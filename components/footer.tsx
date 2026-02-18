@@ -15,9 +15,9 @@ export function Footer() {
             <Image
               src="/images/logo.jpeg"
               alt="Kamiljö AB"
-              width={200}
-              height={80}
-              className="h-16 w-auto rounded-lg"
+              width={280}
+              height={120}
+              className="h-20 w-auto rounded-xl sm:h-24"
             />
             <p className="text-sm leading-relaxed text-secondary-foreground/80">
               {t.footer.tagline}
