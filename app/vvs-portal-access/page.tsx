@@ -14,8 +14,10 @@ import {
   ArrowLeft,
   Upload,
   X,
+  Lock,
 } from "lucide-react"
 import Link from "next/link"
+import { decryptMessage, importPrivateKey } from "@/lib/crypto-utils"
 
 interface Message {
   id: number
@@ -42,15 +44,62 @@ export default function AdminPanel() {
   const [messages, setMessages] = useState<Message[]>([])
   const [gallery, setGallery] = useState<GalleryImage[]>([])
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
+  const [privateKey, setPrivateKey] = useState<CryptoKey | null>(null)
+  const [showKeyInput, setShowKeyInput] = useState(false)
+  const [keyInput, setKeyInput] = useState("")
+  const [keyError, setKeyError] = useState("")
 
-  const loadMessages = useCallback(() => {
+  const loadMessages = useCallback(async () => {
     try {
       const stored = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
-      setMessages(stored)
+      const hasEncrypted = stored.some((m: any) => m.type === "encrypted")
+
+      if (hasEncrypted && !privateKey) {
+        setShowKeyInput(true)
+        // Show only legacy messages while locked
+        setMessages(stored.filter((m: any) => m.type !== "encrypted"))
+        return
+      }
+
+      if (privateKey) {
+        const decrypted = await Promise.all(
+          stored.map(async (m: any) => {
+            if (m.type === "encrypted") {
+              try {
+                const content = await decryptMessage(m, privateKey)
+                // Merge decrypted content with metadata
+                return {
+                  ...content,
+                  id: m.id,
+                  read: m.read,
+                  timestamp: m.timestamp,
+                }
+              } catch (e) {
+                console.error("Decryption failed", e)
+                return {
+                  id: m.id,
+                  timestamp: m.timestamp,
+                  read: m.read,
+                  name: "Decryption Failed",
+                  email: "",
+                  phone: "",
+                  service: "",
+                  message: "Could not decrypt message with provided key.",
+                }
+              }
+            }
+            return m
+          })
+        )
+        setMessages(decrypted)
+        setShowKeyInput(false)
+      } else {
+        setMessages(stored)
+      }
     } catch {
       setMessages([])
     }
-  }, [])
+  }, [privateKey])
 
   const loadGallery = useCallback(() => {
     try {
@@ -65,6 +114,17 @@ export default function AdminPanel() {
     loadMessages()
     loadGallery()
   }, [loadMessages, loadGallery])
+
+  async function handleKeySubmit(e: React.FormEvent) {
+    e.preventDefault()
+    try {
+      const key = await importPrivateKey(keyInput)
+      setPrivateKey(key)
+      setKeyError("")
+    } catch {
+      setKeyError("Invalid Private Key")
+    }
+  }
 
   function toggleRead(id: number) {
     const updated = messages.map((m) =>
@@ -178,7 +238,36 @@ export default function AdminPanel() {
                   Odswiez
                 </button>
               </div>
-              {messages.length === 0 ? (
+
+              {showKeyInput && (
+                <div className="mb-4 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+                  <div className="mb-2 flex items-center gap-2 text-yellow-600">
+                    <Lock className="h-4 w-4" />
+                    <h3 className="font-bold">Encrypted Messages Detected</h3>
+                  </div>
+                  <p className="mb-3 text-xs text-muted-foreground">
+                    Some messages are encrypted. Please enter your Private Key to view them.
+                  </p>
+                  <form onSubmit={handleKeySubmit} className="flex flex-col gap-2">
+                    <textarea
+                      value={keyInput}
+                      onChange={(e) => setKeyInput(e.target.value)}
+                      placeholder='Paste Private Key JWK here: { "kty": "RSA", ... }'
+                      className="w-full rounded-md border border-input bg-background p-2 text-xs font-mono"
+                      rows={3}
+                    />
+                    {keyError && <p className="text-xs text-destructive">{keyError}</p>}
+                    <button
+                      type="submit"
+                      className="self-start rounded-md bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground hover:bg-primary/90"
+                    >
+                      Unlock Messages
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              {messages.length === 0 && !showKeyInput ? (
                 <div className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-10 text-center">
                   <LayoutDashboard className="h-10 w-10 text-muted-foreground/40" />
                   <p className="text-sm text-muted-foreground">Brak wiadomosci</p>
