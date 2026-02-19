@@ -48,7 +48,8 @@ export async function POST(req) {
           const fileMetadata = {
             name: file.originalname,
             parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
-          };\n          const media = {
+          };
+          const media = {
             mimeType: file.mimetype,
             body: file.buffer,
           };
