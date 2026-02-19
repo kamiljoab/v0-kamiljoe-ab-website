@@ -1,68 +1,66 @@
 import { NextResponse } from 'next/server';
-import { google } from 'googleapis';
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import nodemailer from 'nodemailer';
 
-const upload = multer({ storage: multer.memoryStorage() });
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { name, email, phone, service, message } = body;
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+    // Validate required fields
+    if (!name || !email || !service || !message) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
 
-export async function POST(req) {
-  return new Promise((resolve, reject) => {
-    upload.any()(req, {}, async (err) => {
-      if (err) return reject(new Response('Error uploading files', { status: 400 }));
-
-      const { name, email, phone, service, message } = req.body;
-      const files = req.files;
-      const timestamp = new Date().toISOString();
-
-      const auth = new google.auth.GoogleAuth({
-        keyFile: path.join(process.cwd(), '.env.local'),
-        scopes: ['https://www.googleapis.com/auth/drive.file'],
-      });
-
-      const drive = google.drive({ version: 'v3', auth });
-
-      try {
-        // Create a text file with contact form details
-        const textFileContent = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nMessage: ${message}\nTimestamp: ${timestamp}`;
-        const textFileMetadata = {
-          name: `contact_${timestamp}.txt`,
-          parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
-        };
-        const textFile = await drive.files.create({
-          requestBody: textFileMetadata,
-          media: {
-            mimeType: 'text/plain',
-            body: textFileContent,
-          },
-        });
-
-        // Upload each file to Google Drive
-        for (const file of files) {
-          const fileMetadata = {
-            name: file.originalname,
-            parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
-          };\n          const media = {
-            mimeType: file.mimetype,
-            body: file.buffer,
-          };
-          await drive.files.create({
-            requestBody: fileMetadata,
-            media: media,
-          });
-        }
-
-        return resolve(NextResponse.json({ message: 'Contact form submitted successfully!' }, { status: 200 }));
-      } catch (error) {
-        console.error(error);
-        return reject(new Response('Failed to save data', { status: 500 }));
-      }
+    // Configure transporter
+    // Note: User needs to set EMAIL_USER (their gmail) and EMAIL_PASS (app password) in .env
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+      port: Number(process.env.EMAIL_PORT) || 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
     });
-  });
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+      to: 'bonchcevzalaczniki@gmail.com', // Target email as requested
+      subject: `New Contact Form Submission: ${service}`,
+      text: `
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone || 'Not provided'}
+        Service: ${service}
+
+        Message:
+        ${message}
+      `,
+      html: `
+        <h2>New Contact Request</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+        <p><strong>Service:</strong> ${service}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return NextResponse.json(
+      { message: 'Email sent successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return NextResponse.json(
+      { error: 'Failed to send email' },
+      { status: 500 }
+    );
+  }
 }

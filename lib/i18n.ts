@@ -74,6 +74,9 @@ export const translations = {
       emailPlaceholder: "din@email.se",
       phonePlaceholder: "+46 7XX XXX XXX",
       messagePlaceholder: "Beskriv ditt ärende...",
+      captchaLabel: "Säkerhetsfråga",
+      captchaPlaceholder: "Ditt svar",
+      captchaError: "Fel svar, försök igen.",
     },
     footer: {
       tagline: "Auktoriserade VVS-montörer med yrkesbevis",
@@ -156,6 +159,9 @@ export const translations = {
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+46 7XX XXX XXX",
       messagePlaceholder: "Describe your inquiry...",
+      captchaLabel: "Security Question",
+      captchaPlaceholder: "Your answer",
+      captchaError: "Incorrect answer, try again.",
     },
     footer: {
       tagline: "Certified plumbing technicians with professional credentials",
@@ -165,6 +171,6 @@ export const translations = {
       address: "Ludvika, Dalarna",
     },
   },
-} as const
+}
 
 export type Translations = typeof translations.sv
