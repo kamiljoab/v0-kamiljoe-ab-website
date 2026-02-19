@@ -44,7 +44,7 @@ export async function POST(req) {
         });
 
         // Upload each file to Google Drive
-        for (const file of files) {
+        const uploadPromises = files.map((file) => {
           const fileMetadata = {
             name: file.originalname,
             parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
@@ -52,11 +52,13 @@ export async function POST(req) {
             mimeType: file.mimetype,
             body: file.buffer,
           };
-          await drive.files.create({
+          return drive.files.create({
             requestBody: fileMetadata,
             media: media,
           });
-        }
+        });
+
+        await Promise.all(uploadPromises);
 
         return resolve(NextResponse.json({ message: 'Contact form submitted successfully!' }, { status: 200 }));
       } catch (error) {
