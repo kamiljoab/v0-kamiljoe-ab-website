@@ -84,22 +84,32 @@ export default function AdminPanel() {
   function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files
     if (!files) return
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader()
-      reader.onload = () => {
-        const newImage: GalleryImage = {
-          id: Date.now() + Math.random(),
-          name: file.name,
-          url: reader.result as string,
-          addedAt: new Date().toISOString(),
+
+    const promises = Array.from(files).map((file) => {
+      return new Promise<GalleryImage | null>((resolve) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+          resolve({
+            id: Date.now() + Math.random(),
+            name: file.name,
+            url: reader.result as string,
+            addedAt: new Date().toISOString(),
+          })
         }
-        setGallery((prev) => {
-          const updated = [...prev, newImage]
-          localStorage.setItem("kamiljo_gallery", JSON.stringify(updated))
-          return updated
-        })
-      }
-      reader.readAsDataURL(file)
+        reader.onerror = () => resolve(null)
+        reader.readAsDataURL(file)
+      })
+    })
+
+    Promise.all(promises).then((results) => {
+      const newImages = results.filter((img): img is GalleryImage => img !== null)
+      if (newImages.length === 0) return
+
+      setGallery((prev) => {
+        const updated = [...prev, ...newImages]
+        localStorage.setItem("kamiljo_gallery", JSON.stringify(updated))
+        return updated
+      })
     })
   }
 
