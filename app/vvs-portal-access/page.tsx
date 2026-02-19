@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Message {
   id: number
@@ -335,12 +336,13 @@ export default function AdminPanel() {
                     key={img.id}
                     className="group relative overflow-hidden rounded-xl border border-border bg-card"
                   >
-                    <div className="aspect-square">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                    <div className="relative aspect-square">
+                      <Image
                         src={img.url}
                         alt={img.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       />
                     </div>
                     <div className="absolute inset-0 flex items-start justify-end bg-foreground/0 p-2 opacity-0 transition-opacity group-hover:bg-foreground/20 group-hover:opacity-100">
