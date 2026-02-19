@@ -1,16 +1,38 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
-import { Send, CheckCircle, Loader2 } from "lucide-react"
+import { useState, useEffect, type FormEvent } from "react"
+import { Send, CheckCircle, Loader2, AlertCircle } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
 export function ContactForm() {
   const { t } = useLocale()
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // Captcha state
+  const [captcha, setCaptcha] = useState<{ a: number; b: number }>({ a: 0, b: 0 })
+  const [captchaAnswer, setCaptchaAnswer] = useState("")
+
+  // Generate captcha on mount
+  useEffect(() => {
+    setCaptcha({
+      a: Math.floor(Math.random() * 10) + 1,
+      b: Math.floor(Math.random() * 10) + 1,
+    })
+  }, [])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setError(null)
+
+    // Validate captcha
+    const expected = captcha.a + captcha.b
+    if (parseInt(captchaAnswer) !== expected) {
+      setError(t.contact.captchaError || "Incorrect answer")
+      return
+    }
+
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
@@ -20,16 +42,25 @@ export function ContactForm() {
       phone: formData.get("phone") as string,
       service: formData.get("service") as string,
       message: formData.get("message") as string,
-      timestamp: new Date().toISOString(),
     }
 
     try {
-      const existing = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
-      existing.push({ ...data, id: Date.now(), read: false })
-      localStorage.setItem("kamiljo_messages", JSON.stringify(existing))
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send message')
+      }
+
       setSubmitted(true)
-    } catch {
-      // Fallback
+    } catch (err) {
+      console.error(err)
+      setError("Something went wrong. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -138,9 +169,28 @@ export function ContactForm() {
               />
             </div>
 
-            <div className="rounded-lg border border-border bg-muted/50 p-3 text-center text-xs text-muted-foreground">
-              Turnstile CAPTCHA placeholder
+            {/* Math CAPTCHA */}
+            <div>
+              <label htmlFor="captcha" className="mb-1.5 block text-sm font-medium text-foreground">
+                {t.contact.captchaLabel} {captcha.a} + {captcha.b}?
+              </label>
+              <input
+                id="captcha"
+                type="number"
+                required
+                value={captchaAnswer}
+                onChange={(e) => setCaptchaAnswer(e.target.value)}
+                placeholder={t.contact.captchaPlaceholder}
+                className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20 focus:outline-none"
+              />
             </div>
+
+            {error && (
+              <div className="flex items-center gap-2 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <p>{error}</p>
+              </div>
+            )}
 
             <button
               type="submit"
