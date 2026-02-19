@@ -4,6 +4,8 @@ import Image from "next/image"
 import { Star, ArrowRight, Phone } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
+const STARS = [0, 1, 2, 3, 4]
+
 export function Hero() {
   const { t } = useLocale()
 
@@ -14,7 +16,7 @@ export function Hero() {
         <div className="flex-1 text-center lg:text-left">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground">
             <div className="flex items-center gap-0.5">
-              {[...Array(5)].map((_, i) => (
+              {STARS.map((i) => (
                 <Star key={i} className="h-3.5 w-3.5 fill-[oklch(0.75_0.18_85)] text-[oklch(0.75_0.18_85)]" />
               ))}
             </div>
