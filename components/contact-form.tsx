@@ -3,11 +3,13 @@
 import { useState, type FormEvent } from "react"
 import { Send, CheckCircle, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
+import { TurnstileCaptcha } from "@/components/turnstile-captcha"
 
 export function ContactForm() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -20,6 +22,7 @@ export function ContactForm() {
       phone: formData.get("phone") as string,
       service: formData.get("service") as string,
       message: formData.get("message") as string,
+      captchaToken,
       timestamp: new Date().toISOString(),
     }
 
@@ -138,13 +141,11 @@ export function ContactForm() {
               />
             </div>
 
-            <div className="rounded-lg border border-border bg-muted/50 p-3 text-center text-xs text-muted-foreground">
-              Turnstile CAPTCHA placeholder
-            </div>
+            <TurnstileCaptcha onVerify={setCaptchaToken} lang={locale} />
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !captchaToken}
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] disabled:opacity-60"
             >
               {loading ? (
