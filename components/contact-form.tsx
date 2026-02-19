@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react"
 import { Send, CheckCircle, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
+import { encryptMessage } from "@/lib/crypto-utils"
 
 export function ContactForm() {
   const { t } = useLocale()
@@ -14,22 +15,30 @@ export function ContactForm() {
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
+    const timestamp = new Date().toISOString()
     const data = {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
       phone: formData.get("phone") as string,
       service: formData.get("service") as string,
       message: formData.get("message") as string,
-      timestamp: new Date().toISOString(),
+      timestamp,
     }
 
     try {
       const existing = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
-      existing.push({ ...data, id: Date.now(), read: false })
+      const encrypted = await encryptMessage(data)
+      existing.push({
+        ...encrypted,
+        id: Date.now(),
+        timestamp,
+        read: false,
+        type: "encrypted",
+      })
       localStorage.setItem("kamiljo_messages", JSON.stringify(existing))
       setSubmitted(true)
-    } catch {
-      // Fallback
+    } catch (e) {
+      console.error(e)
     } finally {
       setLoading(false)
     }
