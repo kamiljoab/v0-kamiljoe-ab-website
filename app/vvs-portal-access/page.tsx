@@ -42,13 +42,35 @@ export default function AdminPanel() {
   const [messages, setMessages] = useState<Message[]>([])
   const [gallery, setGallery] = useState<GalleryImage[]>([])
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
+  const [loadingMessages, setLoadingMessages] = useState(false)
+  const [serverConnected, setServerConnected] = useState(false)
 
-  const loadMessages = useCallback(() => {
+  const loadMessages = useCallback(async () => {
+    setLoadingMessages(true)
     try {
+      // Try to fetch from API first
+      const res = await fetch('/api/contact')
+      if (res.ok) {
+        const serverMessages = await res.json()
+        if (Array.isArray(serverMessages)) {
+          setMessages(serverMessages)
+          setServerConnected(true)
+          setLoadingMessages(false)
+          return
+        }
+      }
+      // Fallback to local storage if API fails or returns invalid data
+      console.warn("Using local storage fallback")
       const stored = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
       setMessages(stored)
-    } catch {
-      setMessages([])
+      setServerConnected(false)
+    } catch (e) {
+      console.error(e)
+      const stored = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
+      setMessages(stored)
+      setServerConnected(false)
+    } finally {
+      setLoadingMessages(false)
     }
   }, [])
 
@@ -64,7 +86,7 @@ export default function AdminPanel() {
   useEffect(() => {
     loadMessages()
     loadGallery()
-  }, [loadMessages, loadGallery])
+  }, []) // Remove dependencies to prevent loop, or use refs. Actually loadMessages is stable due to useCallback but to be safe.
 
   function toggleRead(id: number) {
     const updated = messages.map((m) =>
@@ -167,14 +189,29 @@ export default function AdminPanel() {
           <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
             <div className="flex flex-col gap-2">
               <div className="mb-2 flex items-center justify-between">
-                <h2 className="font-serif text-sm font-bold text-foreground">
-                  Lista wiadomosci ({messages.length})
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="font-serif text-sm font-bold text-foreground">
+                    Lista wiadomosci ({messages.length})
+                  </h2>
+                  {loadingMessages ? (
+                    <span className="text-xs text-muted-foreground animate-pulse">Wczytywanie...</span>
+                  ) : serverConnected ? (
+                    <span className="flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                      <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                      Online
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                      Local
+                    </span>
+                  )}
+                </div>
                 <button
                   onClick={loadMessages}
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+                  disabled={loadingMessages}
                 >
-                  <RefreshCw className="h-3 w-3" />
+                  <RefreshCw className={`h-3 w-3 ${loadingMessages ? 'animate-spin' : ''}`} />
                   Odswiez
                 </button>
               </div>
