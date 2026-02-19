@@ -14,8 +14,10 @@ import {
   ArrowLeft,
   Upload,
   X,
+  LogOut,
 } from "lucide-react"
 import Link from "next/link"
+import { signOut } from "next-auth/react"
 
 interface Message {
   id: number
@@ -128,7 +130,18 @@ export default function AdminPanel() {
               Panel Administracyjny
             </h1>
           </div>
-          <span className="text-xs text-secondary-foreground/60">Kamiljo AB</span>
+          <div className="flex items-center gap-4">
+            <span className="hidden text-xs text-secondary-foreground/60 sm:inline-block">
+              Kamiljo AB
+            </span>
+            <button
+              onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+              className="flex items-center gap-2 rounded-md bg-secondary-foreground/10 px-3 py-1.5 text-xs font-medium text-secondary-foreground transition-colors hover:bg-secondary-foreground/20"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              Wyloguj
+            </button>
+          </div>
         </div>
       </header>
 
