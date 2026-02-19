@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -22,7 +20,11 @@ export async function POST(req) {
       const timestamp = new Date().toISOString();
 
       const auth = new google.auth.GoogleAuth({
-        keyFile: path.join(process.cwd(), '.env.local'),
+        credentials: {
+          client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+          private_key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+          project_id: process.env.GOOGLE_PROJECT_ID,
+        },
         scopes: ['https://www.googleapis.com/auth/drive.file'],
       });
 
@@ -48,7 +50,8 @@ export async function POST(req) {
           const fileMetadata = {
             name: file.originalname,
             parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
-          };\n          const media = {
+          };
+          const media = {
             mimeType: file.mimetype,
             body: file.buffer,
           };
