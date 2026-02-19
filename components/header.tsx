@@ -6,6 +6,8 @@ import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
 import type { Locale } from "@/lib/i18n"
 
+const LOCALES: Locale[] = ["sv", "en"]
+
 export function Header() {
   const { locale, t, setLocale } = useLocale()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -45,7 +47,7 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 rounded-md border border-border bg-card p-0.5">
-            {(["sv", "en"] as Locale[]).map((lang) => (
+            {LOCALES.map((lang) => (
               <button
                 key={lang}
                 onClick={() => setLocale(lang)}
