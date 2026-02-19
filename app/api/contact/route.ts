@@ -1,68 +1,77 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
-import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
 
-const upload = multer({ storage: multer.memoryStorage() });
+export async function POST(req: NextRequest) {
+  try {
+    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    if (!folderId) {
+      throw new Error('Missing GOOGLE_DRIVE_FOLDER_ID');
+    }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+    const formData = await req.formData();
 
-export async function POST(req) {
-  return new Promise((resolve, reject) => {
-    upload.any()(req, {}, async (err) => {
-      if (err) return reject(new Response('Error uploading files', { status: 400 }));
+    // Extract fields
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
+    const service = formData.get('service') as string;
+    const message = formData.get('message') as string;
+    const timestamp = new Date().toISOString();
 
-      const { name, email, phone, service, message } = req.body;
-      const files = req.files;
-      const timestamp = new Date().toISOString();
-
-      const auth = new google.auth.GoogleAuth({
-        keyFile: path.join(process.cwd(), '.env.local'),
-        scopes: ['https://www.googleapis.com/auth/drive.file'],
-      });
-
-      const drive = google.drive({ version: 'v3', auth });
-
-      try {
-        // Create a text file with contact form details
-        const textFileContent = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nMessage: ${message}\nTimestamp: ${timestamp}`;
-        const textFileMetadata = {
-          name: `contact_${timestamp}.txt`,
-          parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
-        };
-        const textFile = await drive.files.create({
-          requestBody: textFileMetadata,
-          media: {
-            mimeType: 'text/plain',
-            body: textFileContent,
-          },
-        });
-
-        // Upload each file to Google Drive
-        for (const file of files) {
-          const fileMetadata = {
-            name: file.originalname,
-            parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
-          };\n          const media = {
-            mimeType: file.mimetype,
-            body: file.buffer,
-          };
-          await drive.files.create({
-            requestBody: fileMetadata,
-            media: media,
-          });
-        }
-
-        return resolve(NextResponse.json({ message: 'Contact form submitted successfully!' }, { status: 200 }));
-      } catch (error) {
-        console.error(error);
-        return reject(new Response('Failed to save data', { status: 500 }));
+    // Extract files
+    const files: File[] = [];
+    for (const [, value] of formData.entries()) {
+      if (value instanceof File) {
+        files.push(value);
       }
+    }
+
+    const auth = new google.auth.GoogleAuth({
+      keyFile: path.join(process.cwd(), '.env.local'),
+      scopes: ['https://www.googleapis.com/auth/drive.file'],
     });
-  });
+
+    const drive = google.drive({ version: 'v3', auth });
+
+    // Create a text file with contact form details
+    const textFileContent = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\nMessage: ${message}\nTimestamp: ${timestamp}`;
+    const textFileMetadata = {
+      name: `contact_${timestamp}.txt`,
+      parents: [folderId],
+    };
+
+    await drive.files.create({
+      requestBody: textFileMetadata,
+      media: {
+        mimeType: 'text/plain',
+        body: textFileContent,
+      },
+    });
+
+    // Upload each file to Google Drive
+    for (const file of files) {
+      const fileMetadata = {
+        name: file.name,
+        parents: [folderId],
+      };
+
+      const buffer = Buffer.from(await file.arrayBuffer());
+
+      const media = {
+        mimeType: file.type,
+        body: buffer,
+      };
+
+      await drive.files.create({
+        requestBody: fileMetadata,
+        media: media,
+      });
+    }
+
+    return NextResponse.json({ message: 'Contact form submitted successfully!' }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: 'Failed to save data' }, { status: 500 });
+  }
 }
