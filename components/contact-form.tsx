@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react"
 import { Send, CheckCircle, Loader2 } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
+import { addMessage } from "@/lib/storage"
 
 export function ContactForm() {
   const { t } = useLocale()
@@ -24,9 +25,7 @@ export function ContactForm() {
     }
 
     try {
-      const existing = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
-      existing.push({ ...data, id: Date.now(), read: false })
-      localStorage.setItem("kamiljo_messages", JSON.stringify(existing))
+      addMessage(data)
       setSubmitted(true)
     } catch {
       // Fallback

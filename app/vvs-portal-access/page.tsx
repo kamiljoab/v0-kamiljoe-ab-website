@@ -16,24 +16,14 @@ import {
   X,
 } from "lucide-react"
 import Link from "next/link"
-
-interface Message {
-  id: number
-  name: string
-  email: string
-  phone: string
-  service: string
-  message: string
-  timestamp: string
-  read: boolean
-}
-
-interface GalleryImage {
-  id: number
-  name: string
-  url: string
-  addedAt: string
-}
+import {
+  type Message,
+  type GalleryImage,
+  getMessages,
+  saveMessages,
+  getGallery,
+  saveGallery,
+} from "@/lib/storage"
 
 type Tab = "messages" | "gallery"
 
@@ -44,21 +34,11 @@ export default function AdminPanel() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
 
   const loadMessages = useCallback(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
-      setMessages(stored)
-    } catch {
-      setMessages([])
-    }
+    setMessages(getMessages())
   }, [])
 
   const loadGallery = useCallback(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("kamiljo_gallery") || "[]")
-      setGallery(stored)
-    } catch {
-      setGallery([])
-    }
+    setGallery(getGallery())
   }, [])
 
   useEffect(() => {
@@ -71,13 +51,13 @@ export default function AdminPanel() {
       m.id === id ? { ...m, read: !m.read } : m
     )
     setMessages(updated)
-    localStorage.setItem("kamiljo_messages", JSON.stringify(updated))
+    saveMessages(updated)
   }
 
   function deleteMessage(id: number) {
     const updated = messages.filter((m) => m.id !== id)
     setMessages(updated)
-    localStorage.setItem("kamiljo_messages", JSON.stringify(updated))
+    saveMessages(updated)
     if (selectedMessage?.id === id) setSelectedMessage(null)
   }
 
@@ -95,7 +75,7 @@ export default function AdminPanel() {
         }
         setGallery((prev) => {
           const updated = [...prev, newImage]
-          localStorage.setItem("kamiljo_gallery", JSON.stringify(updated))
+          saveGallery(updated)
           return updated
         })
       }
@@ -106,7 +86,7 @@ export default function AdminPanel() {
   function deleteImage(id: number) {
     const updated = gallery.filter((img) => img.id !== id)
     setGallery(updated)
-    localStorage.setItem("kamiljo_gallery", JSON.stringify(updated))
+    saveGallery(updated)
   }
 
   const unreadCount = messages.filter((m) => !m.read).length
