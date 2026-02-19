@@ -1,0 +1,15 @@
+
+> my-project@0.1.0 dev /app
+> next dev
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 795ms
+○ Compiling / ...
+ GET / 200 in 5.2s (compile: 4.9s, render: 370ms)
+ ELIFECYCLE  Command failed.
+[?25h
