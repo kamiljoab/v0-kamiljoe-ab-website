@@ -24,12 +24,28 @@ export function ContactForm() {
     }
 
     try {
+      // Send to API
+      await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      })
+
+      // Also save to localStorage as a backup/local record
       const existing = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
       existing.push({ ...data, id: Date.now(), read: false })
       localStorage.setItem("kamiljo_messages", JSON.stringify(existing))
       setSubmitted(true)
-    } catch {
-      // Fallback
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      // Even if API fails, we save locally so the user doesn't lose data
+      try {
+        const existing = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]")
+        existing.push({ ...data, id: Date.now(), read: false })
+        localStorage.setItem("kamiljo_messages", JSON.stringify(existing))
+        setSubmitted(true)
+      } catch {
+        // Fallback if everything fails
+      }
     } finally {
       setLoading(false)
     }

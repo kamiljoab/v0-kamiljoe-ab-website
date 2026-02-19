@@ -165,6 +165,6 @@ export const translations = {
       address: "Ludvika, Dalarna",
     },
   },
-} as const
+}
 
 export type Translations = typeof translations.sv
