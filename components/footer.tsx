@@ -19,8 +19,8 @@ export function Footer() {
                 alt="Kamiljö AB logotyp"
                 width={240}
                 height={96}
-                className="h-full w-auto rounded-xl object-contain object-left"
-                style={{ width: "auto", height: "auto" }}
+                className="h-full rounded-xl object-contain object-left"
+                style={{ width: "auto" }}
                 priority
               />
             </div>
