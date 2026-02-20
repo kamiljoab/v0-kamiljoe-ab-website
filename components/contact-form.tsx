@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
-import { Send, CheckCircle, Loader2, Calendar, Clock, AlertCircle } from "lucide-react"
+import { Send, CheckCircle, Loader2, Calendar, Clock, AlertCircle, Paperclip, X } from "lucide-react"
+import { useRef } from "react"
 import { useLocale } from "@/lib/locale-context"
 
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzLXpAPVJ7sW66zy6b9ZSFm0XoPLw921xIkd_ZEVcLt0-O-p3Qnk5T-LU71ktPKgs3rYA/exec"
@@ -56,6 +57,32 @@ export function ContactForm() {
   const [error, setError] = useState("")
   const [gdpr, setGdpr] = useState(false)
   const [urgency, setUrgency] = useState("")
+  const [files, setFiles] = useState<File[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files)
+      setFiles((prev) => {
+        const combined = [...prev, ...newFiles]
+        return combined.slice(0, 5)
+      })
+    }
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }
+
+  function removeFile(index: number) {
+    setFiles((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  function fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -67,6 +94,15 @@ export function ContactForm() {
     setError("")
 
     const formData = new FormData(e.currentTarget)
+    const fileData = await Promise.all(
+      files.map(async (f) => ({
+        name: f.name,
+        type: f.type,
+        size: f.size,
+        data: await fileToBase64(f),
+      }))
+    )
+
     const payload = {
       action:    "formSubmit",
       name:      (formData.get("name")     as string) || "",
@@ -79,6 +115,7 @@ export function ContactForm() {
       date1:     (formData.get("date1")    as string) || "",
       timeSlot:  (formData.get("timeSlot") as string) || "",
       date2:     (formData.get("date2")    as string) || "",
+      files:     fileData,
       gdpr:      true,
       timestamp: new Date().toISOString(),
       source:    "kamiljo.se – kontaktformulär",
@@ -251,6 +288,67 @@ export function ContactForm() {
                 placeholder="Beskriv problemet så utförligt du kan"
                 className="w-full resize-none rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
               />
+            </div>
+
+            <div>
+              <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
+                <Paperclip className="h-3.5 w-3.5" /> {"Bifoga bilder / filer (max 5)"}
+              </label>
+              <div
+                className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-input bg-background px-4 py-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/30"
+                onClick={() => fileInputRef.current?.click()}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click() }}
+                role="button"
+                tabIndex={0}
+                aria-label="Ladda upp filer"
+              >
+                <Paperclip className="h-6 w-6 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
+                  {"Klicka eller dra filer hit"}
+                </span>
+                <span className="text-xs text-muted-foreground/70">
+                  {"JPG, PNG, PDF – max 10 MB per fil"}
+                </span>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*,.pdf,.doc,.docx"
+                onChange={handleFileChange}
+                className="hidden"
+                aria-hidden="true"
+              />
+              {files.length > 0 && (
+                <ul className="mt-3 flex flex-col gap-2">
+                  {files.map((file, index) => (
+                    <li key={`${file.name}-${index}`} className="flex items-center gap-3 rounded-lg border border-border bg-muted/20 px-3 py-2">
+                      {file.type.startsWith("image/") ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                          className="h-10 w-10 flex-shrink-0 rounded object-cover"
+                        />
+                      ) : (
+                        <Paperclip className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                      )}
+                      <span className="flex-1 truncate text-sm text-foreground">{file.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {(file.size / 1024).toFixed(0)} KB
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="flex-shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                        aria-label={`Ta bort ${file.name}`}
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
