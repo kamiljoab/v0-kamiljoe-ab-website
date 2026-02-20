@@ -58,21 +58,50 @@ export function ContactForm() {
   const [gdpr, setGdpr] = useState(false)
   const [urgency, setUrgency] = useState("")
   const [files, setFiles] = useState<File[]>([])
+  const [fileStatuses, setFileStatuses] = useState<Record<string, "uploading" | "done" | "error">>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const MAX_FILES = 10
+  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files)
       setFiles((prev) => {
-        const combined = [...prev, ...newFiles]
-        return combined.slice(0, 5)
+        const combined = [...prev, ...newFiles].slice(0, MAX_FILES)
+        return combined
+      })
+      newFiles.forEach((file) => {
+        const key = `${file.name}-${file.size}`
+        if (file.size > MAX_FILE_SIZE) {
+          setFileStatuses((prev) => ({ ...prev, [key]: "error" }))
+        } else {
+          setFileStatuses((prev) => ({ ...prev, [key]: "uploading" }))
+          setTimeout(() => {
+            setFileStatuses((prev) => ({ ...prev, [key]: "done" }))
+          }, 600 + Math.random() * 800)
+        }
       })
     }
     if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
   function removeFile(index: number) {
-    setFiles((prev) => prev.filter((_, i) => i !== index))
+    setFiles((prev) => {
+      const removed = prev[index]
+      const key = `${removed.name}-${removed.size}`
+      setFileStatuses((s) => {
+        const copy = { ...s }
+        delete copy[key]
+        return copy
+      })
+      return prev.filter((_, i) => i !== index)
+    })
+  }
+
+  function formatFileSize(bytes: number) {
+    if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB"
+    return (bytes / 1024).toFixed(0) + " KB"
   }
 
   function fileToBase64(file: File): Promise<string> {
@@ -292,61 +321,95 @@ export function ContactForm() {
 
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <Paperclip className="h-3.5 w-3.5" /> {"Bifoga bilder / filer (max 5)"}
+                <Paperclip className="h-3.5 w-3.5" /> {"Bifoga filer (max 10 st, upp till 5 MB/fil)"}
               </label>
               <div
-                className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-input bg-background px-4 py-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/30"
-                onClick={() => fileInputRef.current?.click()}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click() }}
+                className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed bg-background px-4 py-6 text-center transition-colors ${
+                  files.length >= MAX_FILES
+                    ? "border-muted cursor-not-allowed opacity-50"
+                    : "border-input hover:border-primary/50 hover:bg-muted/30"
+                }`}
+                onClick={() => { if (files.length < MAX_FILES) fileInputRef.current?.click() }}
+                onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && files.length < MAX_FILES) fileInputRef.current?.click() }}
                 role="button"
                 tabIndex={0}
                 aria-label="Ladda upp filer"
               >
                 <Paperclip className="h-6 w-6 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  {"Klicka eller dra filer hit"}
+                  {files.length >= MAX_FILES ? "Max antal filer uppnått" : "Klicka eller dra filer hit"}
                 </span>
                 <span className="text-xs text-muted-foreground/70">
-                  {"JPG, PNG, PDF – max 10 MB per fil"}
+                  {"Bilder, PDF, video, dokument m.m. – upp till 1 GB totalt"}
                 </span>
               </div>
               <input
                 ref={fileInputRef}
                 type="file"
                 multiple
-                accept="image/*,.pdf,.doc,.docx"
+                accept="image/*,.pdf,.doc,.docx,.mp4,.mov,.avi,.zip,.rar"
                 onChange={handleFileChange}
                 className="hidden"
                 aria-hidden="true"
+                disabled={files.length >= MAX_FILES}
               />
               {files.length > 0 && (
-                <ul className="mt-3 flex flex-col gap-2">
-                  {files.map((file, index) => (
-                    <li key={`${file.name}-${index}`} className="flex items-center gap-3 rounded-lg border border-border bg-muted/20 px-3 py-2">
-                      {file.type.startsWith("image/") ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={URL.createObjectURL(file)}
-                          alt={file.name}
-                          className="h-10 w-10 flex-shrink-0 rounded object-cover"
-                        />
-                      ) : (
-                        <Paperclip className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
-                      )}
-                      <span className="flex-1 truncate text-sm text-foreground">{file.name}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {(file.size / 1024).toFixed(0)} KB
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(index)}
-                        className="flex-shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                        aria-label={`Ta bort ${file.name}`}
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </li>
-                  ))}
+                <div className="mt-2 text-right text-xs text-muted-foreground">
+                  {files.length} / {MAX_FILES} {"filer"}
+                </div>
+              )}
+              {files.length > 0 && (
+                <ul className="mt-1 flex flex-col gap-2">
+                  {files.map((file, index) => {
+                    const key = `${file.name}-${file.size}`
+                    const status = fileStatuses[key]
+                    const tooBig = file.size > MAX_FILE_SIZE
+                    return (
+                      <li key={`${file.name}-${index}`} className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${
+                        tooBig ? "border-destructive/40 bg-destructive/5" : "border-border bg-muted/20"
+                      }`}>
+                        {file.type.startsWith("image/") ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={file.name}
+                            className="h-10 w-10 flex-shrink-0 rounded object-cover"
+                          />
+                        ) : (
+                          <Paperclip className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                        )}
+                        <div className="flex flex-1 flex-col gap-0.5 overflow-hidden">
+                          <span className="truncate text-sm text-foreground">{file.name}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
+                            {tooBig && (
+                              <span className="flex items-center gap-1 text-xs font-medium text-destructive">
+                                <AlertCircle className="h-3 w-3" /> {"Filen overskrider 5 MB"}
+                              </span>
+                            )}
+                            {!tooBig && status === "uploading" && (
+                              <span className="flex items-center gap-1 text-xs text-primary">
+                                <Loader2 className="h-3 w-3 animate-spin" /> {"Laddar..."}
+                              </span>
+                            )}
+                            {!tooBig && status === "done" && (
+                              <span className="flex items-center gap-1 text-xs text-primary">
+                                <CheckCircle className="h-3 w-3" /> {"Klar"}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(index)}
+                          className="flex-shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                          aria-label={`Ta bort ${file.name}`}
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </li>
+                    )
+                  })}
                 </ul>
               )}
             </div>
