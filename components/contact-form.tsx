@@ -151,7 +151,7 @@ export function ContactForm() {
           </h2>
           <p className="text-muted-foreground">{t.contact.subtitle}</p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Fält utan * är valfria – fyll i det du vill dela med oss.
+            {"Fält utan * är valfria – fyll i det du vill dela med oss."}
           </p>
         </div>
 
@@ -195,7 +195,7 @@ export function ContactForm() {
 
             <div>
               <label htmlFor="address" className="mb-1.5 block text-sm font-medium text-foreground">
-                Adress för uppdraget
+                {"Adress för uppdraget"}
               </label>
               <input id="address" name="address" type="text"
                 placeholder="Gatuadress, postnummer och ort"
@@ -204,7 +204,7 @@ export function ContactForm() {
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Tjanst och arende
+              {"Tjänst och ärende"}
             </div>
 
             <div>
@@ -214,14 +214,14 @@ export function ContactForm() {
               <select id="service" name="service" defaultValue=""
                 className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
               >
-                <option value="">Valj tjanst (valfritt)</option>
+                <option value="">{"Välj tjänst (valfritt)"}</option>
                 {SERVICES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
 
             <div>
               <label className="mb-1.5 block text-sm font-medium text-foreground">
-                Hur bradskande ar arendet? *
+                {"Hur brådskande är ärendet? *"}
               </label>
               <div className="flex flex-col gap-2">
                 {URGENCY_OPTIONS.map((opt) => (
@@ -248,19 +248,19 @@ export function ContactForm() {
                 {t.contact.message}
               </label>
               <textarea id="message" name="message" rows={4}
-                placeholder="Beskriv problemet sa utforligt du kan"
+                placeholder="Beskriv problemet så utförligt du kan"
                 className="w-full resize-none rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
               />
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Onskad tid
+              {"Önskad tid"}
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="date1" className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                  <Calendar className="h-3.5 w-3.5" /> Onskat datum
+                  <Calendar className="h-3.5 w-3.5" /> {"Önskat datum"}
                 </label>
                 <input id="date1" name="date1" type="date" min={getTodayStr()}
                   className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
@@ -278,12 +278,12 @@ export function ContactForm() {
 
             <div>
               <label htmlFor="timeSlot" className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <Clock className="h-3.5 w-3.5" /> Onskad tid pa dagen
+                <Clock className="h-3.5 w-3.5" /> {"Önskad tid på dagen"}
               </label>
               <select id="timeSlot" name="timeSlot" defaultValue=""
                 className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
               >
-                <option value="">Valj tid (valfritt)</option>
+                <option value="">{"Välj tid (valfritt)"}</option>
                 {TIME_SLOTS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
@@ -293,13 +293,9 @@ export function ContactForm() {
             </div>
 
             <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs leading-relaxed text-muted-foreground">
-              <strong className="text-foreground">Kamiljö AB</strong>, org.nr 559572-5366, är
-              personuppgiftsansvarig. Vi behandlar de uppgifter du lämnar för att kunna kontakta
-              dig, lämna offert och utföra det begärda VVS-arbetet. Uppgifterna sparas i maximalt
-              2 år (eller 7 år om bokföringsunderlag). Du har rätt att begära radering, tillgång
-              eller rättelse via{" "}
-              <a href="mailto:info@kamiljo.se" className="underline hover:text-foreground">info@kamiljo.se</a>.
-              Klagomål kan lämnas till Integritetsskyddsmyndigheten på{" "}
+              <strong className="text-foreground">{"Kamiljö AB"}</strong>{", org.nr 559572-5366, är personuppgiftsansvarig. Vi behandlar de uppgifter du lämnar för att kunna kontakta dig, lämna offert och utföra det begärda VVS-arbetet. Uppgifterna sparas i maximalt 2 år (eller 7 år om bokföringsunderlag). Du har rätt att begära radering, tillgång eller rättelse via "}
+              <a href="mailto:info@kamiljo.se" className="underline hover:text-foreground">info@kamiljo.se</a>
+              {". Klagomål kan lämnas till Integritetsskyddsmyndigheten på "}
               <a href="https://imy.se" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">imy.se</a>.
             </div>
 
@@ -309,8 +305,7 @@ export function ContactForm() {
                 className="mt-0.5 h-4 w-4 flex-shrink-0 accent-primary"
               />
               <span className="text-sm text-foreground">
-                Jag har läst och godkänner att Kamiljö AB behandlar mina personuppgifter
-                i enlighet med integritetspolicyn ovan (GDPR). *
+                {"Jag har läst och godkänner att Kamiljö AB behandlar mina personuppgifter i enlighet med integritetspolicyn ovan (GDPR). *"}
               </span>
             </label>
 
@@ -329,9 +324,9 @@ export function ContactForm() {
             </button>
 
             <p className="text-center text-xs text-muted-foreground">
-              Akut? Ring oss direkt:{" "}
+              {"Akut? Ring oss direkt: "}
               <a href="tel:+46762124124" className="font-bold text-primary">+46 762 124 124</a>
-              {" "}— Jour 24/7
+              {" — Jour 24/7"}
             </p>
 
           </div>
