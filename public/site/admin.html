@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel CMS – Kamiljö AB</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/icon-dark-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       RESET I ZMIENNE
+       Te same zmienne co na stronie glownej, aby panel CMS
+       mial spojny wyglad.
+       ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --background: #f7faf7;
+      --foreground: #1a2332;
+      --card: #ffffff;
+      --card-foreground: #1a2332;
+      --primary: #1a8a4a;
+      --primary-foreground: #ffffff;
+      --secondary: #2a4060;
+      --secondary-foreground: #ffffff;
+      --muted: #f0f4f0;
+      --muted-foreground: #5a6a7a;
+      --accent: #dceede;
+      --accent-foreground: #2a3a4a;
+      --destructive: #d63031;
+      --destructive-foreground: #ffffff;
+      --border: #dde8dd;
+      --input: #e0e8e0;
+      --ring: #1a8a4a;
+      --font-sans: 'Open Sans', sans-serif;
+      --font-serif: 'Roboto', sans-serif;
+      --radius: 0.625rem;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ============================================================
+       NAGLOWEK PANELU CMS
+       Ciemny pasek z linkiem powrotu i tytuliem.
+       ============================================================ */
+    .admin-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .admin-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .admin-header-inner { padding: 0.75rem 2rem; }
+    }
+
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.8);
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #ffffff; }
+
+    .admin-separator {
+      width: 1px;
+      height: 1.25rem;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .admin-title {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--secondary-foreground);
+    }
+
+    .admin-brand {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ============================================================
+       KONTENER PANELU
+       ============================================================ */
+    .admin-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .admin-container { padding: 1.5rem 2rem; }
+    }
+
+    /* ============================================================
+       ZAKLADKI (TABS)
+       Trzy zakladki: Wiadomosci, Galeria, Edycja tresci.
+       ============================================================ */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--card);
+      color: var(--foreground);
+    }
+
+    .tab-btn:hover {
+      background: var(--accent);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.375rem;
+      border-radius: 9999px;
+      background: var(--destructive);
+      color: var(--destructive-foreground);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ============================================================
+       SEKCJA WIADOMOSCI
+       Lista wiadomosci po lewej, szczegoly po prawej.
+       ============================================================ */
+    .messages-layout {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .messages-layout { grid-template-columns: 1fr 1.2fr; }
+    }
+
+    .msg-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .msg-list-header h2 {
+      font-family: var(--font-serif);
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    .refresh-btn:hover { color: var(--foreground); }
+
+    .msg-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .msg-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--card);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+    }
+
+    .msg-item:hover {
+      background: var(--accent);
+    }
+
+    .msg-item.unread {
+      border-color: rgba(26, 138, 74, 0.3);
+      background: var(--accent);
+    }
+
+    .msg-item.selected {
+      border-color: var(--primary);
+      background: rgba(26, 138, 74, 0.05);
+    }
+
+    .msg-icon { flex-shrink: 0; color: var(--muted-foreground); margin-top: 2px; }
+    .msg-item.unread .msg-icon { color: var(--primary); }
+
+    .msg-info { flex: 1; min-width: 0; }
+
+    .msg-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .msg-item.unread .msg-name { font-weight: 700; }
+
+    .msg-date {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .msg-service {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Szczegoly wiadomosci */
+    .msg-detail {
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      padding: 1.5rem;
+    }
+
+    .msg-detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .msg-detail-header h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .msg-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .msg-action-btn {
+      background: none;
+      border: none;
+      padding: 0.375rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+      color: var(--muted-foreground);
+    }
+
+    .msg-action-btn:hover {
+      background: var(--accent);
+      color: var(--foreground);
+    }
+
+    .msg-action-btn.delete:hover {
+      background: rgba(214, 48, 49, 0.1);
+      color: var(--destructive);
+    }
+
+    .msg-fields {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .msg-fields { grid-template-columns: 1fr 1fr; }
+    }
+
+    .msg-field-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .msg-field-value {
+      font-size: 0.875rem;
+      color: var(--foreground);
+    }
+
+    .msg-field-value a {
+      color: var(--primary);
+    }
+
+    .msg-field-value a:hover { text-decoration: underline; }
+
+    .msg-body {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background: var(--background);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .msg-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .msg-status-read { color: var(--primary); }
+    .msg-status-unread { color: var(--destructive); }
+
+    /* Puste stany */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 2.5rem;
+      border: 1px dashed var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      text-align: center;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 2.5rem;
+      color: rgba(90, 106, 122, 0.3);
+    }
+
+    .empty-state p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    /* ============================================================
+       SEKCJA GALERIA
+       Upload zdjec i siatka miniatur z mozliwoscia usuwania.
+       ============================================================ */
+    .gallery-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .gallery-header h2 {
+      font-family: var(--font-serif);
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .upload-btn:hover { transform: scale(1.05); }
+
+    .gallery-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .gallery-item {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      overflow: hidden;
+    }
+
+    .gallery-item-img {
+      aspect-ratio: 1;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 0.5rem;
+      background: transparent;
+      opacity: 0;
+      transition: all 0.2s;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      background: rgba(26, 35, 50, 0.2);
+      opacity: 1;
+    }
+
+    .gallery-delete-btn {
+      background: var(--destructive);
+      color: var(--destructive-foreground);
+      border: none;
+      padding: 0.375rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .gallery-item-name {
+      padding: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ============================================================
+       SEKCJA EDYCJA TRESCI (CMS)
+       Formularz do edycji wszystkich tekstow strony.
+       Zmiany sa zapisywane w localStorage i automatycznie
+       ladowane na stronie glownej.
+       ============================================================ */
+    .cms-section {
+      max-width: 48rem;
+    }
+
+    .cms-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .cms-section > p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1.5rem;
+    }
+
+    .cms-group {
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cms-group h3 {
+      font-family: var(--font-serif);
+      font-size: 0.875rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cms-field {
+      margin-bottom: 1rem;
+    }
+
+    .cms-field:last-child {
+      margin-bottom: 0;
+    }
+
+    .cms-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted-foreground);
+      margin-bottom: 0.375rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cms-field input,
+    .cms-field textarea {
+      width: 100%;
+      border: 1px solid var(--input);
+      border-radius: 0.5rem;
+      background: var(--background);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      font-family: var(--font-sans);
+      color: var(--foreground);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .cms-field input:focus,
+    .cms-field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 138, 74, 0.15);
+    }
+
+    .cms-field textarea {
+      resize: vertical;
+      min-height: 4rem;
+    }
+
+    .cms-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .cms-save-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.625rem 1.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .cms-save-btn:hover { transform: scale(1.02); }
+
+    .cms-reset-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--destructive);
+      padding: 0.625rem 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--destructive);
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cms-reset-btn:hover {
+      background: rgba(214, 48, 49, 0.05);
+    }
+
+    .cms-status {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: none;
+    }
+
+    .cms-status.success {
+      display: block;
+      background: rgba(26, 138, 74, 0.1);
+      color: var(--primary);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAGLOWEK PANELU CMS
+       Link powrotu do strony glownej, tytul, nazwa firmy.
+       ============================================================ -->
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-left">
+        <a href="/site/" class="back-link">
+          &#8592; Strona glowna
+        </a>
+        <div class="admin-separator"></div>
+        <h1 class="admin-title">Panel CMS</h1>
+      </div>
+      <span class="admin-brand">Kamiljö AB</span>
+    </div>
+  </header>
+
+  <div class="admin-container">
+
+    <!-- ============================================================
+         ZAKLADKI (TABS)
+         Trzy zakladki: Wiadomosci, Galeria zdjec, Edycja tresci.
+         ============================================================ -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="messages" role="tab" aria-selected="true">
+        &#9993; Wiadomosci
+        <span class="tab-badge" id="unread-badge" style="display:none">0</span>
+      </button>
+      <button class="tab-btn" data-tab="gallery" role="tab" aria-selected="false">
+        &#128247; Galeria zdjec
+      </button>
+      <button class="tab-btn" data-tab="cms" role="tab" aria-selected="false">
+        &#9998; Edycja tresci (CMS)
+      </button>
+    </div>
+
+    <!-- ============================================================
+         ZAKLADKA 1: WIADOMOSCI
+         Lista wiadomosci z formularza kontaktowego, szczegoly,
+         oznaczanie jako przeczytane, usuwanie.
+         ============================================================ -->
+    <div class="tab-content active" id="tab-messages">
+      <div class="messages-layout">
+        <div>
+          <div class="msg-list-header">
+            <h2>Lista wiadomosci (<span id="msg-count">0</span>)</h2>
+            <button class="refresh-btn" id="refresh-messages">&#8635; Odswiez</button>
+          </div>
+          <div class="msg-list" id="msg-list">
+            <div class="empty-state" id="msg-empty">
+              <div class="empty-icon">&#128233;</div>
+              <p>Brak wiadomosci</p>
+            </div>
+          </div>
+        </div>
+        <div id="msg-detail-container">
+          <div class="empty-state" id="msg-detail-empty">
+            <div class="empty-icon">&#9993;</div>
+            <p>Wybierz wiadomosc, aby zobaczyc szczegoly</p>
+          </div>
+          <div class="msg-detail" id="msg-detail" style="display:none">
+            <div class="msg-detail-header">
+              <h3>Szczegoly wiadomosci</h3>
+              <div class="msg-actions">
+                <button class="msg-action-btn" id="toggle-read-btn" title="Oznacz jako przeczytane/nieprzeczytane">&#128065;</button>
+                <button class="msg-action-btn delete" id="delete-msg-btn" title="Usun">&#128465;</button>
+              </div>
+            </div>
+            <div class="msg-fields">
+              <div>
+                <div class="msg-field-label">Imie i nazwisko</div>
+                <div class="msg-field-value" id="detail-name"></div>
+              </div>
+              <div>
+                <div class="msg-field-label">E-mail</div>
+                <div class="msg-field-value" id="detail-email"></div>
+              </div>
+              <div>
+                <div class="msg-field-label">Telefon</div>
+                <div class="msg-field-value" id="detail-phone"></div>
+              </div>
+              <div>
+                <div class="msg-field-label">Usluga</div>
+                <div class="msg-field-value" id="detail-service"></div>
+              </div>
+              <div>
+                <div class="msg-field-label">Pilnosc</div>
+                <div class="msg-field-value" id="detail-urgency"></div>
+              </div>
+              <div>
+                <div class="msg-field-label">Adres</div>
+                <div class="msg-field-value" id="detail-address"></div>
+              </div>
+            </div>
+            <div class="msg-field-label" style="margin-top:1rem">Wiadomosc</div>
+            <div class="msg-body" id="detail-message"></div>
+            <div class="msg-meta" id="detail-meta"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ZAKLADKA 2: GALERIA ZDJEC
+         Upload i wyswietlanie zdjec z mozliwoscia usuwania.
+         Zdjecia zapisane sa w localStorage jako base64.
+         ============================================================ -->
+    <div class="tab-content" id="tab-gallery">
+      <div class="gallery-header">
+        <h2>Galeria zdjec (<span id="gallery-count">0</span>)</h2>
+        <label class="upload-btn">
+          &#8593; Dodaj zdjecia
+          <input type="file" accept="image/*" multiple id="gallery-upload" class="sr-only">
+        </label>
+      </div>
+      <div id="gallery-container">
+        <div class="empty-state" id="gallery-empty">
+          <div class="empty-icon">&#128247;</div>
+          <p>Brak zdjec w galerii</p>
+          <p style="font-size:0.75rem;opacity:0.6">Kliknij "Dodaj zdjecia" aby dodac nowe</p>
+        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ZAKLADKA 3: EDYCJA TRESCI (CMS)
+         Formularz do edycji tekstow strony glownej.
+         Kazde pole odpowiada kluczowi i18n na stronie glownej.
+         Po zapisaniu dane sa w localStorage pod kluczem
+         "kamiljo_cms_content" i pobierane przez strone glowna.
+         ============================================================ -->
+    <div class="tab-content" id="tab-cms">
+      <div class="cms-section">
+        <h2>Edycja tresci strony</h2>
+        <p>Zmien teksty widoczne na stronie glownej. Po zapisaniu zmiany beda natychmiast widoczne. Dane sa zapisywane lokalnie w przegladarce (localStorage).</p>
+
+        <!-- Sekcja Hero -->
+        <div class="cms-group">
+          <h3>Sekcja Hero (baner glowny)</h3>
+          <div class="cms-field">
+            <label for="cms-hero-h1">Naglowek H1 (tytul)</label>
+            <input type="text" id="cms-hero-h1" data-cms-key="hero.h1">
+          </div>
+          <div class="cms-field">
+            <label for="cms-hero-h2">Podtytul</label>
+            <input type="text" id="cms-hero-h2" data-cms-key="hero.h2">
+          </div>
+          <div class="cms-field">
+            <label for="cms-hero-cta">Tekst przycisku CTA</label>
+            <input type="text" id="cms-hero-cta" data-cms-key="hero.cta">
+          </div>
+        </div>
+
+        <!-- Sekcja Uslugi -->
+        <div class="cms-group">
+          <h3>Sekcja Uslugi</h3>
+          <div class="cms-field">
+            <label for="cms-services-title">Tytul sekcji</label>
+            <input type="text" id="cms-services-title" data-cms-key="services.title">
+          </div>
+          <div class="cms-field">
+            <label for="cms-services-subtitle">Podtytul sekcji</label>
+            <input type="text" id="cms-services-subtitle" data-cms-key="services.subtitle">
+          </div>
+          <div id="cms-services-items"></div>
+        </div>
+
+        <!-- Sekcja O nas -->
+        <div class="cms-group">
+          <h3>Sekcja O nas</h3>
+          <div class="cms-field">
+            <label for="cms-about-title">Tytul</label>
+            <input type="text" id="cms-about-title" data-cms-key="about.title">
+          </div>
+          <div class="cms-field">
+            <label for="cms-about-desc">Opis firmy</label>
+            <textarea id="cms-about-desc" rows="4" data-cms-key="about.description"></textarea>
+          </div>
+        </div>
+
+        <!-- Sekcja Kontakt -->
+        <div class="cms-group">
+          <h3>Sekcja Kontakt</h3>
+          <div class="cms-field">
+            <label for="cms-contact-title">Tytul</label>
+            <input type="text" id="cms-contact-title" data-cms-key="contact.title">
+          </div>
+          <div class="cms-field">
+            <label for="cms-contact-subtitle">Podtytul</label>
+            <input type="text" id="cms-contact-subtitle" data-cms-key="contact.subtitle">
+          </div>
+        </div>
+
+        <!-- Sekcja Stopka -->
+        <div class="cms-group">
+          <h3>Stopka</h3>
+          <div class="cms-field">
+            <label for="cms-footer-tagline">Slogan</label>
+            <input type="text" id="cms-footer-tagline" data-cms-key="footer.tagline">
+          </div>
+        </div>
+
+        <!-- Przyciski zapisz / resetuj -->
+        <div class="cms-actions">
+          <button class="cms-save-btn" id="cms-save-btn">&#10003; Zapisz zmiany</button>
+          <button class="cms-reset-btn" id="cms-reset-btn">&#8635; Przywroc domyslne</button>
+        </div>
+        <div class="cms-status" id="cms-status"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       JAVASCRIPT PANELU CMS
+       Obsluga: zakladek, wiadomosci, galerii, edycji tresci.
+       ============================================================ -->
+  <script>
+  /* =============================================================
+     OBSLUGA ZAKLADEK
+     Klikniecie w zakladke pokazuje odpowiednia sekcje,
+     ukrywajac pozostale.
+     ============================================================= */
+  document.querySelectorAll(".tab-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".tab-btn").forEach(function(b) {
+        b.classList.remove("active");
+        b.setAttribute("aria-selected", "false");
+      });
+      document.querySelectorAll(".tab-content").forEach(function(c) {
+        c.classList.remove("active");
+      });
+      this.classList.add("active");
+      this.setAttribute("aria-selected", "true");
+      document.getElementById("tab-" + this.dataset.tab).classList.add("active");
+    });
+  });
+
+  /* =============================================================
+     WIADOMOSCI
+     Ladowanie, wyswietlanie, oznaczanie, usuwanie wiadomosci
+     z localStorage.
+     ============================================================= */
+  let messages = [];
+  let selectedMsgId = null;
+
+  function loadMessages() {
+    try {
+      messages = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]");
+    } catch(e) {
+      messages = [];
+    }
+    renderMessages();
+  }
+
+  function saveMessages() {
+    localStorage.setItem("kamiljo_messages", JSON.stringify(messages));
+  }
+
+  function renderMessages() {
+    const listEl = document.getElementById("msg-list");
+    const emptyEl = document.getElementById("msg-empty");
+    const countEl = document.getElementById("msg-count");
+    const badgeEl = document.getElementById("unread-badge");
+
+    const unread = messages.filter(function(m) { return !m.read; }).length;
+    countEl.textContent = messages.length;
+
+    if (unread > 0) {
+      badgeEl.style.display = "inline-flex";
+      badgeEl.textContent = unread;
+    } else {
+      badgeEl.style.display = "none";
+    }
+
+    /* Wyczysc liste (zostawiajac empty state) */
+    listEl.querySelectorAll(".msg-item").forEach(function(el) { el.remove(); });
+
+    if (messages.length === 0) {
+      emptyEl.style.display = "flex";
+      hideDetail();
+      return;
+    }
+
+    emptyEl.style.display = "none";
+
+    /* Sortuj od najnowszych */
+    const sorted = messages.slice().sort(function(a, b) { return b.id - a.id; });
+
+    sorted.forEach(function(msg) {
+      const btn = document.createElement("button");
+      btn.className = "msg-item" + (!msg.read ? " unread" : "") + (msg.id === selectedMsgId ? " selected" : "");
+      btn.dataset.id = msg.id;
+
+      const dateStr = new Date(msg.timestamp).toLocaleDateString("pl-PL");
+      btn.innerHTML =
+        '<span class="msg-icon">' + (msg.read ? "&#9993;" : "&#9993;") + '</span>' +
+        '<div class="msg-info">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem">' +
+            '<span class="msg-name">' + escapeHtml(msg.name) + '</span>' +
+            '<span class="msg-date">' + dateStr + '</span>' +
+          '</div>' +
+          '<div class="msg-service">' + escapeHtml(msg.service || "—") + '</div>' +
+        '</div>';
+
+      btn.addEventListener("click", function() {
+        selectMessage(msg.id);
+      });
+
+      listEl.appendChild(btn);
+    });
+  }
+
+  function selectMessage(id) {
+    selectedMsgId = id;
+    const msg = messages.find(function(m) { return m.id === id; });
+    if (!msg) return;
+
+    /* Oznacz jako przeczytane */
+    if (!msg.read) {
+      msg.read = true;
+      saveMessages();
+    }
+
+    showDetail(msg);
+    renderMessages();
+  }
+
+  function showDetail(msg) {
+    document.getElementById("msg-detail-empty").style.display = "none";
+    document.getElementById("msg-detail").style.display = "block";
+
+    document.getElementById("detail-name").textContent = msg.name || "—";
+    document.getElementById("detail-email").innerHTML = msg.email
+      ? '<a href="mailto:' + escapeHtml(msg.email) + '">' + escapeHtml(msg.email) + '</a>'
+      : "—";
+    document.getElementById("detail-phone").textContent = msg.phone || "—";
+    document.getElementById("detail-service").textContent = msg.service || "—";
+    document.getElementById("detail-urgency").textContent = msg.urgency || "—";
+    document.getElementById("detail-address").textContent = msg.address || "—";
+    document.getElementById("detail-message").textContent = msg.message || "—";
+
+    const metaEl = document.getElementById("detail-meta");
+    const dateStr = new Date(msg.timestamp).toLocaleString("pl-PL");
+    metaEl.innerHTML =
+      '<span>Data: ' + dateStr + '</span> | ' +
+      '<span class="' + (msg.read ? "msg-status-read" : "msg-status-unread") + '">' +
+        (msg.read ? "Przeczytane" : "Nieprzeczytane") +
+      '</span>';
+  }
+
+  function hideDetail() {
+    selectedMsgId = null;
+    document.getElementById("msg-detail-empty").style.display = "flex";
+    document.getElementById("msg-detail").style.display = "none";
+  }
+
+  /* Przycisk oznacz jako przeczytane/nieprzeczytane */
+  document.getElementById("toggle-read-btn").addEventListener("click", function() {
+    if (!selectedMsgId) return;
+    const msg = messages.find(function(m) { return m.id === selectedMsgId; });
+    if (msg) {
+      msg.read = !msg.read;
+      saveMessages();
+      showDetail(msg);
+      renderMessages();
+    }
+  });
+
+  /* Przycisk usun wiadomosc */
+  document.getElementById("delete-msg-btn").addEventListener("click", function() {
+    if (!selectedMsgId) return;
+    messages = messages.filter(function(m) { return m.id !== selectedMsgId; });
+    saveMessages();
+    hideDetail();
+    renderMessages();
+  });
+
+  /* Przycisk odswiez */
+  document.getElementById("refresh-messages").addEventListener("click", loadMessages);
+
+  /* Zabezpieczenie przed XSS */
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  /* =============================================================
+     GALERIA ZDJEC
+     Upload, wyswietlanie i usuwanie zdjec.
+     Zdjecia zapisane jako base64 w localStorage.
+     ============================================================= */
+  let gallery = [];
+
+  function loadGallery() {
+    try {
+      gallery = JSON.parse(localStorage.getItem("kamiljo_gallery") || "[]");
+    } catch(e) {
+      gallery = [];
+    }
+    renderGallery();
+  }
+
+  function saveGallery() {
+    localStorage.setItem("kamiljo_gallery", JSON.stringify(gallery));
+  }
+
+  function renderGallery() {
+    const gridEl = document.getElementById("gallery-grid");
+    const emptyEl = document.getElementById("gallery-empty");
+    const countEl = document.getElementById("gallery-count");
+
+    countEl.textContent = gallery.length;
+    gridEl.innerHTML = "";
+
+    if (gallery.length === 0) {
+      emptyEl.style.display = "flex";
+      return;
+    }
+
+    emptyEl.style.display = "none";
+
+    gallery.forEach(function(img) {
+      const div = document.createElement("div");
+      div.className = "gallery-item";
+      div.innerHTML =
+        '<img src="' + img.url + '" alt="' + escapeHtml(img.name) + '" class="gallery-item-img">' +
+        '<div class="gallery-item-overlay">' +
+          '<button class="gallery-delete-btn" data-id="' + img.id + '" title="Usun zdjecie">&#10005;</button>' +
+        '</div>' +
+        '<div class="gallery-item-name">' + escapeHtml(img.name) + '</div>';
+
+      gridEl.appendChild(div);
+    });
+
+    /* Obsluga przyciskow usuwania */
+    gridEl.querySelectorAll(".gallery-delete-btn").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        const id = parseFloat(this.dataset.id);
+        gallery = gallery.filter(function(img) { return img.id !== id; });
+        saveGallery();
+        renderGallery();
+      });
+    });
+  }
+
+  /* Upload zdjec */
+  document.getElementById("gallery-upload").addEventListener("change", function(e) {
+    if (!e.target.files) return;
+    Array.from(e.target.files).forEach(function(file) {
+      const reader = new FileReader();
+      reader.onload = function() {
+        gallery.push({
+          id: Date.now() + Math.random(),
+          name: file.name,
+          url: reader.result,
+          addedAt: new Date().toISOString()
+        });
+        saveGallery();
+        renderGallery();
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = "";
+  });
+
+  /* =============================================================
+     EDYCJA TRESCI (CMS)
+     Ladowanie i zapisywanie tekstow strony.
+     Dane sa przechowywane w localStorage pod kluczem
+     "kamiljo_cms_content" jako obiekt {klucz: wartosc}.
+     Strona glowna (index.html) odczytuje te dane przy ladowaniu
+     i nadpisuje domyslne teksty.
+     ============================================================= */
+
+  /* Domyslne wartosci (szwedzkie) */
+  const defaultContent = {
+    "hero.h1": "Din professionella rörmokare i Ludvika – Kamiljö AB",
+    "hero.h2": "Gratis offert inom 24h",
+    "hero.cta": "Begär offert",
+    "services.title": "Våra tjänster",
+    "services.subtitle": "Professionella VVS-tjänster i Ludvika och hela Dalarna",
+    "services.items.0.title": "Installation & Inkoppling",
+    "services.items.0.description": "Installation av vask, tvättställ, dusch, toalett och blandare.",
+    "services.items.1.title": "Värme & Pannor",
+    "services.items.1.description": "Installation och byte av pannor, radiatorer (element) och värmesystem.",
+    "services.items.2.title": "Komponentbyte",
+    "services.items.2.description": "Byte av varmvattenberedare, värmeväxlare och hydroforer.",
+    "services.items.3.title": "Nyinstallation",
+    "services.items.3.description": "Kompletta VVS-installationer för nya maskiner i hemmet.",
+    "services.items.4.title": "Innovativa lösningar",
+    "services.items.4.description": "Egenutvecklade innovativa lösningar för husuppvärmning baserade på kavitationsteknik.",
+    "about.title": "Om Kamiljö AB",
+    "about.description": "Vi är auktoriserade VVS-montörer med yrkesbevis verksamma i Ludvika, Smedjebacken, Borlänge, Falun och hela Dalarna. Med fokus på kvalitet, energieffektiv uppvärmning och innovativa lösningar erbjuder vi allt från akut rörjour till stambyte och badrumsrenovering. ROT-avdrag gäller på våra tjänster.",
+    "contact.title": "Kontakta oss",
+    "contact.subtitle": "Fyll i formuläret så återkommer vi inom 24 timmar med en gratis offert.",
+    "footer.tagline": "Auktoriserade VVS-montörer med yrkesbevis"
+  };
+
+  /* Wygeneruj pola CMS dla uslug */
+  const servicesContainer = document.getElementById("cms-services-items");
+  for (let i = 0; i < 5; i++) {
+    const titleKey = "services.items." + i + ".title";
+    const descKey = "services.items." + i + ".description";
+    servicesContainer.innerHTML +=
+      '<div class="cms-field">' +
+        '<label for="cms-svc-' + i + '-title">Usluga ' + (i + 1) + ' – tytul</label>' +
+        '<input type="text" id="cms-svc-' + i + '-title" data-cms-key="' + titleKey + '">' +
+      '</div>' +
+      '<div class="cms-field">' +
+        '<label for="cms-svc-' + i + '-desc">Usluga ' + (i + 1) + ' – opis</label>' +
+        '<textarea id="cms-svc-' + i + '-desc" rows="2" data-cms-key="' + descKey + '"></textarea>' +
+      '</div>';
+  }
+
+  /* Laduj zapisane wartosci CMS */
+  function loadCmsContent() {
+    let saved = {};
+    try {
+      saved = JSON.parse(localStorage.getItem("kamiljo_cms_content") || "{}");
+    } catch(e) {
+      saved = {};
+    }
+
+    document.querySelectorAll("[data-cms-key]").forEach(function(el) {
+      const key = el.getAttribute("data-cms-key");
+      const value = saved[key] || defaultContent[key] || "";
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        el.value = value;
+      }
+    });
+  }
+
+  /* Zapisz zmiany CMS */
+  document.getElementById("cms-save-btn").addEventListener("click", function() {
+    const content = {};
+    document.querySelectorAll("[data-cms-key]").forEach(function(el) {
+      const key = el.getAttribute("data-cms-key");
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        content[key] = el.value;
+      }
+    });
+    localStorage.setItem("kamiljo_cms_content", JSON.stringify(content));
+
+    const statusEl = document.getElementById("cms-status");
+    statusEl.className = "cms-status success";
+    statusEl.textContent = "Zmiany zostaly zapisane! Odswiez strone glowna, aby je zobaczyc.";
+    setTimeout(function() { statusEl.className = "cms-status"; }, 4000);
+  });
+
+  /* Przywroc domyslne */
+  document.getElementById("cms-reset-btn").addEventListener("click", function() {
+    if (confirm("Czy na pewno chcesz przywrocic domyslne teksty? Wszystkie zmiany zostana utracone.")) {
+      localStorage.removeItem("kamiljo_cms_content");
+      loadCmsContent();
+
+      const statusEl = document.getElementById("cms-status");
+      statusEl.className = "cms-status success";
+      statusEl.textContent = "Przywrocono domyslne teksty.";
+      setTimeout(function() { statusEl.className = "cms-status"; }, 4000);
+    }
+  });
+
+  /* =============================================================
+     INICJALIZACJA
+     Zaladuj dane przy starcie strony.
+     ============================================================= */
+  loadMessages();
+  loadGallery();
+  loadCmsContent();
+  </script>
+
+</body>
+</html>

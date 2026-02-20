@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamiljö AB | VVS & Rörmokare i Ludvika, Dalarna</title>
+  <meta name="description" content="Professionell rörmokare i Ludvika. VVS-installation, rörjour 24/7, värme & pannor, badrumsrenovering. Auktoriserade VVS-montörer med yrkesbevis. Ring +46 762 124 124.">
+  <meta name="keywords" content="rörmokare Ludvika, VVS Ludvika, rörjour Dalarna, akut rörmokare Smedjebacken, VVS-service Borlänge, VVS-installatör Falun, badrumsrenovering Ludvika, stambyte Dalarna, kavitationsteknik uppvärmning, ROT-avdrag VVS Ludvika">
+  <meta property="og:title" content="Kamiljö AB | VVS & Rörmokare i Ludvika">
+  <meta property="og:description" content="Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sv_SE">
+  <link rel="icon" href="/icon-light-32x32.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="/icon-dark-32x32.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="/apple-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD Structured Data / Dane strukturalne SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Plumber",
+    "name": "Kamiljö AB",
+    "description": "Professionell rörmokare i Ludvika. VVS-installation, rörjour 24/7, värme & pannor, badrumsrenovering.",
+    "url": "https://kamiljo.se",
+    "telephone": "+46762124124",
+    "email": "info@kamiljo.se",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ludvika",
+      "addressRegion": "Dalarna",
+      "addressCountry": "SE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 60.1497,
+      "longitude": 15.1876
+    },
+    "areaServed": [
+      {"@type": "City", "name": "Ludvika"},
+      {"@type": "City", "name": "Smedjebacken"},
+      {"@type": "City", "name": "Borlänge"},
+      {"@type": "City", "name": "Falun"},
+      {"@type": "AdministrativeArea", "name": "Dalarna"}
+    ],
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "15"
+    },
+    "taxID": "559572-5366",
+    "legalName": "Kamiljö AB"
+  }
+  </script>
+
+  <style>
+    /* ============================================================
+       RESET I ZMIENNE GLOBALNE
+       Reset i zmienne CSS uzywane w calym dokumencie.
+       ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Kolory glowne */
+      --background: #f7faf7;
+      --foreground: #1a2332;
+      --card: #ffffff;
+      --card-foreground: #1a2332;
+      --primary: #1a8a4a;
+      --primary-foreground: #ffffff;
+      --secondary: #2a4060;
+      --secondary-foreground: #ffffff;
+      --muted: #f0f4f0;
+      --muted-foreground: #5a6a7a;
+      --accent: #dceede;
+      --accent-foreground: #2a3a4a;
+      --destructive: #d63031;
+      --destructive-foreground: #ffffff;
+      --border: #dde8dd;
+      --input: #e0e8e0;
+      --ring: #1a8a4a;
+
+      /* Czcionki */
+      --font-sans: 'Open Sans', sans-serif;
+      --font-serif: 'Roboto', sans-serif;
+
+      /* Promien zaokraglenia */
+      --radius: 0.625rem;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================================
+       UKLAD STRONY
+       Glowny kontener flexbox zapewniajacy, ze stopka
+       jest zawsze na dole strony.
+       ============================================================ */
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .main-content {
+      flex: 1;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 0 2rem;
+      }
+    }
+
+    /* ============================================================
+       NAGLOWEK (HEADER)
+       Przyklejony naglowek z nawigacja, przelacznikiem jezyka
+       oraz przyciskiem jour (dyżur 24/7).
+       ============================================================ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 1024px) {
+      .header-inner {
+        padding: 0.75rem 2rem;
+      }
+    }
+
+    .logo-link {
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      height: 3.5rem;
+      width: auto;
+    }
+
+    @media (min-width: 640px) {
+      .logo-img { height: 4rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .logo-img { height: 5rem; }
+    }
+
+    /* Nawigacja desktopowa */
+    .desktop-nav {
+      display: none;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .desktop-nav { display: flex; }
+    }
+
+    .desktop-nav a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--foreground);
+      transition: color 0.2s;
+    }
+
+    .desktop-nav a:hover {
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Przelacznik jezyka */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      background: var(--card);
+      padding: 0.125rem;
+    }
+
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border: none;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      color: var(--muted-foreground);
+    }
+
+    .lang-btn.active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .lang-btn:not(.active):hover {
+      color: var(--foreground);
+    }
+
+    /* Przycisk jour (dyzur awaryjny) */
+    .emergency-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--destructive);
+      color: var(--destructive-foreground);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      transition: transform 0.2s;
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    .emergency-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .emergency-btn .full-text {
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .emergency-btn .full-text { display: inline; }
+      .emergency-btn .short-text { display: none; }
+    }
+
+    /* Przycisk menu mobilnego */
+    .mobile-toggle {
+      display: flex;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 0.375rem;
+      background: transparent;
+      color: var(--foreground);
+      cursor: pointer;
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-toggle { display: none; }
+    }
+
+    /* Menu mobilne */
+    .mobile-nav {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+      padding: 1rem;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
+
+    .mobile-nav a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--foreground);
+      transition: background 0.2s;
+    }
+
+    .mobile-nav a:hover {
+      background: var(--accent);
+    }
+
+    /* ============================================================
+       SEKCJA HERO (GLOWNA)
+       Baner powitalny z naglowkiem, ocenami, przyciskami CTA
+       oraz kodem QR.
+       ============================================================ */
+    .hero-section {
+      position: relative;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(26, 138, 74, 0.08), transparent 60%);
+    }
+
+    .hero-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 4rem 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-inner {
+        flex-direction: row;
+        gap: 3rem;
+        padding: 6rem 2rem;
+      }
+    }
+
+    .hero-content {
+      flex: 1;
+      text-align: center;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-content { text-align: left; }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: var(--accent-foreground);
+      padding: 0.375rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .stars {
+      display: inline-flex;
+      gap: 0.125rem;
+    }
+
+    .star-icon {
+      color: #c8a415;
+      font-size: 0.875rem;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-serif);
+      font-size: 1.875rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      color: var(--foreground);
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+
+    @media (min-width: 768px) {
+      .hero-h1 { font-size: 2.25rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-h1 { font-size: 3rem; }
+    }
+
+    .hero-h2 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero-h2 { font-size: 1.25rem; }
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .hero-cta-group { flex-direction: row; }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-cta-group { justify-content: flex-start; }
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      transition: transform 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--secondary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border: 2px solid var(--secondary);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+
+    /* Kod QR */
+    .hero-qr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .qr-card {
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: var(--card);
+      padding: 1rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .qr-card img {
+      width: 11rem;
+      height: 11rem;
+    }
+
+    @media (min-width: 1024px) {
+      .qr-card img { width: 13rem; height: 13rem; }
+    }
+
+    .qr-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .google-rating {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .google-rating p {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      text-align: center;
+    }
+
+    .google-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: opacity 0.2s;
+    }
+
+    .google-link:hover {
+      opacity: 0.8;
+    }
+
+    /* ============================================================
+       SEKCJA USLUGI (TJANSTER)
+       Siatka kart z opisami uslug VVS.
+       ============================================================ */
+    .services-section {
+      background: var(--background);
+      padding: 4rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .services-section { padding: 6rem 0; }
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--foreground);
+      margin-bottom: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .section-title { font-size: 1.875rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .section-title { font-size: 2.25rem; }
+    }
+
+    .section-subtitle {
+      color: var(--muted-foreground);
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .service-card.innovation {
+      border-color: rgba(26, 138, 74, 0.3);
+      background: rgba(26, 138, 74, 0.05);
+    }
+
+    .service-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.5rem;
+      background: var(--accent);
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .service-card.innovation .service-icon {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .service-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--foreground);
+      margin-bottom: 0.5rem;
+    }
+
+    .service-card p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--muted-foreground);
+    }
+
+    .usp-badge {
+      display: inline-block;
+      margin-top: 0.75rem;
+      background: rgba(26, 138, 74, 0.1);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       SEKCJA O NAS (OM OSS)
+       Opis firmy i trzy kafelki z wyroznikami.
+       ============================================================ */
+    .about-section {
+      background: var(--card);
+      padding: 4rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .about-section { padding: 6rem 0; }
+    }
+
+    .about-content {
+      max-width: 48rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-content h2 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--foreground);
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .about-content h2 { font-size: 1.875rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .about-content h2 { font-size: 2.25rem; }
+    }
+
+    .about-content > p {
+      line-height: 1.6;
+      color: var(--muted-foreground);
+      margin-bottom: 2.5rem;
+    }
+
+    .highlights-grid {
+      display: grid;
+      gap: 1.5rem;
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 640px) {
+      .highlights-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .highlight-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--background);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .highlight-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background: rgba(26, 138, 74, 0.1);
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .highlight-card span {
+      font-family: var(--font-serif);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    /* ============================================================
+       SEKCJA KONTAKTOWA
+       Formularz kontaktowy z walidacja, uploadem plikow
+       i polityka prywatnosci.
+       ============================================================ */
+    .contact-section {
+      background: var(--background);
+      padding: 4rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .contact-section { padding: 6rem 0; }
+    }
+
+    .contact-wrapper {
+      max-width: 36rem;
+      margin: 0 auto;
+    }
+
+    .contact-form-card {
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      padding: 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    @media (min-width: 1024px) {
+      .contact-form-card { padding: 2rem; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-section-label {
+      border: 1px solid rgba(221, 232, 221, 0.6);
+      background: rgba(240, 244, 240, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-foreground);
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--foreground);
+      margin-bottom: 0.375rem;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--input);
+      border-radius: 0.5rem;
+      background: var(--background);
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+      font-family: var(--font-sans);
+      color: var(--foreground);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--muted-foreground);
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 138, 74, 0.15);
+    }
+
+    .field textarea {
+      resize: none;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .two-col { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Opcje pilnosci (radio buttons) */
+    .urgency-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .urgency-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 1rem;
+      border: 1px solid var(--input);
+      border-radius: 0.5rem;
+      background: var(--background);
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .urgency-option:hover {
+      border-color: rgba(26, 138, 74, 0.5);
+    }
+
+    .urgency-option.selected {
+      border-color: var(--primary);
+      background: rgba(26, 138, 74, 0.05);
+      color: var(--foreground);
+      font-weight: 500;
+    }
+
+    .urgency-option input[type="radio"] {
+      accent-color: var(--primary);
+    }
+
+    /* Upload plikow */
+    .file-drop-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.5rem 1rem;
+      border: 2px dashed var(--input);
+      border-radius: 0.5rem;
+      background: var(--background);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .file-drop-zone:hover {
+      border-color: rgba(26, 138, 74, 0.5);
+      background: rgba(240, 244, 240, 0.3);
+    }
+
+    .file-drop-zone.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .file-drop-zone .drop-icon {
+      font-size: 1.5rem;
+      color: var(--muted-foreground);
+    }
+
+    .file-drop-zone .drop-text {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .file-drop-zone .drop-hint {
+      font-size: 0.75rem;
+      color: rgba(90, 106, 122, 0.7);
+    }
+
+    .file-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: rgba(240, 244, 240, 0.2);
+    }
+
+    .file-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-item-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-item-size {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .file-item-status {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    .file-remove-btn {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 50%;
+      transition: all 0.2s;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .file-remove-btn:hover {
+      background: rgba(214, 48, 49, 0.1);
+      color: var(--destructive);
+    }
+
+    /* Pasek postepu uploadu */
+    .progress-bar {
+      height: 0.5rem;
+      width: 100%;
+      border-radius: 9999px;
+      background: var(--muted);
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: var(--primary);
+      transition: width 0.2s;
+    }
+
+    /* GDPR / polityka prywatnosci */
+    .gdpr-box {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: rgba(240, 244, 240, 0.2);
+      padding: 1rem;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      color: var(--muted-foreground);
+    }
+
+    .gdpr-box strong {
+      color: var(--foreground);
+    }
+
+    .gdpr-box a {
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+
+    .gdpr-box a:hover {
+      color: var(--foreground);
+    }
+
+    .gdpr-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .gdpr-checkbox input {
+      margin-top: 0.125rem;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .gdpr-checkbox span {
+      font-size: 0.875rem;
+      color: var(--foreground);
+    }
+
+    /* Przycisk wyslij */
+    .submit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: scale(1.02);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Komunikat bledu */
+    .error-msg {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border: 1px solid rgba(214, 48, 49, 0.3);
+      border-radius: 0.5rem;
+      background: rgba(214, 48, 49, 0.05);
+      font-size: 0.875rem;
+      color: var(--destructive);
+    }
+
+    /* Komunikat sukcesu */
+    .success-card {
+      border: 1px solid rgba(26, 138, 74, 0.2);
+      border-radius: 0.75rem;
+      background: rgba(26, 138, 74, 0.05);
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .success-card .check-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .success-card .success-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .success-card .success-text {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-top: 0.5rem;
+    }
+
+    .success-card a {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .emergency-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .emergency-note a {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* ============================================================
+       STOPKA (FOOTER)
+       Trzy kolumny: logo + opis, kontakt, uslugi.
+       ============================================================ */
+    .site-footer {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .footer-col p,
+    .footer-col span,
+    .footer-col a {
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .footer-logo {
+      height: 5rem;
+      width: auto;
+      border-radius: 0.75rem;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
+    .footer-tagline {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .footer-col h3 {
+      font-family: var(--font-serif);
+      font-size: 0.875rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-contact a,
+    .footer-contact span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.2s;
+    }
+
+    .footer-contact a:hover {
+      color: #ffffff;
+    }
+
+    .footer-services {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-services a {
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.2s;
+    }
+
+    .footer-services a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ============================================================
+       ANIMACJA PULSOWANIA (dla przycisku jour)
+       ============================================================ */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 8px 2px rgba(214, 48, 49, 0.4); }
+      50% { box-shadow: 0 0 20px 6px rgba(214, 48, 49, 0.7); }
+    }
+
+    /* ============================================================
+       SVG IKONY (inline)
+       ============================================================ */
+    .icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.125em;
+    }
+
+    .icon-sm { width: 1rem; height: 1rem; }
+    .icon-md { width: 1.25rem; height: 1.25rem; }
+    .icon-lg { width: 1.5rem; height: 1.5rem; }
+
+    /* Ukryty tekst dla czytnikow ekranowych */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* Spinner ladowania */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spinner {
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     WRAPPER STRONY
+     Kontener flex zapewniajacy, ze stopka jest zawsze na dole.
+     ============================================================ -->
+<div class="page-wrapper">
+
+  <!-- ============================================================
+       NAGLOWEK (HEADER)
+       Zawiera: logo, nawigacje desktopowa, przelacznik jezyka,
+       przycisk jour, przycisk menu mobilnego.
+       ============================================================ -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="#hem" class="logo-link" aria-label="Kamiljö AB - Strona glowna">
+        <img src="/images/logo.jpeg" alt="Kamiljö AB logotyp" class="logo-img" width="220" height="90">
+      </a>
+
+      <!-- Nawigacja desktopowa (widoczna od 1024px) -->
+      <nav class="desktop-nav" aria-label="Huvudnavigation" id="desktop-nav">
+        <a href="#hem" data-i18n="nav.home">Hem</a>
+        <a href="#tjanster" data-i18n="nav.services">Tjänster</a>
+        <a href="#om-oss" data-i18n="nav.about">Om oss</a>
+        <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Przelacznik jezyka SV / EN -->
+        <div class="lang-switcher" role="group" aria-label="Välj språk">
+          <button class="lang-btn active" data-lang="sv" aria-label="Byt till svenska">
+            <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            SV
+          </button>
+          <button class="lang-btn" data-lang="en" aria-label="Switch to English">
+            <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            EN
+          </button>
+        </div>
+
+        <!-- Przycisk JOUR / dyzur 24/7 -->
+        <a href="tel:+46762124124" class="emergency-btn" aria-label="Ring jour">
+          <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <span class="full-text" data-i18n="nav.emergency">Jour 24/7</span>
+          <span class="short-text">Jour</span>
+        </a>
+
+        <!-- Przycisk hamburger (menu mobilne) -->
+        <button class="mobile-toggle" aria-label="Meny" id="mobile-toggle">
+          <svg class="icon icon-lg" id="menu-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="icon icon-lg" id="close-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu mobilne (ukryte domyslnie) -->
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobilnavigation">
+      <a href="#hem" data-i18n="nav.home">Hem</a>
+      <a href="#tjanster" data-i18n="nav.services">Tjänster</a>
+      <a href="#om-oss" data-i18n="nav.about">Om oss</a>
+      <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       TRESC GLOWNA (MAIN)
+       ============================================================ -->
+  <main class="main-content">
+
+    <!-- ========================================================
+         SEKCJA HERO
+         Baner powitalny z naglowkiem H1, ocenami Google,
+         przyciskami CTA (offert + telefon) oraz kodem QR.
+         ======================================================== -->
+    <section id="hem" class="hero-section">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-inner container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="stars" aria-hidden="true">
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+            </span>
+            <span>5.0 <span data-i18n="hero.reviews">Verifierade omdömen</span></span>
+          </div>
+
+          <h1 class="hero-h1" data-i18n="hero.h1">Din professionella rörmokare i Ludvika – Kamiljö AB</h1>
+
+          <p class="hero-h2" data-i18n="hero.h2">Gratis offert inom 24h</p>
+
+          <div class="hero-cta-group">
+            <a href="#kontakt" class="btn-primary">
+              <span data-i18n="hero.cta">Begär offert</span>
+              <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="tel:+46762124124" class="btn-outline">
+              <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              +46 762 124 124
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-qr">
+          <div class="qr-card">
+            <img src="/images/qr-code.png" alt="QR-kod för att kontakta Kamiljö AB" width="180" height="180">
+          </div>
+          <p class="qr-label" data-i18n="hero.scanQr">Skanna för kontakt</p>
+          <div class="google-rating">
+            <div class="stars" aria-hidden="true">
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+              <span class="star-icon">&#9733;</span>
+            </div>
+            <p>5.0 på Google Maps – Klicka för rekommendationer</p>
+            <a href="https://www.google.com/maps/place/Kamilj%C3%B6+AB" target="_blank" rel="noopener noreferrer" class="google-link">
+              Visa på Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SEKCJA USLUGI (TJANSTER)
+         Karty z ikonami SVG opisujace kazda usluge VVS.
+         ======================================================== -->
+    <section id="tjanster" class="services-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="services.title">Våra tjänster</h2>
+          <p class="section-subtitle" data-i18n="services.subtitle">Professionella VVS-tjänster i Ludvika och hela Dalarna</p>
+        </div>
+
+        <div class="services-grid" id="services-grid">
+          <!-- Usluga 1: Instalacja -->
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <h3 data-i18n="services.items.0.title">Installation & Inkoppling</h3>
+            <p data-i18n="services.items.0.description">Installation av vask, tvättställ, dusch, toalett och blandare.</p>
+          </article>
+
+          <!-- Usluga 2: Ogrzewanie -->
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+            </div>
+            <h3 data-i18n="services.items.1.title">Värme & Pannor</h3>
+            <p data-i18n="services.items.1.description">Installation och byte av pannor, radiatorer (element) och värmesystem.</p>
+          </article>
+
+          <!-- Usluga 3: Wymiana komponentow -->
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/></svg>
+            </div>
+            <h3 data-i18n="services.items.2.title">Komponentbyte</h3>
+            <p data-i18n="services.items.2.description">Byte av varmvattenberedare, värmeväxlare och hydroforer.</p>
+          </article>
+
+          <!-- Usluga 4: Nowa instalacja -->
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3 data-i18n="services.items.3.title">Nyinstallation</h3>
+            <p data-i18n="services.items.3.description">Kompletta VVS-installationer för nya maskiner i hemmet.</p>
+          </article>
+
+          <!-- Usluga 5: Innowacyjne rozwiazania (USP) -->
+          <article class="service-card innovation">
+            <div class="service-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 015 11.9V17H7v-3.1A7 7 0 0112 2z"/></svg>
+            </div>
+            <h3 data-i18n="services.items.4.title">Innovativa lösningar</h3>
+            <p data-i18n="services.items.4.description">Egenutvecklade innovativa lösningar för husuppvärmning baserade på kavitationsteknik.</p>
+            <span class="usp-badge">USP</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SEKCJA O NAS (OM OSS)
+         Opis firmy i trzy wyrozniki: doswiadczenie,
+         gwarancja jakosci, dostepnosc 24/7.
+         ======================================================== -->
+    <section id="om-oss" class="about-section">
+      <div class="container">
+        <div class="about-content">
+          <h2 data-i18n="about.title">Om Kamiljö AB</h2>
+          <p data-i18n="about.description">Vi är auktoriserade VVS-montörer med yrkesbevis verksamma i Ludvika, Smedjebacken, Borlänge, Falun och hela Dalarna. Med fokus på kvalitet, energieffektiv uppvärmning och innovativa lösningar erbjuder vi allt från akut rörjour till stambyte och badrumsrenovering. ROT-avdrag gäller på våra tjänster.</p>
+        </div>
+
+        <div class="highlights-grid">
+          <div class="highlight-card">
+            <div class="highlight-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>
+            </div>
+            <span data-i18n="about.experience">Professionell erfarenhet</span>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span data-i18n="about.quality">Kvalitetsgaranti</span>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon" aria-hidden="true">
+              <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <span data-i18n="about.available">Jour dygnet runt</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SEKCJA KONTAKTOWA
+         Formularz z: danymi kontaktowymi, wyborem uslugi,
+         pilnoscia, wiadomoscia, uploadem plikow, datami,
+         polityka prywatnosci (GDPR) i przyciskiem wyslij.
+         ======================================================== -->
+    <section id="kontakt" class="contact-section">
+      <div class="container">
+        <div class="contact-wrapper">
+          <div class="section-header">
+            <h2 class="section-title" data-i18n="contact.title">Kontakta oss</h2>
+            <p class="section-subtitle" data-i18n="contact.subtitle">Fyll i formuläret så återkommer vi inom 24 timmar med en gratis offert.</p>
+            <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--muted-foreground)">Fält utan * är valfria – fyll i det du vill dela med oss.</p>
+          </div>
+
+          <!-- Komunikat sukcesu (domyslnie ukryty) -->
+          <div id="contact-success" style="display:none">
+            <div class="success-card">
+              <div class="check-icon">&#10003;</div>
+              <p class="success-title" data-i18n="contact.success">Tack! Vi återkommer snart.</p>
+              <p class="success-text">
+                Vi återkommer inom 24 timmar. Vid akuta ärenden ring
+                <a href="tel:+46762124124">+46 762 124 124</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Formularz kontaktowy -->
+          <form id="contact-form" class="contact-form-card" novalidate>
+            <div class="form-group">
+
+              <div class="form-section-label">Kontaktuppgifter</div>
+
+              <!-- Imie i nazwisko -->
+              <div class="field">
+                <label for="name"><span data-i18n="contact.name">Namn</span> *</label>
+                <input type="text" id="name" name="name" required placeholder="Ditt namn">
+              </div>
+
+              <!-- Email i telefon obok siebie -->
+              <div class="two-col">
+                <div class="field">
+                  <label for="email" data-i18n="contact.email">E-post</label>
+                  <input type="email" id="email" name="email" placeholder="din@email.se">
+                </div>
+                <div class="field">
+                  <label for="phone" data-i18n="contact.phone">Telefon</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+46 7XX XXX XXX">
+                </div>
+              </div>
+
+              <!-- Adres -->
+              <div class="field">
+                <label for="address">Adress för uppdraget</label>
+                <input type="text" id="address" name="address" placeholder="Gatuadress, postnummer och ort">
+              </div>
+
+              <div class="form-section-label">Tjänst och ärende</div>
+
+              <!-- Wybor uslugi (select / dropdown) -->
+              <div class="field">
+                <label for="service" data-i18n="contact.service">Tjänst</label>
+                <select id="service" name="service">
+                  <option value="">Välj tjänst (valfritt)</option>
+                  <option>Installation & Inkoppling</option>
+                  <option>Värme & Pannor</option>
+                  <option>Komponentbyte (varmvattenberedare m.m.)</option>
+                  <option>Nyinstallation</option>
+                  <option>Innovativa lösningar (kavitationsteknik)</option>
+                  <option>Rörjour 24/7 – Akut utryckning</option>
+                  <option>Stambyte</option>
+                  <option>Avloppsrensning</option>
+                  <option>Badrumsrenovering – VVS-del</option>
+                  <option>Golvvärme (vattenburen)</option>
+                  <option>Vattenläcka & Fuktskada</option>
+                  <option>Värmepump</option>
+                  <option>Rörinstallation</option>
+                  <option>Tryckreglering</option>
+                  <option>VVS för Företag & Industri</option>
+                  <option>Underhåll & Service</option>
+                  <option>Akut Reparation</option>
+                  <option>Rörinspektionskamera</option>
+                  <option>Relining – Rörförnyelse</option>
+                  <option>Övrigt / Vet ej</option>
+                </select>
+              </div>
+
+              <!-- Pilnosc (radio buttons) -->
+              <div class="field">
+                <label>Hur brådskande är ärendet? *</label>
+                <div class="urgency-options" id="urgency-options">
+                  <label class="urgency-option">
+                    <input type="radio" name="urgency" value="Akut – inom 2 timmar (Jour 24/7)" required>
+                    Akut – inom 2 timmar (Jour 24/7)
+                  </label>
+                  <label class="urgency-option">
+                    <input type="radio" name="urgency" value="Samma dag">
+                    Samma dag
+                  </label>
+                  <label class="urgency-option">
+                    <input type="radio" name="urgency" value="Inom 24 timmar">
+                    Inom 24 timmar
+                  </label>
+                  <label class="urgency-option">
+                    <input type="radio" name="urgency" value="Planerat – väljer datum nedan">
+                    Planerat – väljer datum nedan
+                  </label>
+                  <label class="urgency-option">
+                    <input type="radio" name="urgency" value="Vill först ha en offert">
+                    Vill först ha en offert
+                  </label>
+                </div>
+              </div>
+
+              <!-- Tresc wiadomosci -->
+              <div class="field">
+                <label for="message" data-i18n="contact.message">Meddelande</label>
+                <textarea id="message" name="message" rows="4" placeholder="Beskriv problemet så utförligt du kan"></textarea>
+              </div>
+
+              <!-- Upload plikow -->
+              <div class="field">
+                <label>
+                  <svg class="icon icon-sm" style="vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                  Bifoga filer (max 10 st, upp till 1 GB/fil)
+                </label>
+                <div class="file-drop-zone" id="file-drop-zone" role="button" tabindex="0" aria-label="Ladda upp filer">
+                  <span class="drop-icon">
+                    <svg class="icon icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                  </span>
+                  <span class="drop-text">Klicka eller dra filer hit</span>
+                  <span class="drop-hint">Bilder, PDF, video, dokument m.m. – upp till 1 GB per fil</span>
+                </div>
+                <input type="file" id="file-input" multiple accept="image/*,.pdf,.doc,.docx,.mp4,.mov,.avi,.mkv,.zip,.rar,.7z" style="display:none" aria-hidden="true">
+                <div id="file-count" style="margin-top:0.5rem;text-align:right;font-size:0.75rem;color:var(--muted-foreground);display:none"></div>
+                <ul class="file-list" id="file-list"></ul>
+              </div>
+
+              <div class="form-section-label">Önskad tid</div>
+
+              <!-- Data i godzina -->
+              <div class="two-col">
+                <div class="field">
+                  <label for="date1">
+                    <svg class="icon icon-sm" style="vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    Önskat datum
+                  </label>
+                  <input type="date" id="date1" name="date1">
+                </div>
+                <div class="field">
+                  <label for="date2">
+                    <svg class="icon icon-sm" style="vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    Alternativt datum
+                  </label>
+                  <input type="date" id="date2" name="date2">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="timeSlot">
+                  <svg class="icon icon-sm" style="vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  Önskad tid på dagen
+                </label>
+                <select id="timeSlot" name="timeSlot">
+                  <option value="">Välj tid (valfritt)</option>
+                  <option>07:00 – 09:00</option>
+                  <option>09:00 – 12:00</option>
+                  <option>12:00 – 15:00</option>
+                  <option>15:00 – 17:00</option>
+                  <option>Flexibel – valfri tid</option>
+                </select>
+              </div>
+
+              <div class="form-section-label">Integritetspolicy</div>
+
+              <!-- Polityka prywatnosci (GDPR) -->
+              <div class="gdpr-box">
+                <strong>Kamiljö AB</strong>, org.nr 559572-5366, är personuppgiftsansvarig. Vi behandlar de uppgifter du lämnar för att kunna kontakta dig, lämna offert och utföra det begärda VVS-arbetet. Uppgifterna sparas i maximalt 2 år (eller 7 år om bokföringsunderlag). Du har rätt att begära radering, tillgång eller rättelse via
+                <a href="mailto:info@kamiljo.se">info@kamiljo.se</a>.
+                Klagomål kan lämnas till Integritetsskyddsmyndigheten på
+                <a href="https://imy.se" target="_blank" rel="noopener noreferrer">imy.se</a>.
+              </div>
+
+              <!-- Checkbox GDPR -->
+              <label class="gdpr-checkbox">
+                <input type="checkbox" id="gdpr-checkbox">
+                <span>Jag har läst och godkänner att Kamiljö AB behandlar mina personuppgifter i enlighet med integritetspolicyn ovan (GDPR). *</span>
+              </label>
+
+              <!-- Komunikat bledu -->
+              <div id="form-error" class="error-msg" style="display:none"></div>
+
+              <!-- Przycisk wyslij -->
+              <button type="submit" class="submit-btn" id="submit-btn" disabled>
+                <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+                <span data-i18n="contact.submit">Skicka förfrågan</span>
+              </button>
+
+              <p class="emergency-note">
+                Akut? Ring oss direkt:
+                <a href="tel:+46762124124">+46 762 124 124</a>
+                — Jour 24/7
+              </p>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       STOPKA (FOOTER)
+       Trzy kolumny: logo z opisem, dane kontaktowe, lista uslug.
+       Na dole: prawa autorskie.
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Kolumna 1: Logo i opis -->
+        <div class="footer-col">
+          <img src="/images/logo.jpeg" alt="Kamiljö AB logotyp" class="footer-logo" width="240" height="96">
+          <p class="footer-tagline" data-i18n="footer.tagline">Auktoriserade VVS-montörer med yrkesbevis</p>
+          <div class="footer-meta">
+            <span data-i18n="footer.orgNr">Org.nr: 559572-5366</span>
+            <span data-i18n="footer.fSkatt">Godkänd för F-skatt</span>
+          </div>
+        </div>
+
+        <!-- Kolumna 2: Kontakt -->
+        <div class="footer-col">
+          <h3 data-i18n="nav.contact">Kontakt</h3>
+          <div class="footer-contact">
+            <a href="tel:+46762124124">
+              <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              +46 762 124 124
+            </a>
+            <a href="mailto:info@kamiljo.se">
+              <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+              info@kamiljo.se
+            </a>
+            <span>
+              <svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span data-i18n="footer.address">Ludvika, Dalarna</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Kolumna 3: Lista uslug -->
+        <div class="footer-col">
+          <h3 data-i18n="nav.services">Tjänster</h3>
+          <div class="footer-services" id="footer-services">
+            <a href="#tjanster" data-i18n="services.items.0.title">Installation & Inkoppling</a>
+            <a href="#tjanster" data-i18n="services.items.1.title">Värme & Pannor</a>
+            <a href="#tjanster" data-i18n="services.items.2.title">Komponentbyte</a>
+            <a href="#tjanster" data-i18n="services.items.3.title">Nyinstallation</a>
+            <a href="#tjanster" data-i18n="services.items.4.title">Innovativa lösningar</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Kamiljö AB. <span data-i18n="footer.rights">Alla rättigheter förbehållna.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     Cala logika strony: przelaczanie jezyka (i18n), menu mobilne,
+     formularz kontaktowy, upload plikow, walidacja GDPR.
+     ============================================================ -->
+<script>
+/* =============================================================
+   TLUMACZENIA (i18n)
+   Obiekt ze wszystkimi tekstami w dwoch jezykach: SV i EN.
+   Uzywany przez system data-i18n do dynamicznej zmiany tresci.
+   ============================================================= */
+const translations = {
+  sv: {
+    "nav.home": "Hem",
+    "nav.services": "Tjänster",
+    "nav.about": "Om oss",
+    "nav.contact": "Kontakt",
+    "nav.emergency": "Jour 24/7",
+    "hero.h1": "Din professionella rörmokare i Ludvika – Kamiljö AB",
+    "hero.h2": "Gratis offert inom 24h",
+    "hero.cta": "Begär offert",
+    "hero.reviews": "Verifierade omdömen",
+    "hero.scanQr": "Skanna för kontakt",
+    "services.title": "Våra tjänster",
+    "services.subtitle": "Professionella VVS-tjänster i Ludvika och hela Dalarna",
+    "services.items.0.title": "Installation & Inkoppling",
+    "services.items.0.description": "Installation av vask, tvättställ, dusch, toalett och blandare.",
+    "services.items.1.title": "Värme & Pannor",
+    "services.items.1.description": "Installation och byte av pannor, radiatorer (element) och värmesystem.",
+    "services.items.2.title": "Komponentbyte",
+    "services.items.2.description": "Byte av varmvattenberedare, värmeväxlare och hydroforer.",
+    "services.items.3.title": "Nyinstallation",
+    "services.items.3.description": "Kompletta VVS-installationer för nya maskiner i hemmet.",
+    "services.items.4.title": "Innovativa lösningar",
+    "services.items.4.description": "Egenutvecklade innovativa lösningar för husuppvärmning baserade på kavitationsteknik.",
+    "about.title": "Om Kamiljö AB",
+    "about.description": "Vi är auktoriserade VVS-montörer med yrkesbevis verksamma i Ludvika, Smedjebacken, Borlänge, Falun och hela Dalarna. Med fokus på kvalitet, energieffektiv uppvärmning och innovativa lösningar erbjuder vi allt från akut rörjour till stambyte och badrumsrenovering. ROT-avdrag gäller på våra tjänster.",
+    "about.experience": "Professionell erfarenhet",
+    "about.quality": "Kvalitetsgaranti",
+    "about.available": "Jour dygnet runt",
+    "contact.title": "Kontakta oss",
+    "contact.subtitle": "Fyll i formuläret så återkommer vi inom 24 timmar med en gratis offert.",
+    "contact.name": "Namn",
+    "contact.email": "E-post",
+    "contact.phone": "Telefon",
+    "contact.service": "Tjänst",
+    "contact.message": "Meddelande",
+    "contact.submit": "Skicka förfrågan",
+    "contact.success": "Tack! Vi återkommer snart.",
+    "footer.tagline": "Auktoriserade VVS-montörer med yrkesbevis",
+    "footer.orgNr": "Org.nr: 559572-5366",
+    "footer.fSkatt": "Godkänd för F-skatt",
+    "footer.rights": "Alla rättigheter förbehållna.",
+    "footer.address": "Ludvika, Dalarna"
+  },
+  en: {
+    "nav.home": "Home",
+    "nav.services": "Services",
+    "nav.about": "About",
+    "nav.contact": "Contact",
+    "nav.emergency": "24/7 Emergency",
+    "hero.h1": "Your Professional Plumber in Ludvika – Kamiljö AB",
+    "hero.h2": "Free quote within 24h",
+    "hero.cta": "Request a quote",
+    "hero.reviews": "Verified Reviews",
+    "hero.scanQr": "Scan to contact",
+    "services.title": "Our Services",
+    "services.subtitle": "Professional plumbing services in Ludvika and across Dalarna",
+    "services.items.0.title": "Installation & Connection",
+    "services.items.0.description": "Installation of sinks, washbasins, showers, toilets, and faucets.",
+    "services.items.1.title": "Heating & Boilers",
+    "services.items.1.description": "Installation and replacement of boilers, radiators, and heating systems.",
+    "services.items.2.title": "Component Replacement",
+    "services.items.2.description": "Replacement of water heaters, heat exchangers, and hydrophores.",
+    "services.items.3.title": "New Installation",
+    "services.items.3.description": "Complete plumbing installations for new home appliances.",
+    "services.items.4.title": "Innovative Solutions",
+    "services.items.4.description": "Self-developed innovative solutions for home heating based on cavitation technology.",
+    "about.title": "About Kamiljö AB",
+    "about.description": "We are certified plumbing technicians operating in Ludvika, Smedjebacken, Borlänge, Falun, and across Dalarna. With a focus on quality, energy-efficient heating, and innovative solutions, we offer everything from emergency plumbing to pipe replacements and bathroom renovations. ROT tax deduction applies to our services.",
+    "about.experience": "Professional Experience",
+    "about.quality": "Quality Guarantee",
+    "about.available": "Available 24/7",
+    "contact.title": "Contact Us",
+    "contact.subtitle": "Fill in the form and we will get back to you within 24 hours with a free quote.",
+    "contact.name": "Name",
+    "contact.email": "Email",
+    "contact.phone": "Phone",
+    "contact.service": "Service",
+    "contact.message": "Message",
+    "contact.submit": "Send Inquiry",
+    "contact.success": "Thank you! We'll get back to you soon.",
+    "footer.tagline": "Certified plumbing technicians with professional credentials",
+    "footer.orgNr": "Org. no: 559572-5366",
+    "footer.fSkatt": "Approved for F-tax",
+    "footer.rights": "All rights reserved.",
+    "footer.address": "Ludvika, Dalarna"
+  }
+};
+
+/* Aktualny jezyk – domyslnie szwedzki */
+let currentLocale = "sv";
+
+/* =============================================================
+   FUNKCJA ZMIANY JEZYKA
+   Przechodzi po wszystkich elementach z atrybutem data-i18n
+   i podmienia ich tekst na tlumaczenie z obiektu translations.
+   ============================================================= */
+function setLanguage(lang) {
+  currentLocale = lang;
+  const t = translations[lang];
+
+  /* Aktualizuj wszystkie elementy data-i18n */
+  document.querySelectorAll("[data-i18n]").forEach(function(el) {
+    const key = el.getAttribute("data-i18n");
+    if (t[key]) {
+      el.textContent = t[key];
+    }
+  });
+
+  /* Aktualizuj aktywny przycisk jezyka */
+  document.querySelectorAll(".lang-btn").forEach(function(btn) {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  /* Zmien atrybut lang na elemencie <html> */
+  document.documentElement.lang = lang;
+}
+
+/* =============================================================
+   MENU MOBILNE
+   Obsluga otwierania/zamykania menu hamburger.
+   ============================================================= */
+const mobileToggle = document.getElementById("mobile-toggle");
+const mobileNav = document.getElementById("mobile-nav");
+const menuIcon = document.getElementById("menu-icon");
+const closeIcon = document.getElementById("close-icon");
+
+mobileToggle.addEventListener("click", function() {
+  const isOpen = mobileNav.classList.toggle("open");
+  menuIcon.style.display = isOpen ? "none" : "block";
+  closeIcon.style.display = isOpen ? "block" : "none";
+});
+
+/* Zamknij menu po kliknieciu w link */
+mobileNav.querySelectorAll("a").forEach(function(link) {
+  link.addEventListener("click", function() {
+    mobileNav.classList.remove("open");
+    menuIcon.style.display = "block";
+    closeIcon.style.display = "none";
+  });
+});
+
+/* =============================================================
+   PRZELACZNIK JEZYKA
+   Obsluga klikniec na przyciski SV / EN.
+   ============================================================= */
+document.querySelectorAll(".lang-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    setLanguage(this.dataset.lang);
+  });
+});
+
+/* =============================================================
+   OPCJE PILNOSCI (URGENCY)
+   Podswietlanie wybranej opcji radio.
+   ============================================================= */
+document.querySelectorAll(".urgency-option input[type='radio']").forEach(function(radio) {
+  radio.addEventListener("change", function() {
+    document.querySelectorAll(".urgency-option").forEach(function(opt) {
+      opt.classList.remove("selected");
+    });
+    this.closest(".urgency-option").classList.add("selected");
+  });
+});
+
+/* =============================================================
+   UPLOAD PLIKOW
+   Obsluga przeciagania, klikania, symulacji uploadu chunkami
+   oraz usuwania plikow z listy.
+
+   MAX_FILES  = 10 plikow jednoczesnie
+   MAX_SIZE   = 1 GB na plik
+   CHUNK_SIZE = 5 MB na paczke (chunk)
+   ============================================================= */
+const MAX_FILES = 10;
+const MAX_FILE_SIZE = 1024 * 1024 * 1024; /* 1 GB */
+const CHUNK_SIZE = 5 * 1024 * 1024; /* 5 MB */
+let fileEntries = [];
+
+const fileDropZone = document.getElementById("file-drop-zone");
+const fileInput = document.getElementById("file-input");
+const fileListEl = document.getElementById("file-list");
+const fileCountEl = document.getElementById("file-count");
+
+/* Klikniecie w stefe drop otwiera dialog plikow */
+fileDropZone.addEventListener("click", function() {
+  if (fileEntries.length < MAX_FILES) fileInput.click();
+});
+
+fileDropZone.addEventListener("keydown", function(e) {
+  if ((e.key === "Enter" || e.key === " ") && fileEntries.length < MAX_FILES) {
+    fileInput.click();
+  }
+});
+
+/* Obsluga wybrania plikow z dialogu */
+fileInput.addEventListener("change", function(e) {
+  if (!e.target.files) return;
+  addFiles(Array.from(e.target.files));
+  fileInput.value = "";
+});
+
+/* Funkcja dodawania plikow do listy */
+function addFiles(newFiles) {
+  const space = MAX_FILES - fileEntries.length;
+  const toAdd = newFiles.slice(0, space);
+
+  toAdd.forEach(function(file) {
+    const totalChunks = Math.max(1, Math.ceil(file.size / CHUNK_SIZE));
+    const id = file.name + "-" + file.size + "-" + Date.now() + "-" + Math.random();
+    const entry = {
+      file: file,
+      id: id,
+      progress: 0,
+      status: file.size > MAX_FILE_SIZE ? "error" : "pending",
+      chunksTotal: totalChunks,
+      chunksDone: 0
+    };
+    fileEntries.push(entry);
+
+    if (entry.status !== "error") {
+      simulateChunkedUpload(entry.id, totalChunks);
+    }
+  });
+
+  renderFileList();
+}
+
+/* Symulacja uploadu chunkowego (paczkami) */
+function simulateChunkedUpload(fileId, totalChunks) {
+  let done = 0;
+  const entry = fileEntries.find(function(e) { return e.id === fileId; });
+  if (entry) entry.status = "chunking";
+  renderFileList();
+
+  const interval = setInterval(function() {
+    done++;
+    const entry = fileEntries.find(function(e) { return e.id === fileId; });
+    if (!entry) { clearInterval(interval); return; }
+
+    entry.chunksDone = done;
+    entry.progress = Math.round((done / totalChunks) * 100);
+    if (done >= totalChunks) {
+      entry.status = "done";
+      clearInterval(interval);
+    }
+    renderFileList();
+  }, 150 + Math.random() * 250);
+}
+
+/* Usuwanie pliku z listy */
+function removeFile(fileId) {
+  fileEntries = fileEntries.filter(function(e) { return e.id !== fileId; });
+  renderFileList();
+}
+
+/* Formatowanie rozmiaru pliku */
+function formatFileSize(bytes) {
+  if (bytes >= 1024 * 1024 * 1024) return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+  if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  return (bytes / 1024).toFixed(0) + " KB";
+}
+
+/* Renderowanie listy plikow w DOM */
+function renderFileList() {
+  fileListEl.innerHTML = "";
+
+  if (fileEntries.length > 0) {
+    fileCountEl.style.display = "block";
+    fileCountEl.textContent = fileEntries.length + " / " + MAX_FILES + " filer";
+  } else {
+    fileCountEl.style.display = "none";
+  }
+
+  /* Aktualizuj stref drop gdy limit */
+  if (fileEntries.length >= MAX_FILES) {
+    fileDropZone.classList.add("disabled");
+  } else {
+    fileDropZone.classList.remove("disabled");
+  }
+
+  fileEntries.forEach(function(entry) {
+    const li = document.createElement("li");
+    li.className = "file-item";
+
+    let statusHtml = "";
+    if (entry.status === "chunking") {
+      statusHtml =
+        '<div class="progress-bar"><div class="progress-bar-fill" style="width:' + entry.progress + '%"></div></div>' +
+        '<div class="file-item-size" style="margin-top:4px">' +
+          '<span class="spinner" style="font-size:0.75rem">&#8635;</span> ' +
+          'Skickar ' + entry.chunksDone + ' / ' + entry.chunksTotal +
+          ' (' + entry.progress + '%)' +
+        '</div>';
+    } else if (entry.status === "done") {
+      statusHtml = '<div class="file-item-status">&#10003; Klar – alla ' + entry.chunksTotal + ' paczek skickade</div>';
+    } else if (entry.status === "error") {
+      statusHtml = '<div style="color:var(--destructive);font-size:0.75rem;font-weight:500">Filen överskrider 1 GB</div>';
+    } else {
+      statusHtml = '<div class="file-item-size">Väntar...</div>';
+    }
+
+    li.innerHTML =
+      '<div class="file-item-info">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem">' +
+          '<span class="file-item-name">' + entry.file.name + '</span>' +
+          '<button type="button" class="file-remove-btn" data-id="' + entry.id + '" aria-label="Ta bort ' + entry.file.name + '">&#10005;</button>' +
+        '</div>' +
+        '<div class="file-item-size">' + formatFileSize(entry.file.size) + ' / ' + entry.chunksTotal + ' paczek</div>' +
+        statusHtml +
+      '</div>';
+
+    fileListEl.appendChild(li);
+  });
+
+  /* Obsluga przyciskow usuwania */
+  fileListEl.querySelectorAll(".file-remove-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      removeFile(this.dataset.id);
+    });
+  });
+}
+
+/* =============================================================
+   FORMULARZ KONTAKTOWY
+   Walidacja, obsluga GDPR, wysylka do Google Apps Script
+   lub zapis w localStorage jako fallback.
+
+   WEBAPP_URL – adres Google Apps Script do obslugi zgloszeni.
+   ============================================================= */
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzLXpAPVJ7sW66zy6b9ZSFm0XoPLw921xIkd_ZEVcLt0-O-p3Qnk5T-LU71ktPKgs3rYA/exec";
+
+const contactForm = document.getElementById("contact-form");
+const gdprCheckbox = document.getElementById("gdpr-checkbox");
+const submitBtn = document.getElementById("submit-btn");
+const formError = document.getElementById("form-error");
+const contactSuccess = document.getElementById("contact-success");
+
+/* Wlaczanie / wylaczanie przycisku wyslij na podstawie GDPR */
+gdprCheckbox.addEventListener("change", function() {
+  submitBtn.disabled = !this.checked;
+  formError.style.display = "none";
+});
+
+/* Obsluga wysylki formularza */
+contactForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  /* Sprawdz GDPR */
+  if (!gdprCheckbox.checked) {
+    formError.textContent = "Du måste godkänna integritetspolicyn för att skicka formuläret.";
+    formError.style.display = "flex";
+    return;
+  }
+
+  /* Sprawdz czy wymagane pola sa wypelnione */
+  const name = document.getElementById("name").value.trim();
+  if (!name) {
+    formError.textContent = "Vänligen fyll i ditt namn.";
+    formError.style.display = "flex";
+    return;
+  }
+
+  const urgencyRadio = document.querySelector('input[name="urgency"]:checked');
+  if (!urgencyRadio) {
+    formError.textContent = "Vänligen välj hur brådskande ärendet är.";
+    formError.style.display = "flex";
+    return;
+  }
+
+  /* Zablokuj przycisk i pokaz spinner */
+  submitBtn.disabled = true;
+  submitBtn.innerHTML =
+    '<span class="spinner">&#8635;</span> ' +
+    (currentLocale === "sv" ? "Skickar..." : "Sending...");
+
+  formError.style.display = "none";
+
+  /* Przygotuj dane (payload) */
+  const payload = {
+    action: "formSubmit",
+    name: name,
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    address: document.getElementById("address").value.trim(),
+    service: document.getElementById("service").value,
+    urgency: urgencyRadio.value,
+    message: document.getElementById("message").value.trim(),
+    date1: document.getElementById("date1").value,
+    timeSlot: document.getElementById("timeSlot").value,
+    date2: document.getElementById("date2").value,
+    files: fileEntries.filter(function(e) { return e.status === "done"; }).map(function(e) {
+      return { name: e.file.name, size: e.file.size, type: e.file.type, chunks: e.chunksTotal };
+    }),
+    gdpr: true,
+    timestamp: new Date().toISOString(),
+    source: "kamiljo.se – kontaktformulär (HTML5)"
+  };
+
+  try {
+    /* Wyslij do Google Apps Script */
+    const res = await fetch(WEBAPP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.success) {
+      showSuccess();
+    } else {
+      throw new Error(json.error || "Okänt fel");
+    }
+  } catch (err) {
+    /* Fallback: zapisz w localStorage */
+    try {
+      const existing = JSON.parse(localStorage.getItem("kamiljo_messages") || "[]");
+      existing.push(Object.assign({}, payload, { id: Date.now(), read: false }));
+      localStorage.setItem("kamiljo_messages", JSON.stringify(existing));
+      showSuccess();
+    } catch (e2) {
+      formError.textContent = "Något gick fel: " + (err.message || "Okänt fel") + ". Ring oss på +46 762 124 124.";
+      formError.style.display = "flex";
+      submitBtn.disabled = false;
+      submitBtn.innerHTML =
+        '<svg class="icon icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg> ' +
+        translations[currentLocale]["contact.submit"];
+    }
+  }
+});
+
+/* Pokaz komunikat sukcesu */
+function showSuccess() {
+  contactForm.style.display = "none";
+  contactSuccess.style.display = "block";
+}
+
+/* =============================================================
+   INICJALIZACJA
+   Ustawia biezacy rok w stopce i minimalny dzien w polach dat.
+   ============================================================= */
+document.getElementById("current-year").textContent = new Date().getFullYear();
+
+/* Ustaw minimalna date na dzis */
+const today = new Date().toISOString().split("T")[0];
+const date1Input = document.getElementById("date1");
+const date2Input = document.getElementById("date2");
+if (date1Input) date1Input.min = today;
+if (date2Input) date2Input.min = today;
+
+/* =============================================================
+   LADOWANIE TRESCI Z CMS
+   Sprawdza, czy w localStorage istnieja zapisane zmiany
+   z panelu CMS (admin.html). Jesli tak, nadpisuje domyslne
+   teksty na stronie (elementy z atrybutem data-i18n).
+
+   Klucz localStorage: "kamiljo_cms_content"
+   Format: { "hero.h1": "nowy tytul", "services.title": "..." }
+   ============================================================= */
+(function loadCmsOverrides() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("kamiljo_cms_content") || "{}");
+    if (Object.keys(saved).length === 0) return;
+
+    /* Nadpisz tlumaczenia SV danymi z CMS */
+    Object.keys(saved).forEach(function(key) {
+      if (saved[key] && translations.sv[key]) {
+        translations.sv[key] = saved[key];
+      }
+    });
+
+    /* Jesli aktualny jezyk to SV, natychmiast zaktualizuj DOM */
+    if (currentLocale === "sv") {
+      setLanguage("sv");
+    }
+  } catch(e) {
+    /* Ignoruj bledy – uzyj domyslnych tekstow */
+  }
+})();
+</script>
+
+</body>
+</html>
