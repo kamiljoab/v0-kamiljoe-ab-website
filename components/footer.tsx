@@ -20,6 +20,7 @@ export function Footer() {
                 width={240}
                 height={96}
                 className="h-full w-auto rounded-xl object-contain object-left"
+                style={{ width: "auto", height: "auto" }}
                 priority
               />
             </div>
