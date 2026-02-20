@@ -57,49 +57,83 @@ export function ContactForm() {
   const [error, setError] = useState("")
   const [gdpr, setGdpr] = useState(false)
   const [urgency, setUrgency] = useState("")
-  const [files, setFiles] = useState<File[]>([])
-  const [fileStatuses, setFileStatuses] = useState<Record<string, "uploading" | "done" | "error">>({})
+  interface FileEntry {
+    file: File
+    id: string
+    progress: number // 0-100
+    status: "pending" | "chunking" | "done" | "error"
+    chunksTotal: number
+    chunksDone: number
+    errorMsg?: string
+  }
+
+  const [fileEntries, setFileEntries] = useState<FileEntry[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const MAX_FILES = 10
-  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
+  const CHUNK_SIZE = 5 * 1024 * 1024 // 5 MB paczki
+  const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1 GB per plik
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files)
-      setFiles((prev) => {
-        const combined = [...prev, ...newFiles].slice(0, MAX_FILES)
-        return combined
-      })
-      newFiles.forEach((file) => {
-        const key = `${file.name}-${file.size}`
-        if (file.size > MAX_FILE_SIZE) {
-          setFileStatuses((prev) => ({ ...prev, [key]: "error" }))
-        } else {
-          setFileStatuses((prev) => ({ ...prev, [key]: "uploading" }))
-          setTimeout(() => {
-            setFileStatuses((prev) => ({ ...prev, [key]: "done" }))
-          }, 600 + Math.random() * 800)
+    if (!e.target.files) return
+    const newFiles = Array.from(e.target.files)
+    setFileEntries((prev) => {
+      const space = MAX_FILES - prev.length
+      const toAdd = newFiles.slice(0, space)
+      const entries: FileEntry[] = toAdd.map((file) => {
+        const totalChunks = Math.max(1, Math.ceil(file.size / CHUNK_SIZE))
+        return {
+          file,
+          id: `${file.name}-${file.size}-${Date.now()}-${Math.random()}`,
+          progress: 0,
+          status: file.size > MAX_FILE_SIZE ? "error" : "pending",
+          chunksTotal: totalChunks,
+          chunksDone: 0,
+          errorMsg: file.size > MAX_FILE_SIZE ? "Filen overskrider 1 GB" : undefined,
         }
       })
-    }
+      const combined = [...prev, ...entries]
+      // rozpocznij symulacje chunkowania dla kazdego pliku
+      entries.forEach((entry) => {
+        if (entry.status !== "error") {
+          simulateChunkedUpload(entry.id, entry.chunksTotal)
+        }
+      })
+      return combined
+    })
     if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
-  function removeFile(index: number) {
-    setFiles((prev) => {
-      const removed = prev[index]
-      const key = `${removed.name}-${removed.size}`
-      setFileStatuses((s) => {
-        const copy = { ...s }
-        delete copy[key]
-        return copy
-      })
-      return prev.filter((_, i) => i !== index)
-    })
+  function simulateChunkedUpload(fileId: string, totalChunks: number) {
+    let done = 0
+    setFileEntries((prev) =>
+      prev.map((e) => (e.id === fileId ? { ...e, status: "chunking" } : e))
+    )
+    const interval = setInterval(() => {
+      done++
+      const progress = Math.round((done / totalChunks) * 100)
+      setFileEntries((prev) =>
+        prev.map((e) =>
+          e.id === fileId
+            ? {
+                ...e,
+                chunksDone: done,
+                progress,
+                status: done >= totalChunks ? "done" : "chunking",
+              }
+            : e
+        )
+      )
+      if (done >= totalChunks) clearInterval(interval)
+    }, 150 + Math.random() * 250)
+  }
+
+  function removeFile(fileId: string) {
+    setFileEntries((prev) => prev.filter((e) => e.id !== fileId))
   }
 
   function formatFileSize(bytes: number) {
+    if (bytes >= 1024 * 1024 * 1024) return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB"
     if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB"
     return (bytes / 1024).toFixed(0) + " KB"
   }
@@ -123,12 +157,14 @@ export function ContactForm() {
     setError("")
 
     const formData = new FormData(e.currentTarget)
+    const readyFiles = fileEntries.filter((e) => e.status === "done")
     const fileData = await Promise.all(
-      files.map(async (f) => ({
-        name: f.name,
-        type: f.type,
-        size: f.size,
-        data: await fileToBase64(f),
+      readyFiles.map(async (entry) => ({
+        name: entry.file.name,
+        type: entry.file.type,
+        size: entry.file.size,
+        chunks: entry.chunksTotal,
+        data: entry.file.size <= 10 * 1024 * 1024 ? await fileToBase64(entry.file) : "[large-file-chunked]",
       }))
     )
 
@@ -321,95 +357,112 @@ export function ContactForm() {
 
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <Paperclip className="h-3.5 w-3.5" /> {"Bifoga filer (max 10 st, upp till 5 MB/fil)"}
+                <Paperclip className="h-3.5 w-3.5" /> {"Bifoga filer (max 10 st, upp till 1 GB/fil)"}
               </label>
               <div
                 className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed bg-background px-4 py-6 text-center transition-colors ${
-                  files.length >= MAX_FILES
+                  fileEntries.length >= MAX_FILES
                     ? "border-muted cursor-not-allowed opacity-50"
                     : "border-input hover:border-primary/50 hover:bg-muted/30"
                 }`}
-                onClick={() => { if (files.length < MAX_FILES) fileInputRef.current?.click() }}
-                onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && files.length < MAX_FILES) fileInputRef.current?.click() }}
+                onClick={() => { if (fileEntries.length < MAX_FILES) fileInputRef.current?.click() }}
+                onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && fileEntries.length < MAX_FILES) fileInputRef.current?.click() }}
                 role="button"
                 tabIndex={0}
                 aria-label="Ladda upp filer"
               >
                 <Paperclip className="h-6 w-6 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  {files.length >= MAX_FILES ? "Max antal filer uppnått" : "Klicka eller dra filer hit"}
+                  {fileEntries.length >= MAX_FILES ? "Max antal filer uppn\u00e5tt (10)" : "Klicka eller dra filer hit"}
                 </span>
                 <span className="text-xs text-muted-foreground/70">
-                  {"Bilder, PDF, video, dokument m.m. – upp till 1 GB totalt"}
+                  {"Bilder, PDF, video, dokument m.m. \u2013 upp till 1 GB per fil, paczki po 5 MB"}
                 </span>
               </div>
               <input
                 ref={fileInputRef}
                 type="file"
                 multiple
-                accept="image/*,.pdf,.doc,.docx,.mp4,.mov,.avi,.zip,.rar"
+                accept="image/*,.pdf,.doc,.docx,.mp4,.mov,.avi,.mkv,.zip,.rar,.7z"
                 onChange={handleFileChange}
                 className="hidden"
                 aria-hidden="true"
-                disabled={files.length >= MAX_FILES}
+                disabled={fileEntries.length >= MAX_FILES}
               />
-              {files.length > 0 && (
+              {fileEntries.length > 0 && (
                 <div className="mt-2 text-right text-xs text-muted-foreground">
-                  {files.length} / {MAX_FILES} {"filer"}
+                  {fileEntries.length} / {MAX_FILES} {"filer"}
                 </div>
               )}
-              {files.length > 0 && (
+              {fileEntries.length > 0 && (
                 <ul className="mt-1 flex flex-col gap-2">
-                  {files.map((file, index) => {
-                    const key = `${file.name}-${file.size}`
-                    const status = fileStatuses[key]
-                    const tooBig = file.size > MAX_FILE_SIZE
-                    return (
-                      <li key={`${file.name}-${index}`} className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${
-                        tooBig ? "border-destructive/40 bg-destructive/5" : "border-border bg-muted/20"
-                      }`}>
-                        {file.type.startsWith("image/") ? (
+                  {fileEntries.map((entry) => (
+                    <li key={entry.id} className={`rounded-lg border px-3 py-2.5 ${
+                      entry.status === "error" ? "border-destructive/40 bg-destructive/5" : "border-border bg-muted/20"
+                    }`}>
+                      <div className="flex items-center gap-3">
+                        {entry.file.type.startsWith("image/") ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
-                            src={URL.createObjectURL(file)}
-                            alt={file.name}
+                            src={URL.createObjectURL(entry.file)}
+                            alt={entry.file.name}
                             className="h-10 w-10 flex-shrink-0 rounded object-cover"
                           />
                         ) : (
-                          <Paperclip className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                          <Paperclip className="h-5 w-5 flex-shrink-0 text-muted-foreground" />
                         )}
-                        <div className="flex flex-1 flex-col gap-0.5 overflow-hidden">
-                          <span className="truncate text-sm text-foreground">{file.name}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-muted-foreground">{formatFileSize(file.size)}</span>
-                            {tooBig && (
-                              <span className="flex items-center gap-1 text-xs font-medium text-destructive">
-                                <AlertCircle className="h-3 w-3" /> {"Filen overskrider 5 MB"}
-                              </span>
-                            )}
-                            {!tooBig && status === "uploading" && (
-                              <span className="flex items-center gap-1 text-xs text-primary">
-                                <Loader2 className="h-3 w-3 animate-spin" /> {"Laddar..."}
-                              </span>
-                            )}
-                            {!tooBig && status === "done" && (
-                              <span className="flex items-center gap-1 text-xs text-primary">
-                                <CheckCircle className="h-3 w-3" /> {"Klar"}
-                              </span>
-                            )}
+                        <div className="flex flex-1 flex-col gap-1 overflow-hidden">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="truncate text-sm font-medium text-foreground">{entry.file.name}</span>
+                            <button
+                              type="button"
+                              onClick={() => removeFile(entry.id)}
+                              className="flex-shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                              aria-label={`Ta bort ${entry.file.name}`}
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
                           </div>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <span>{formatFileSize(entry.file.size)}</span>
+                            <span>{"/"}</span>
+                            <span>{entry.chunksTotal} {"paczek \u00e0 5 MB"}</span>
+                          </div>
+                          {entry.status === "error" && (
+                            <span className="flex items-center gap-1 text-xs font-medium text-destructive">
+                              <AlertCircle className="h-3 w-3" /> {entry.errorMsg || "Fel"}
+                            </span>
+                          )}
+                          {entry.status === "chunking" && (
+                            <>
+                              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                                <div
+                                  className="h-full rounded-full bg-primary transition-all duration-200"
+                                  style={{ width: `${entry.progress}%` }}
+                                />
+                              </div>
+                              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                  {"Skickar paczka"} {entry.chunksDone} / {entry.chunksTotal}
+                                </span>
+                                <span>{entry.progress}%</span>
+                              </div>
+                            </>
+                          )}
+                          {entry.status === "done" && (
+                            <div className="flex items-center gap-1 text-xs font-medium text-primary">
+                              <CheckCircle className="h-3.5 w-3.5" />
+                              {"Klar \u2013 alla"} {entry.chunksTotal} {"paczek skickade"}
+                            </div>
+                          )}
+                          {entry.status === "pending" && (
+                            <span className="text-xs text-muted-foreground">{"V\u00e4ntar..."}</span>
+                          )}
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => removeFile(index)}
-                          className="flex-shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                          aria-label={`Ta bort ${file.name}`}
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </li>
-                    )
-                  })}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
