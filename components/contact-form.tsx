@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react"
 import { Send, CheckCircle, Loader2, Calendar, Clock, AlertCircle } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
-const WEBAPP_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE"
+const WEBAPP_URL = https://script.google.com/macros/s/AKfycbzLXpAPVJ7sW66zy6b9ZSFm0XoPLw921xIkd_ZEVcLt0-O-p3Qnk5T-LU71ktPKgs3rYA/exec
 
 const SERVICES = [
   "Installation & Inkoppling",
