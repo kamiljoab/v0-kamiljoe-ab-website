@@ -44,35 +44,6 @@ async function readMessages(drive: GoogleDrive, fileId: string) {
   }
 }
 
-export async function GET() {
-  try {
-    // Check if Google Drive environment variables are set
-    if (!process.env.GOOGLE_DRIVE_FOLDER_ID) {
-       // Return mock data for dev environment without credentials
-       return NextResponse.json([
-         { id: 1, name: "Test User (Mock)", email: "test@example.com", phone: "123456789", service: "Test Service", message: "This is a mock message from the server.", timestamp: new Date().toISOString(), read: false }
-       ]);
-    }
-
-    const auth = new google.auth.GoogleAuth({
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
-    });
-    const drive = google.drive({ version: 'v3', auth }) as unknown as GoogleDrive;
-
-    const fileId = await findMessagesFile(drive, process.env.GOOGLE_DRIVE_FOLDER_ID);
-
-    if (!fileId) {
-      return NextResponse.json([]);
-    }
-
-    const messages = await readMessages(drive, fileId);
-    return NextResponse.json(messages);
-  } catch (error) {
-    console.error('Error fetching messages:', error);
-    return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 });
-  }
-}
-
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();

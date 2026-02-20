@@ -1,5 +1,5 @@
 
-import { GET, POST } from './route';
+import { POST } from './route';
 import { google } from 'googleapis';
 import { NextResponse } from 'next/server';
 
@@ -41,35 +41,6 @@ describe('Contact API', () => {
     jest.clearAllMocks();
     process.env.GOOGLE_DRIVE_FOLDER_ID = 'test-folder-id';
     mockDrive = (google.drive as jest.Mock)();
-  });
-
-  it('GET returns messages from existing file', async () => {
-    mockDrive.files.list.mockResolvedValue({
-      data: { files: [{ id: 'existing-file-id' }] },
-    });
-
-    const mockMessages = [{ id: 1, message: 'Hello' }];
-    mockDrive.files.get.mockResolvedValue({
-      data: mockMessages,
-    });
-
-    const response = await GET();
-    const data = await response.json();
-
-    expect(data).toEqual(mockMessages);
-    expect(mockDrive.files.list).toHaveBeenCalled();
-    expect(mockDrive.files.get).toHaveBeenCalledWith(expect.objectContaining({ fileId: 'existing-file-id' }));
-  });
-
-  it('GET returns empty array if no file exists', async () => {
-    mockDrive.files.list.mockResolvedValue({
-      data: { files: [] },
-    });
-
-    const response = await GET();
-    const data = await response.json();
-
-    expect(data).toEqual([]);
   });
 
   it('POST creates new file if none exists', async () => {
