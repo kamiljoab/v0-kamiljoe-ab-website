@@ -58,6 +58,24 @@ export function Hero() {
             />
           </div>
           <p className="text-sm font-medium text-muted-foreground">{t.hero.scanQr}</p>
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-[oklch(0.75_0.18_85)] text-[oklch(0.75_0.18_85)]" />
+              ))}
+            </div>
+            <p className="text-center text-xs text-muted-foreground">
+              {"5.0 p\u00e5 Google Maps \u2013 Klicka f\u00f6r rekommendationer"}
+            </p>
+            <a
+              href="https://www.google.com/maps/place/Kamilj%C3%B6+AB"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-primary underline underline-offset-2 transition-colors hover:text-primary/80"
+            >
+              {"Visa p\u00e5 Google Maps"}
+            </a>
+          </div>
         </div>
       </div>
     </section>
