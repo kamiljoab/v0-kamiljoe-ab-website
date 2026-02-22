@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
 import { Star, ExternalLink, MapPin, Quote } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
@@ -15,7 +15,6 @@ interface GoogleReview {
   rating: number
   relativeTimeDescription: string
   text: string
-  time: number
 }
 
 interface PlaceData {
@@ -42,102 +41,141 @@ function StarRating({ rating, size = "md" }: { rating: number; size?: "sm" | "md
   )
 }
 
+// Load Google Maps JS API script dynamically
+function loadGoogleMapsScript(apiKey: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (typeof window === "undefined") return reject("SSR")
+    if ((window as unknown as Record<string, unknown>).__googleMapsLoaded) {
+      resolve()
+      return
+    }
+    if (document.querySelector('script[src*="maps.googleapis.com"]')) {
+      // Script tag exists, wait for it
+      const check = setInterval(() => {
+        if (window.google?.maps?.places) {
+          clearInterval(check)
+          ;(window as unknown as Record<string, unknown>).__googleMapsLoaded = true
+          resolve()
+        }
+      }, 100)
+      setTimeout(() => {
+        clearInterval(check)
+        reject("Google Maps script load timeout")
+      }, 10000)
+      return
+    }
+    const script = document.createElement("script")
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
+    script.async = true
+    script.defer = true
+    script.onload = () => {
+      ;(window as unknown as Record<string, unknown>).__googleMapsLoaded = true
+      resolve()
+    }
+    script.onerror = () => reject("Failed to load Google Maps script")
+    document.head.appendChild(script)
+  })
+}
+
 export function GoogleReviews() {
   const { t } = useLocale()
   const [placeData, setPlaceData] = useState<PlaceData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [expandedReviews, setExpandedReviews] = useState<Set<number>>(new Set())
+  const mapRef = useRef<HTMLDivElement>(null)
+
+  const fetchReviews = useCallback(async () => {
+    try {
+      console.log("[v0] Loading Google Maps script...")
+      await loadGoogleMapsScript(GOOGLE_MAPS_API_KEY)
+      console.log("[v0] Google Maps script loaded")
+
+      // Need a map div for PlacesService
+      const mapDiv = mapRef.current
+      if (!mapDiv) throw new Error("Map div not found")
+
+      const map = new google.maps.Map(mapDiv, {
+        center: { lat: 60.15, lng: 15.19 },
+        zoom: 1,
+      })
+
+      const service = new google.maps.places.PlacesService(map)
+
+      // Step 1: Find place
+      const placeResult = await new Promise<google.maps.places.PlaceResult>((resolve, reject) => {
+        service.findPlaceFromQuery(
+          {
+            query: SEARCH_QUERY,
+            fields: ["place_id"],
+          },
+          (results, status) => {
+            console.log("[v0] findPlaceFromQuery status:", status, "results:", results?.length)
+            if (status === google.maps.places.PlacesServiceStatus.OK && results && results[0]) {
+              resolve(results[0])
+            } else {
+              reject(new Error("Place not found: " + status))
+            }
+          }
+        )
+      })
+
+      const placeId = placeResult.place_id
+      console.log("[v0] Place ID:", placeId)
+
+      if (!placeId) throw new Error("No place_id")
+
+      // Step 2: Get details with reviews
+      const details = await new Promise<google.maps.places.PlaceResult>((resolve, reject) => {
+        service.getDetails(
+          {
+            placeId,
+            fields: ["rating", "user_ratings_total", "reviews"],
+          },
+          (place, status) => {
+            console.log("[v0] getDetails status:", status)
+            console.log("[v0] rating:", place?.rating, "total:", place?.user_ratings_total, "reviews count:", place?.reviews?.length)
+            if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+              resolve(place)
+            } else {
+              reject(new Error("Details failed: " + status))
+            }
+          }
+        )
+      })
+
+      const reviews: GoogleReview[] = (details.reviews || [])
+        .slice(0, 6)
+        .map((r) => ({
+          authorName: r.author_name || t.reviews.anonymous,
+          profilePhotoUrl: r.profile_photo_url || "",
+          rating: r.rating || 5,
+          relativeTimeDescription: r.relative_time_description || "",
+          text: r.text || "",
+        }))
+
+      setPlaceData({
+        rating: details.rating || 0,
+        totalReviews: details.user_ratings_total || 0,
+        reviews,
+      })
+    } catch (err) {
+      console.log("[v0] Google Reviews error:", err)
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [t.reviews.anonymous])
 
   useEffect(() => {
     if (!GOOGLE_MAPS_API_KEY) {
+      console.log("[v0] No API key found")
       setError(true)
       setLoading(false)
       return
     }
     fetchReviews()
-  }, [])
-
-  async function fetchReviews() {
-    try {
-      console.log("[v0] Google API Key present:", !!GOOGLE_MAPS_API_KEY, "length:", GOOGLE_MAPS_API_KEY.length)
-
-      // Step 1: Text Search to find Place ID
-      const searchRes = await fetch(
-        "https://places.googleapis.com/v1/places:searchText",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Goog-Api-Key": GOOGLE_MAPS_API_KEY,
-            "X-Goog-FieldMask": "places.id",
-          },
-          body: JSON.stringify({ textQuery: SEARCH_QUERY }),
-        }
-      )
-
-      console.log("[v0] Search response status:", searchRes.status)
-      if (!searchRes.ok) {
-        const errText = await searchRes.text()
-        console.log("[v0] Search error body:", errText)
-        throw new Error("Search failed: " + errText)
-      }
-      const searchData = await searchRes.json()
-      console.log("[v0] Search data:", JSON.stringify(searchData))
-      const placeId = searchData?.places?.[0]?.id
-      console.log("[v0] Place ID:", placeId)
-
-      if (!placeId) throw new Error("Place not found")
-
-      // Step 2: Get Place Details with reviews
-      const detailsRes = await fetch(
-        `https://places.googleapis.com/v1/places/${placeId}`,
-        {
-          headers: {
-            "X-Goog-Api-Key": GOOGLE_MAPS_API_KEY,
-            "X-Goog-FieldMask":
-              "rating,userRatingCount,reviews.authorAttribution,reviews.rating,reviews.relativePublishTimeDescription,reviews.text,reviews.publishTime",
-          },
-        }
-      )
-
-      console.log("[v0] Details response status:", detailsRes.status)
-      if (!detailsRes.ok) {
-        const errText = await detailsRes.text()
-        console.log("[v0] Details error body:", errText)
-        throw new Error("Details failed: " + errText)
-      }
-      const details = await detailsRes.json()
-      console.log("[v0] Details data:", JSON.stringify(details).slice(0, 2000))
-
-      const reviews: GoogleReview[] = (details.reviews || [])
-        .slice(0, 6)
-        .map((r: Record<string, unknown>) => {
-          const authorAttribution = r.authorAttribution as Record<string, string> | undefined
-          const textObj = r.text as Record<string, string> | undefined
-          return {
-            authorName: authorAttribution?.displayName || t.reviews.anonymous,
-            profilePhotoUrl: authorAttribution?.photoUri || "",
-            rating: (r.rating as number) || 5,
-            relativeTimeDescription: (r.relativePublishTimeDescription as string) || "",
-            text: textObj?.text || "",
-            time: r.publishTime
-              ? new Date(r.publishTime as string).getTime() / 1000
-              : 0,
-          }
-        })
-
-      setPlaceData({
-        rating: details.rating || 0,
-        totalReviews: details.userRatingCount || 0,
-        reviews,
-      })
-    } catch {
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
+  }, [fetchReviews])
 
   function toggleExpand(index: number) {
     setExpandedReviews((prev) => {
@@ -151,10 +189,20 @@ export function GoogleReviews() {
     })
   }
 
+  // Hidden map div needed by PlacesService
+  const hiddenMap = (
+    <div
+      ref={mapRef}
+      style={{ width: 0, height: 0, position: "absolute", overflow: "hidden" }}
+      aria-hidden="true"
+    />
+  )
+
   // Loading state
   if (loading) {
     return (
       <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
+        {hiddenMap}
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="text-center">
             <div className="mx-auto h-8 w-48 animate-pulse rounded-md bg-border" />
@@ -186,6 +234,7 @@ export function GoogleReviews() {
   if (error || !placeData) {
     return (
       <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
+        {hiddenMap}
         <div className="mx-auto max-w-7xl px-4 text-center lg:px-8">
           <h2 className="text-balance font-serif text-3xl font-bold text-foreground sm:text-4xl">
             {t.reviews.title}
@@ -210,6 +259,7 @@ export function GoogleReviews() {
 
   return (
     <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
+      {hiddenMap}
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Header with rating summary */}
         <div className="text-center">
