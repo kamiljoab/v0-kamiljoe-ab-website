@@ -60,6 +60,8 @@ export function GoogleReviews() {
 
   async function fetchReviews() {
     try {
+      console.log("[v0] Google API Key present:", !!GOOGLE_MAPS_API_KEY, "length:", GOOGLE_MAPS_API_KEY.length)
+
       // Step 1: Text Search to find Place ID
       const searchRes = await fetch(
         "https://places.googleapis.com/v1/places:searchText",
@@ -74,9 +76,16 @@ export function GoogleReviews() {
         }
       )
 
-      if (!searchRes.ok) throw new Error("Search failed")
+      console.log("[v0] Search response status:", searchRes.status)
+      if (!searchRes.ok) {
+        const errText = await searchRes.text()
+        console.log("[v0] Search error body:", errText)
+        throw new Error("Search failed: " + errText)
+      }
       const searchData = await searchRes.json()
+      console.log("[v0] Search data:", JSON.stringify(searchData))
       const placeId = searchData?.places?.[0]?.id
+      console.log("[v0] Place ID:", placeId)
 
       if (!placeId) throw new Error("Place not found")
 
@@ -92,8 +101,14 @@ export function GoogleReviews() {
         }
       )
 
-      if (!detailsRes.ok) throw new Error("Details failed")
+      console.log("[v0] Details response status:", detailsRes.status)
+      if (!detailsRes.ok) {
+        const errText = await detailsRes.text()
+        console.log("[v0] Details error body:", errText)
+        throw new Error("Details failed: " + errText)
+      }
       const details = await detailsRes.json()
+      console.log("[v0] Details data:", JSON.stringify(details).slice(0, 2000))
 
       const reviews: GoogleReview[] = (details.reviews || [])
         .slice(0, 6)
