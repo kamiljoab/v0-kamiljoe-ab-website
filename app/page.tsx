@@ -12,6 +12,7 @@ import { InstagramFeed } from "@/components/instagram-feed"
 import { ContactForm } from "@/components/contact-form"
 import { Footer } from "@/components/footer"
 import { JsonLd } from "@/components/json-ld"
+import { SeoKeywords } from "@/components/seo-keywords"
 
 export default function HomePage() {
   return (
@@ -28,6 +29,7 @@ export default function HomePage() {
             <About />
             <Partners />
           </main>
+          <SeoKeywords />
           <Footer />
         </div>
         <ContactForm />
