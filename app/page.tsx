@@ -1,6 +1,7 @@
 "use client"
 
 import { LocaleProvider } from "@/lib/locale-context"
+import { ContactModalProvider } from "@/lib/contact-modal-context"
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { Services } from "@/components/services"
@@ -14,19 +15,21 @@ import { JsonLd } from "@/components/json-ld"
 export default function HomePage() {
   return (
     <LocaleProvider>
-      <JsonLd />
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          <Hero />
-          <Services />
-          <InstagramFeed />
-          <GoogleReviews />
-          <About />
-          <ContactForm />
-        </main>
-        <Footer />
-      </div>
+      <ContactModalProvider>
+        <JsonLd />
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Hero />
+            <Services />
+            <InstagramFeed />
+            <GoogleReviews />
+            <About />
+          </main>
+          <Footer />
+        </div>
+        <ContactForm />
+      </ContactModalProvider>
     </LocaleProvider>
   )
 }
