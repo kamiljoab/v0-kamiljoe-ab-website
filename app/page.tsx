@@ -7,6 +7,7 @@ import { Hero } from "@/components/hero"
 import { Services } from "@/components/services"
 import { GoogleReviews } from "@/components/google-reviews"
 import { About } from "@/components/about"
+import { Partners } from "@/components/partners"
 import { InstagramFeed } from "@/components/instagram-feed"
 import { ContactForm } from "@/components/contact-form"
 import { Footer } from "@/components/footer"
@@ -25,6 +26,7 @@ export default function HomePage() {
             <InstagramFeed />
             <GoogleReviews />
             <About />
+            <Partners />
           </main>
           <Footer />
         </div>

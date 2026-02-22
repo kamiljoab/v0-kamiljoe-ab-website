@@ -37,35 +37,17 @@ export function InstagramFeed() {
     async function fetchPosts() {
       try {
         const res = await fetch(`${BEHOLD_FEED_URL}?t=${Date.now()}`, { cache: "no-store" })
-        console.log("[v0] Behold fetch status:", res.status)
         if (!res.ok) throw new Error("Failed to fetch Behold feed")
         const data = await res.json()
-        console.log("[v0] Behold data keys:", data ? Object.keys(data) : "null")
-        console.log("[v0] Behold posts array?:", Array.isArray(data?.posts), "length:", data?.posts?.length)
 
         // Behold returns { username, posts: [...] } - extract posts array
         const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
-        console.log("[v0] Parsed items count:", items.length)
-        if (items.length > 0) {
-          console.log("[v0] First post:", JSON.stringify({
-            id: items[0].id,
-            mediaType: items[0].mediaType,
-            permalink: items[0].permalink,
-            hasThumbnailUrl: !!items[0].thumbnailUrl,
-            hasMediaUrl: !!items[0].mediaUrl,
-            hasPpiSizes: !!items[0].ppiSizes,
-            hasSizes: !!items[0].sizes,
-            thumbnailChosen: getThumbnail(items[0]),
-          }))
-        }
         setPosts(items.slice(0, 6))
 
         if (items.length === 0) {
-          console.log("[v0] No posts found - showing error state")
           setError(true)
         }
-      } catch (err) {
-        console.log("[v0] Behold fetch error:", err)
+      } catch {
         setError(true)
       } finally {
         setLoading(false)
