@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Professionell rörmokare i Ludvika. VVS-installation, rörjour 24/7, värme & pannor, badrumsrenovering. Auktoriserade VVS-montörer med yrkesbevis. Ring +46 762 124 124.",
   keywords:
-    "rörmokare Ludvika, VVS Ludvika, rörjour Dalarna, akut rörmokare Smedjebacken, VVS-service Borlänge, VVS-installatör Falun, badrumsrenovering Ludvika, stambyte Dalarna, kavitationsteknik uppvärmning, ROT-avdrag VVS Ludvika",
+    "rörmokare Ludvika, VVS Ludvika, rörjour Dalarna, rörmokare Borlänge, VVS Falun, rörmokare Avesta, VVS Mora, rörmokare Leksand, VVS Hedemora, rörmokare Smedjebacken, VVS Malung, rörmokare Rättvik, installera diskmaskin Dalarna, installera tvättmaskin Ludvika, montera tvättställ, installera toalett, montera duschkabin, byta radiator, installera pannrum, värmepump Dalarna, bergvärme Ludvika, vattenrening, golvvärme, varmvattenberedare, cirkulationspump, expansionskärl, säkerhetsventil, termostat, shuntventil, ROT-avdrag VVS, F-skatt rörmokare, auktoriserad rörmokare Dalarna, certifierad VVS, rörinspektion, VVS-besiktning, akut rörmokare, vattenskada, laga läckage, kavitationsteknik uppvärmning, badrumsrenovering Ludvika, stambyte Dalarna",
   openGraph: {
     title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
     description:
