@@ -46,7 +46,7 @@ export const metadata: Metadata = {
       "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
   },
   verification: {
-    google: "GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE",
+    google: "Yhp89mD3iTMNlSiXpDs2nCY5OLVVBm2TMOrt2PwHAjI",
   },
   icons: {
     icon: [
