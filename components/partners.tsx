@@ -44,13 +44,11 @@ const PARTNERS = [
   { name: "Vatette", url: "https://www.vatette.se" },
 ]
 
-function getLogoUrl(name: string): string {
-  // Use Logo.dev API (free tier) for brand logos
-  const domain = PARTNERS.find((p) => p.name === name)?.url
-  if (!domain) return ""
+function getLogoUrl(domain: string): string {
+  // Google S2 Favicon API - free, unlimited, no token needed
   try {
-    const hostname = new URL(domain).hostname.replace("www.", "")
-    return `https://img.logo.dev/${hostname}?token=pk_a8z0e3WDRGOl1RLBBXTBmQ&size=120&format=png`
+    const hostname = new URL(domain).hostname
+    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`
   } catch {
     return ""
   }
@@ -119,13 +117,13 @@ export function Partners() {
 }
 
 function PartnerCard({ partner }: { partner: { name: string; url: string } }) {
-  const logoUrl = getLogoUrl(partner.name)
+  const logoUrl = getLogoUrl(partner.url)
   const [imgFailed, setImgFailed] = useState(false)
 
   return (
     <button
       onClick={() => handlePartnerClick(partner.url)}
-      className="group flex h-20 w-40 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-card p-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+      className="group flex h-20 w-44 shrink-0 cursor-pointer items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
       title={partner.name}
     >
       {logoUrl && !imgFailed ? (
@@ -133,16 +131,16 @@ function PartnerCard({ partner }: { partner: { name: string; url: string } }) {
         <img
           src={logoUrl}
           alt={`${partner.name} logo`}
-          className="h-8 max-w-[100px] object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+          className="h-8 w-8 shrink-0 rounded object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
           loading="lazy"
           onError={() => setImgFailed(true)}
         />
       ) : (
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-muted text-xs font-bold text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
           {partner.name.slice(0, 2).toUpperCase()}
         </span>
       )}
-      <span className="max-w-full truncate text-[10px] font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+      <span className="truncate text-sm font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
         {partner.name}
       </span>
     </button>
