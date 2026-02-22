@@ -4,6 +4,7 @@ import { LocaleProvider } from "@/lib/locale-context"
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { Services } from "@/components/services"
+import { GoogleReviews } from "@/components/google-reviews"
 import { About } from "@/components/about"
 import { InstagramFeed } from "@/components/instagram-feed"
 import { ContactForm } from "@/components/contact-form"
@@ -20,6 +21,7 @@ export default function HomePage() {
           <Hero />
           <Services />
           <InstagramFeed />
+          <GoogleReviews />
           <About />
           <ContactForm />
         </main>

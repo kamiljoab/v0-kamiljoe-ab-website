@@ -5,6 +5,7 @@ export const translations = {
     nav: {
       home: "Hem",
       services: "Tjänster",
+      reviews: "Rekommendationer",
       about: "Om oss",
       contact: "Kontakt",
       emergency: "Jour 24/7",
@@ -75,6 +76,18 @@ export const translations = {
       phonePlaceholder: "+46 7XX XXX XXX",
       messagePlaceholder: "Beskriv ditt ärende...",
     },
+    reviews: {
+      title: "Rekommendationer",
+      subtitle: "Vad våra kunder säger om oss på Google",
+      rating: "betyg",
+      reviewCount: "omdömen",
+      readMore: "Läs mer",
+      showLess: "Visa mindre",
+      viewOnGoogle: "Se alla omdömen på Google",
+      loading: "Laddar omdömen...",
+      error: "Kunde inte ladda omdömen",
+      anonymous: "Anonym",
+    },
     instagram: {
       title: "Följ oss på Instagram",
       subtitle: "Se våra senaste projekt och uppdateringar",
@@ -95,6 +108,7 @@ export const translations = {
     nav: {
       home: "Home",
       services: "Services",
+      reviews: "Reviews",
       about: "About",
       contact: "Contact",
       emergency: "24/7 Emergency",
@@ -164,6 +178,18 @@ export const translations = {
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+46 7XX XXX XXX",
       messagePlaceholder: "Describe your inquiry...",
+    },
+    reviews: {
+      title: "Reviews",
+      subtitle: "What our customers say about us on Google",
+      rating: "rating",
+      reviewCount: "reviews",
+      readMore: "Read more",
+      showLess: "Show less",
+      viewOnGoogle: "See all reviews on Google",
+      loading: "Loading reviews...",
+      error: "Could not load reviews",
+      anonymous: "Anonymous",
     },
     instagram: {
       title: "Follow Us on Instagram",
