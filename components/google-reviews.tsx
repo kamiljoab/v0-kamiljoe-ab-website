@@ -1,40 +1,43 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
+import Script from "next/script"
 import { Star, ExternalLink, MapPin } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
 const GOOGLE_MAPS_URL =
   "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9?g_st=i&utm_campaign=ac-im"
 
-const TRUSTINDEX_SRC =
-  "https://cdn.trustindex.io/loader.js?be6b0ac65bd443753f869d9c145"
-
 export function GoogleReviews() {
   const { t } = useLocale()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const scriptLoaded = useRef(false)
+  const [scriptStatus, setScriptStatus] = useState<"loading" | "ready" | "error">("loading")
 
   useEffect(() => {
-    if (scriptLoaded.current) return
-    scriptLoaded.current = true
-
-    const script = document.createElement("script")
-    script.src = TRUSTINDEX_SRC
-    script.defer = true
-    script.async = true
-
-    if (containerRef.current) {
-      containerRef.current.appendChild(script)
-    }
-
-    return () => {
-      script.remove()
-    }
-  }, [])
+    console.log("[v0] GoogleReviews mounted, scriptStatus:", scriptStatus)
+    // Check if trustindex widget rendered
+    const timer = setTimeout(() => {
+      const widget = document.querySelector('[class*="trustindex"]') || document.querySelector('[id*="trustindex"]') || document.querySelector('[src*="trustindex"]')
+      console.log("[v0] Trustindex widget element found:", !!widget)
+      console.log("[v0] Container innerHTML length:", document.getElementById("trustindex-widget")?.innerHTML.length)
+    }, 5000)
+    return () => clearTimeout(timer)
+  }, [scriptStatus])
 
   return (
     <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
+      <Script
+        src="https://cdn.trustindex.io/loader.js?be6b0ac65bd443753f869d9c145"
+        strategy="afterInteractive"
+        onLoad={() => {
+          console.log("[v0] Trustindex script loaded successfully")
+          setScriptStatus("ready")
+        }}
+        onError={() => {
+          console.log("[v0] Trustindex script failed to load")
+          setScriptStatus("error")
+        }}
+      />
+
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Header */}
         <div className="text-center">
@@ -74,11 +77,23 @@ export function GoogleReviews() {
           </p>
         </div>
 
-        {/* Trustindex widget */}
+        {/* Trustindex widget container */}
         <div
-          ref={containerRef}
-          className="mx-auto mt-10 max-w-5xl overflow-hidden rounded-xl"
-        />
+          id="trustindex-widget"
+          className="mx-auto mt-10 min-h-[200px] max-w-5xl overflow-hidden rounded-xl"
+        >
+          {scriptStatus === "loading" && (
+            <div className="flex items-center justify-center py-12">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              <span className="ml-3 text-muted-foreground">{t.reviews.loading}</span>
+            </div>
+          )}
+          {scriptStatus === "error" && (
+            <div className="py-8 text-center text-muted-foreground">
+              {t.reviews.error}
+            </div>
+          )}
+        </div>
 
         {/* CTA to Google Maps */}
         <div className="mt-10 text-center">
