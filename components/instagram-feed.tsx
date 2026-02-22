@@ -42,14 +42,6 @@ export function InstagramFeed() {
 
         // Behold returns { username, posts: [...] } - extract posts array
         const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
-        console.log("[v0] Behold posts count:", items.length)
-        if (items.length > 0) {
-          console.log("[v0] First post keys:", Object.keys(items[0]))
-          console.log("[v0] First post mediaType:", items[0].mediaType)
-          console.log("[v0] First post thumbnailUrl:", items[0].thumbnailUrl?.slice(0, 80))
-          console.log("[v0] First post ppiSizes:", JSON.stringify(items[0].ppiSizes)?.slice(0, 200))
-          console.log("[v0] First post sizes:", JSON.stringify(items[0].sizes)?.slice(0, 200))
-        }
         setPosts(items.slice(0, 3))
 
         if (items.length === 0) {

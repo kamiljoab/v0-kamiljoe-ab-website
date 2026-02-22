@@ -29,8 +29,8 @@ export function Header() {
             alt="Kamiljö AB logotyp"
             width={220}
             height={90}
-            style={{ width: "auto" }}
-            className="h-14 sm:h-16 lg:h-20"
+            style={{ width: "auto", height: "auto" }}
+            className="max-h-14 sm:max-h-16 lg:max-h-20"
             priority
           />
         </a>
