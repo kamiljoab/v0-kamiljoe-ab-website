@@ -42,7 +42,7 @@ export function InstagramFeed() {
 
         // Behold returns { username, posts: [...] } - extract posts array
         const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
-        setPosts(items.slice(0, 3))
+        setPosts(items.slice(0, 6))
 
         if (items.length === 0) {
           setError(true)
@@ -85,8 +85,8 @@ export function InstagramFeed() {
         </div>
 
         {loading ? (
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[0, 1, 2].map((i) => (
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
                 className="aspect-square animate-pulse rounded-xl bg-muted"
@@ -94,7 +94,7 @@ export function InstagramFeed() {
             ))}
           </div>
         ) : !error && posts.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
             {posts.map((post) => (
               <a
                 key={post.id}
@@ -141,8 +141,8 @@ export function InstagramFeed() {
 
 function FallbackGrid() {
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
-      {[0, 1, 2].map((i) => (
+    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
+      {[0, 1, 2, 3, 4, 5].map((i) => (
         <a
           key={i}
           href={INSTAGRAM_PROFILE}
