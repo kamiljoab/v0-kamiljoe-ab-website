@@ -75,6 +75,14 @@ export const translations = {
       phonePlaceholder: "+46 7XX XXX XXX",
       messagePlaceholder: "Beskriv ditt ärende...",
     },
+    instagram: {
+      title: "Följ oss på Instagram",
+      subtitle: "Se våra senaste projekt och uppdateringar",
+      followButton: "Följ @kamiljoab",
+      viewPost: "Visa inlägg",
+      loading: "Laddar...",
+      error: "Kunde inte ladda inlägg",
+    },
     footer: {
       tagline: "Auktoriserade VVS-montörer med yrkesbevis",
       orgNr: "Org.nr: 559572-5366",
@@ -156,6 +164,14 @@ export const translations = {
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+46 7XX XXX XXX",
       messagePlaceholder: "Describe your inquiry...",
+    },
+    instagram: {
+      title: "Follow Us on Instagram",
+      subtitle: "See our latest projects and updates",
+      followButton: "Follow @kamiljoab",
+      viewPost: "View post",
+      loading: "Loading...",
+      error: "Could not load posts",
     },
     footer: {
       tagline: "Certified plumbing technicians with professional credentials",
