@@ -24,7 +24,14 @@ export function Footer() {
               {t.footer.tagline}
             </p>
             <div className="flex flex-col gap-1 text-sm text-secondary-foreground/70">
-              <span>{t.footer.orgNr}</span>
+              <a
+                href="https://www.bolagsfakta.se/5595725366-Kamiljo_AB"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-secondary-foreground/30 underline-offset-2 transition-colors hover:text-secondary-foreground hover:decoration-secondary-foreground"
+              >
+                {t.footer.orgNr}
+              </a>
               <span>{t.footer.fSkatt}</span>
             </div>
           </div>
