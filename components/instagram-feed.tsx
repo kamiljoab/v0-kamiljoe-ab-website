@@ -4,30 +4,41 @@ import { useEffect, useState } from "react"
 import { Instagram, ExternalLink } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
-interface InstagramPost {
-  id: string
-  thumbnail: string
-  permalink: string
-  alt: string
-}
-
+const BEHOLD_FEED_ID = process.env.NEXT_PUBLIC_BEHOLD_FEED_ID || "MWzGVeGrFCHtifcZcbhz"
+const BEHOLD_FEED_URL = `https://feeds.behold.so/${BEHOLD_FEED_ID}`
 const INSTAGRAM_PROFILE = "https://www.instagram.com/kamiljoab/"
+
+interface BeholdPost {
+  id: string
+  mediaUrl: string
+  permalink: string
+  caption?: string
+  mediaType: string
+  thumbnailUrl?: string
+  sizes?: {
+    small?: { mediaUrl: string }
+    medium?: { mediaUrl: string }
+    large?: { mediaUrl: string }
+  }
+}
 
 export function InstagramFeed() {
   const { t } = useLocale()
-  const [posts, setPosts] = useState<InstagramPost[]>([])
+  const [posts, setPosts] = useState<BeholdPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch("/api/instagram")
-        if (!res.ok) throw new Error("Failed to fetch")
+        const res = await fetch(BEHOLD_FEED_URL)
+        if (!res.ok) throw new Error("Failed to fetch Behold feed")
         const data = await res.json()
-        if (data.posts && data.posts.length > 0) {
-          setPosts(data.posts)
-        } else {
+
+        const items: BeholdPost[] = Array.isArray(data) ? data : []
+        setPosts(items.slice(0, 3))
+
+        if (items.length === 0) {
           setError(true)
         }
       } catch {
@@ -38,6 +49,13 @@ export function InstagramFeed() {
     }
     fetchPosts()
   }, [])
+
+  function getThumbnail(post: BeholdPost): string {
+    if (post.sizes?.medium?.mediaUrl) return post.sizes.medium.mediaUrl
+    if (post.sizes?.small?.mediaUrl) return post.sizes.small.mediaUrl
+    if (post.thumbnailUrl) return post.thumbnailUrl
+    return post.mediaUrl
+  }
 
   return (
     <section id="instagram" className="bg-card py-16 lg:py-24">
@@ -75,8 +93,8 @@ export function InstagramFeed() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={post.thumbnail}
-                  alt={post.alt}
+                  src={getThumbnail(post)}
+                  alt={post.caption ? post.caption.slice(0, 100) : "Instagram post by @kamiljoab"}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"
                 />
