@@ -20,6 +20,11 @@ interface BeholdPost {
     medium?: { mediaUrl: string }
     large?: { mediaUrl: string }
   }
+  ppiSizes?: {
+    low?: { mediaUrl: string }
+    medium?: { mediaUrl: string }
+    high?: { mediaUrl: string }
+  }
 }
 
 export function InstagramFeed() {
@@ -37,6 +42,14 @@ export function InstagramFeed() {
 
         // Behold returns { username, posts: [...] } - extract posts array
         const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
+        console.log("[v0] Behold posts count:", items.length)
+        if (items.length > 0) {
+          console.log("[v0] First post keys:", Object.keys(items[0]))
+          console.log("[v0] First post mediaType:", items[0].mediaType)
+          console.log("[v0] First post thumbnailUrl:", items[0].thumbnailUrl?.slice(0, 80))
+          console.log("[v0] First post ppiSizes:", JSON.stringify(items[0].ppiSizes)?.slice(0, 200))
+          console.log("[v0] First post sizes:", JSON.stringify(items[0].sizes)?.slice(0, 200))
+        }
         setPosts(items.slice(0, 3))
 
         if (items.length === 0) {
@@ -52,8 +65,14 @@ export function InstagramFeed() {
   }, [])
 
   function getThumbnail(post: BeholdPost): string {
+    // Behold uses ppiSizes for optimized images
+    if (post.ppiSizes?.medium?.mediaUrl) return post.ppiSizes.medium.mediaUrl
+    if (post.ppiSizes?.low?.mediaUrl) return post.ppiSizes.low.mediaUrl
+    if (post.ppiSizes?.high?.mediaUrl) return post.ppiSizes.high.mediaUrl
+    // Fallback to sizes
     if (post.sizes?.medium?.mediaUrl) return post.sizes.medium.mediaUrl
     if (post.sizes?.small?.mediaUrl) return post.sizes.small.mediaUrl
+    // For reels/videos use thumbnailUrl
     if (post.thumbnailUrl) return post.thumbnailUrl
     return post.mediaUrl
   }
