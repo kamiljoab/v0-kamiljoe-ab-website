@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useLocale } from "@/lib/locale-context"
 
 const PARTNERS = [
@@ -44,12 +45,12 @@ const PARTNERS = [
 ]
 
 function getLogoUrl(name: string): string {
-  // Use Clearbit Logo API for free brand logos
+  // Use Logo.dev API (free tier) for brand logos
   const domain = PARTNERS.find((p) => p.name === name)?.url
   if (!domain) return ""
   try {
-    const hostname = new URL(domain).hostname
-    return `https://logo.clearbit.com/${hostname}`
+    const hostname = new URL(domain).hostname.replace("www.", "")
+    return `https://img.logo.dev/${hostname}?token=pk_a8z0e3WDRGOl1RLBBXTBmQ&size=120&format=png`
   } catch {
     return ""
   }
@@ -119,38 +120,31 @@ export function Partners() {
 
 function PartnerCard({ partner }: { partner: { name: string; url: string } }) {
   const logoUrl = getLogoUrl(partner.name)
+  const [imgFailed, setImgFailed] = useState(false)
 
   return (
     <button
       onClick={() => handlePartnerClick(partner.url)}
-      className="group flex h-20 w-36 shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+      className="group flex h-20 w-40 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-card p-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
       title={partner.name}
     >
-      {logoUrl ? (
-        <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={logoUrl}
-            alt={`${partner.name} logo`}
-            className="h-8 max-w-[80px] object-contain grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
-            loading="lazy"
-            onError={(e) => {
-              // Hide broken image, show text fallback
-              const target = e.currentTarget
-              target.style.display = "none"
-              const sibling = target.nextElementSibling as HTMLElement
-              if (sibling) sibling.style.display = "block"
-            }}
-          />
-          <span className="hidden text-xs font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
-            {partner.name}
-          </span>
-        </>
+      {logoUrl && !imgFailed ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={logoUrl}
+          alt={`${partner.name} logo`}
+          className="h-8 max-w-[100px] object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+          loading="lazy"
+          onError={() => setImgFailed(true)}
+        />
       ) : (
-        <span className="text-xs font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
-          {partner.name}
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+          {partner.name.slice(0, 2).toUpperCase()}
         </span>
       )}
+      <span className="max-w-full truncate text-[10px] font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+        {partner.name}
+      </span>
     </button>
   )
 }
