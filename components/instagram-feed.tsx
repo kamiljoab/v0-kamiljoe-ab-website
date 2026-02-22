@@ -35,7 +35,8 @@ export function InstagramFeed() {
         if (!res.ok) throw new Error("Failed to fetch Behold feed")
         const data = await res.json()
 
-        const items: BeholdPost[] = Array.isArray(data) ? data : []
+        // Behold returns { username, posts: [...] } - extract posts array
+        const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
         setPosts(items.slice(0, 3))
 
         if (items.length === 0) {
