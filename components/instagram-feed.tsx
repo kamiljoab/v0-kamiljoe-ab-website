@@ -31,7 +31,7 @@ export function InstagramFeed() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch(BEHOLD_FEED_URL)
+        const res = await fetch(`${BEHOLD_FEED_URL}?t=${Date.now()}`, { cache: "no-store" })
         if (!res.ok) throw new Error("Failed to fetch Behold feed")
         const data = await res.json()
 
