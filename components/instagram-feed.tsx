@@ -20,6 +20,11 @@ interface BeholdPost {
     medium?: { mediaUrl: string }
     large?: { mediaUrl: string }
   }
+  ppiSizes?: {
+    low?: { mediaUrl: string }
+    medium?: { mediaUrl: string }
+    high?: { mediaUrl: string }
+  }
 }
 
 export function InstagramFeed() {
@@ -31,13 +36,13 @@ export function InstagramFeed() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch(BEHOLD_FEED_URL)
+        const res = await fetch(`${BEHOLD_FEED_URL}?t=${Date.now()}`, { cache: "no-store" })
         if (!res.ok) throw new Error("Failed to fetch Behold feed")
         const data = await res.json()
 
         // Behold returns { username, posts: [...] } - extract posts array
         const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
-        setPosts(items.slice(0, 3))
+        setPosts(items.slice(0, 6))
 
         if (items.length === 0) {
           setError(true)
@@ -52,8 +57,14 @@ export function InstagramFeed() {
   }, [])
 
   function getThumbnail(post: BeholdPost): string {
+    // Behold uses ppiSizes for optimized images
+    if (post.ppiSizes?.medium?.mediaUrl) return post.ppiSizes.medium.mediaUrl
+    if (post.ppiSizes?.low?.mediaUrl) return post.ppiSizes.low.mediaUrl
+    if (post.ppiSizes?.high?.mediaUrl) return post.ppiSizes.high.mediaUrl
+    // Fallback to sizes
     if (post.sizes?.medium?.mediaUrl) return post.sizes.medium.mediaUrl
     if (post.sizes?.small?.mediaUrl) return post.sizes.small.mediaUrl
+    // For reels/videos use thumbnailUrl
     if (post.thumbnailUrl) return post.thumbnailUrl
     return post.mediaUrl
   }
@@ -74,8 +85,8 @@ export function InstagramFeed() {
         </div>
 
         {loading ? (
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[0, 1, 2].map((i) => (
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
                 className="aspect-square animate-pulse rounded-xl bg-muted"
@@ -83,7 +94,7 @@ export function InstagramFeed() {
             ))}
           </div>
         ) : !error && posts.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
             {posts.map((post) => (
               <a
                 key={post.id}
@@ -130,8 +141,8 @@ export function InstagramFeed() {
 
 function FallbackGrid() {
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
-      {[0, 1, 2].map((i) => (
+    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
+      {[0, 1, 2, 3, 4, 5].map((i) => (
         <a
           key={i}
           href={INSTAGRAM_PROFILE}

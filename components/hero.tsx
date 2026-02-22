@@ -3,9 +3,11 @@
 import Image from "next/image"
 import { Star, ArrowRight, Phone } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
+import { useContactModal } from "@/lib/contact-modal-context"
 
 export function Hero() {
   const { t } = useLocale()
+  const { open: openContactModal } = useContactModal()
 
   return (
     <section id="hem" className="relative overflow-hidden bg-card">
@@ -30,13 +32,13 @@ export function Hero() {
           </p>
 
           <div className="flex flex-col items-center gap-3 sm:flex-row lg:items-start">
-            <a
-              href="#kontakt"
+            <button
+              onClick={openContactModal}
               className="flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-105"
             >
               {t.hero.cta}
               <ArrowRight className="h-4 w-4" />
-            </a>
+            </button>
             <a
               href="tel:+46762124124"
               className="flex items-center gap-2 rounded-lg border-2 border-secondary px-6 py-3 text-sm font-bold text-secondary transition-colors hover:bg-secondary hover:text-secondary-foreground"

@@ -96,6 +96,10 @@ export const translations = {
       loading: "Laddar...",
       error: "Kunde inte ladda inlägg",
     },
+    partners: {
+      title: "Våra partners",
+      subtitle: "Vi arbetar med marknadsledande varumärken inom VVS",
+    },
     footer: {
       tagline: "Auktoriserade VVS-montörer med yrkesbevis",
       orgNr: "Org.nr: 559572-5366",
@@ -198,6 +202,10 @@ export const translations = {
       viewPost: "View post",
       loading: "Loading...",
       error: "Could not load posts",
+    },
+    partners: {
+      title: "Our Partners",
+      subtitle: "We work with market-leading brands in plumbing and heating",
     },
     footer: {
       tagline: "Certified plumbing technicians with professional credentials",
