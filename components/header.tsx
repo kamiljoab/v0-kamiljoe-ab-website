@@ -13,6 +13,7 @@ export function Header() {
   const navItems = [
     { label: t.nav.home, href: "#hem" },
     { label: t.nav.services, href: "#tjanster" },
+    { label: t.nav.reviews, href: "#rekommendationer" },
     { label: t.nav.about, href: "#om-oss" },
     { label: t.nav.contact, href: "#kontakt" },
   ]

@@ -68,7 +68,7 @@ export function Hero() {
               {"5.0 p\u00e5 Google Maps \u2013 Klicka f\u00f6r rekommendationer"}
             </p>
             <a
-              href="https://www.google.com/maps/place/Kamilj%C3%B6+AB"
+              href="https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9?g_st=i&utm_campaign=ac-im"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-semibold text-primary underline underline-offset-2 transition-colors hover:text-primary/80"
