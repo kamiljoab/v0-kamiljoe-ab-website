@@ -7,17 +7,46 @@ const _roboto = Roboto({ subsets: ["latin", "latin-ext"], weight: ["400", "500",
 const _openSans = Open_Sans({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600", "700"] })
 
 export const metadata: Metadata = {
-  title: "Kamiljö AB | VVS & Rörmokare i Ludvika, Dalarna",
+  metadataBase: new URL("https://www.kamiljo.se"),
+  title: {
+    default: "Kamiljö AB | VVS & Rörmokare i Ludvika, Dalarna",
+    template: "%s | Kamiljö AB",
+  },
   description:
     "Professionell rörmokare i Ludvika. VVS-installation, rörjour 24/7, värme & pannor, badrumsrenovering. Auktoriserade VVS-montörer med yrkesbevis. Ring +46 762 124 124.",
   keywords:
     "rörmokare Ludvika, VVS Ludvika, rörjour Dalarna, rörmokare Borlänge, VVS Falun, rörmokare Avesta, VVS Mora, rörmokare Leksand, VVS Hedemora, rörmokare Smedjebacken, VVS Malung, rörmokare Rättvik, installera diskmaskin Dalarna, installera tvättmaskin Ludvika, montera tvättställ, installera toalett, montera duschkabin, byta radiator, installera pannrum, värmepump Dalarna, bergvärme Ludvika, vattenrening, golvvärme, varmvattenberedare, cirkulationspump, expansionskärl, säkerhetsventil, termostat, shuntventil, ROT-avdrag VVS, F-skatt rörmokare, auktoriserad rörmokare Dalarna, certifierad VVS, rörinspektion, VVS-besiktning, akut rörmokare, vattenskada, laga läckage, kavitationsteknik uppvärmning, badrumsrenovering Ludvika, stambyte Dalarna",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://www.kamiljo.se",
+  },
   openGraph: {
     title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
     description:
       "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
+    url: "https://www.kamiljo.se",
+    siteName: "Kamiljö AB",
     type: "website",
     locale: "sv_SE",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
+    description:
+      "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
+  },
+  verification: {
+    google: "GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE",
   },
   icons: {
     icon: [
