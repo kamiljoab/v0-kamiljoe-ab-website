@@ -189,20 +189,17 @@ export function GoogleReviews() {
     })
   }
 
-  // Hidden map div needed by PlacesService
-  const hiddenMap = (
-    <div
-      ref={mapRef}
-      style={{ width: 0, height: 0, position: "absolute", overflow: "hidden" }}
-      aria-hidden="true"
-    />
-  )
+  return (
+    <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
+      {/* Hidden map div - MUST always be in DOM for PlacesService */}
+      <div
+        ref={mapRef}
+        style={{ width: 1, height: 1, position: "absolute", overflow: "hidden", opacity: 0, pointerEvents: "none" }}
+        aria-hidden="true"
+      />
 
-  // Loading state
-  if (loading) {
-    return (
-      <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
-        {hiddenMap}
+      {/* Loading state */}
+      {loading && (
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="text-center">
             <div className="mx-auto h-8 w-48 animate-pulse rounded-md bg-border" />
@@ -226,15 +223,10 @@ export function GoogleReviews() {
             ))}
           </div>
         </div>
-      </section>
-    )
-  }
+      )}
 
-  // Error state
-  if (error || !placeData) {
-    return (
-      <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
-        {hiddenMap}
+      {/* Error state */}
+      {!loading && (error || !placeData) && (
         <div className="mx-auto max-w-7xl px-4 text-center lg:px-8">
           <h2 className="text-balance font-serif text-3xl font-bold text-foreground sm:text-4xl">
             {t.reviews.title}
@@ -253,13 +245,10 @@ export function GoogleReviews() {
             <ExternalLink className="h-4 w-4" />
           </a>
         </div>
-      </section>
-    )
-  }
+      )}
 
-  return (
-    <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
-      {hiddenMap}
+      {/* Success state */}
+      {!loading && !error && placeData && (
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Header with rating summary */}
         <div className="text-center">
@@ -388,6 +377,7 @@ export function GoogleReviews() {
           </a>
         </div>
       </div>
+      )}
     </section>
   )
 }
