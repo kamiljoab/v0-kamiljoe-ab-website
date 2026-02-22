@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { Phone, Mail, MapPin } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
@@ -14,14 +13,11 @@ export function Footer() {
 
           <div className="flex flex-col gap-4">
             <div className="relative h-20 w-full max-w-[200px] sm:h-24 sm:max-w-[240px]">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/images/logo.jpeg"
                 alt="Kamiljö AB logotyp"
-                width={240}
-                height={96}
-                style={{ width: "auto", height: "auto" }}
-                className="max-h-full rounded-xl object-contain object-left"
-                priority
+                className="h-full w-auto rounded-xl object-contain object-left"
               />
             </div>
             <p className="text-sm leading-relaxed text-secondary-foreground/80">

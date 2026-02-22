@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Phone, Menu, X, Globe } from "lucide-react"
-import Image from "next/image"
 import { useLocale } from "@/lib/locale-context"
 import { useContactModal } from "@/lib/contact-modal-context"
 import type { Locale } from "@/lib/i18n"
@@ -24,14 +23,11 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
         <a href="#hem" className="flex shrink-0 items-center gap-3">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/images/logo.jpeg"
             alt="Kamiljö AB logotyp"
-            width={220}
-            height={90}
-            style={{ width: "auto", height: "auto" }}
-            className="max-h-14 sm:max-h-16 lg:max-h-20"
-            priority
+            className="h-14 w-auto sm:h-16 lg:h-20"
           />
         </a>
 
