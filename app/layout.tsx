@@ -1,10 +1,17 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Roboto, Open_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
 const _roboto = Roboto({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "700", "900"] })
 const _openSans = Open_Sans({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600", "700"] })
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#4338ca",
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.kamiljo.se"),
@@ -50,11 +57,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
       { url: "/icon-dark-32x32.png", media: "(prefers-color-scheme: dark)" },
-      { url: "/icon.svg", type: "image/svg+xml" },
     ],
     apple: "/apple-icon.png",
+    shortcut: "/icon.svg",
   },
 }
 
@@ -64,7 +72,20 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="sv">
+    <html lang="sv" className="bg-background">
+      <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXX');
+            `,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased">
         {children}
         <Analytics />
