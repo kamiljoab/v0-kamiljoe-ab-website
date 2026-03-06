@@ -34,26 +34,35 @@ export function InstagramFeed() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const res = await fetch(`${BEHOLD_FEED_URL}?t=${Date.now()}`, { cache: "no-store" })
-        if (!res.ok) throw new Error("Failed to fetch Behold feed")
-        const data = await res.json()
-
-        // Behold returns { username, posts: [...] } - extract posts array
+    const controller = new AbortController()
+    
+    fetch(`${BEHOLD_FEED_URL}?t=${Date.now()}`, { 
+      cache: "no-store",
+      signal: controller.signal 
+    })
+      .then(res => {
+        if (!res.ok) {
+          setError(true)
+          setLoading(false)
+          return null
+        }
+        return res.json()
+      })
+      .then(data => {
+        if (!data) return
         const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
         setPosts(items.slice(0, 6))
-
         if (items.length === 0) {
           setError(true)
         }
-      } catch {
-        setError(true)
-      } finally {
         setLoading(false)
-      }
-    }
-    fetchPosts()
+      })
+      .catch(() => {
+        setError(true)
+        setLoading(false)
+      })
+    
+    return () => controller.abort()
   }, [])
 
   function getThumbnail(post: BeholdPost): string {
