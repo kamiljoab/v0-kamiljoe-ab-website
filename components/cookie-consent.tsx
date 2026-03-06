@@ -10,6 +10,8 @@ const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
 const TELEGRAM_CHAT_ID = "7838369609"
 
 function getVisitorStats() {
+  if (typeof window === "undefined") return { daily: 0, monthly: 0 }
+  
   const today = new Date().toISOString().split("T")[0]
   const currentMonth = today.slice(0, 7)
   
@@ -47,6 +49,7 @@ function getVisitorStats() {
 }
 
 function getDeviceInfo() {
+  if (typeof window === "undefined") return { device: "Okand", browser: "Okand", os: "Okand" }
   const ua = navigator.userAgent
   let device = "Okand enhet"
   let browser = "Okand webblasare"
@@ -92,6 +95,7 @@ async function getIpAndLocation() {
 }
 
 async function sendVisitorNotification() {
+  if (typeof window === "undefined") return
   const info = getDeviceInfo()
   const location = await getIpAndLocation()
   const stats = getVisitorStats()
