@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     locale: "sv_SE",
     images: [
       {
-        url: "/images/logo.jpeg",
+        url: "https://www.kamiljo.se/images/logo.jpeg",
         width: 1200,
         height: 630,
         alt: "Kamiljö AB - VVS & Rörmokare i Ludvika",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
     description:
       "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
-    images: ["/images/logo.jpeg"],
+    images: ["https://www.kamiljo.se/images/logo.jpeg"],
   },
   verification: {
     google: "Yhp89mD3iTMNlSiXpDs2nCY5OLVVBm2TMOrt2PwHAjI",
@@ -82,19 +82,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sv" className="bg-background">
-      <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XXXX');
-            `,
-          }}
-        />
-      </head>
+
       <body className="font-sans antialiased">
         {children}
         <Analytics />
