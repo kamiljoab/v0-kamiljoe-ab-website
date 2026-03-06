@@ -5,14 +5,14 @@ import Link from "next/link"
 import { X } from "lucide-react"
 
 const COOKIE_CONSENT_KEY = "kamiljo-cookie-consent"
-const CALLMEBOT_PHONE = "46762124124"
-const CALLMEBOT_APIKEY = "YOUR_CALLMEBOT_API_KEY"
+const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+const TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID"
 
 function getDeviceInfo() {
   const ua = navigator.userAgent
-  let device = "Okänd enhet"
-  let browser = "Okänd webbläsare"
-  let os = "Okänt OS"
+  let device = "Okand enhet"
+  let browser = "Okand webblasare"
+  let os = "Okant OS"
 
   if (/iPhone/.test(ua)) device = "iPhone"
   else if (/iPad/.test(ua)) device = "iPad"
@@ -32,27 +32,34 @@ function getDeviceInfo() {
   else if (/Android/.test(ua)) os = "Android"
   else if (/iOS|iPhone|iPad/.test(ua)) os = "iOS"
 
-  return { device, browser, os, userAgent: ua }
+  return { device, browser, os }
 }
 
 async function sendVisitorNotification() {
   const info = getDeviceInfo()
   const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
   
-  const message = encodeURIComponent(
-    `*Ny besökare på kamiljo.se!*\n\n` +
-    `*Tid:* ${timestamp}\n` +
-    `*Enhet:* ${info.device}\n` +
-    `*Webbläsare:* ${info.browser}\n` +
-    `*OS:* ${info.os}\n` +
-    `*Sida:* ${window.location.pathname}\n` +
-    `*Referrer:* ${document.referrer || "Direkt besök"}\n` +
-    `*Skärm:* ${window.innerWidth}x${window.innerHeight}`
-  )
+  const message = 
+    `<b>Ny besokare pa kamiljo.se!</b>\n\n` +
+    `<b>Tid:</b> ${timestamp}\n` +
+    `<b>Enhet:</b> ${info.device}\n` +
+    `<b>Webblasare:</b> ${info.browser}\n` +
+    `<b>OS:</b> ${info.os}\n` +
+    `<b>Sida:</b> ${window.location.pathname}\n` +
+    `<b>Referrer:</b> ${document.referrer || "Direkt besok"}\n` +
+    `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}`
   
   try {
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${message}&apikey=${CALLMEBOT_APIKEY}`
-    await fetch(url, { mode: "no-cors" })
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: "HTML"
+      })
+    })
   } catch {
     // Silently fail
   }

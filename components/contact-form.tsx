@@ -5,22 +5,30 @@ import { Send, CheckCircle, Loader2, X } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 import { useContactModal } from "@/lib/contact-modal-context"
 
-const CALLMEBOT_PHONE = "46762124124"
-const CALLMEBOT_APIKEY = "YOUR_CALLMEBOT_API_KEY"
+const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+const TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID"
 
-async function sendWhatsAppMessage(payload: Record<string, string>): Promise<boolean> {
-  const message = encodeURIComponent(
-    `*Ny förfrågan från kamiljo.se!*\n\n` +
-    `*Förnamn:* ${payload.firstName}\n` +
-    `*Efternamn:* ${payload.lastName}\n` +
-    `*Telefon:* ${payload.phone}\n` +
-    `*Meddelande:* ${payload.message || "Inget meddelande"}\n\n` +
-    `_Skickat: ${new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })}_`
-  )
+async function sendTelegramMessage(payload: Record<string, string>): Promise<boolean> {
+  const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
+  const message = 
+    `<b>Ny förfrågan från kamiljo.se!</b>\n\n` +
+    `<b>Förnamn:</b> ${payload.firstName}\n` +
+    `<b>Efternamn:</b> ${payload.lastName}\n` +
+    `<b>Telefon:</b> ${payload.phone}\n` +
+    `<b>Meddelande:</b> ${payload.message || "Inget meddelande"}\n\n` +
+    `<i>Skickat: ${timestamp}</i>`
   
   try {
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${message}&apikey=${CALLMEBOT_APIKEY}`
-    await fetch(url, { mode: "no-cors" })
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: "HTML"
+      })
+    })
     return true
   } catch {
     return false
@@ -80,7 +88,7 @@ export function ContactForm() {
       message: (formData.get("message") as string) || "",
     }
 
-    await sendWhatsAppMessage(payload)
+    await sendTelegramMessage(payload)
     setSubmitted(true)
     setLoading(false)
   }
