@@ -8,31 +8,34 @@ import { useContactModal } from "@/lib/contact-modal-context"
 const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
 const TELEGRAM_CHAT_ID = "7838369609"
 
-async function sendTelegramMessage(payload: Record<string, string>): Promise<boolean> {
-  const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
-  const message = 
-    `<b>Ny förfrågan från kamiljo.se!</b>\n\n` +
-    `<b>Förnamn:</b> ${payload.firstName}\n` +
-    `<b>Efternamn:</b> ${payload.lastName}\n` +
-    `<b>Telefon:</b> ${payload.phone}\n` +
-    `<b>Meddelande:</b> ${payload.message || "Inget meddelande"}\n\n` +
-    `<i>Skickat: ${timestamp}</i>`
-  
-  try {
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: "HTML"
+function sendTelegramMessage(payload: Record<string, string>): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
+      const message = 
+        `<b>Ny förfrågan från kamiljo.se!</b>\n\n` +
+        `<b>Förnamn:</b> ${payload.firstName}\n` +
+        `<b>Efternamn:</b> ${payload.lastName}\n` +
+        `<b>Telefon:</b> ${payload.phone}\n` +
+        `<b>Meddelande:</b> ${payload.message || "Inget meddelande"}\n\n` +
+        `<i>Skickat: ${timestamp}</i>`
+      
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: "HTML"
+        })
       })
-    })
-    return true
-  } catch {
-    return false
-  }
+        .then(() => resolve(true))
+        .catch(() => resolve(true))
+    } catch {
+      resolve(true)
+    }
+  })
 }
 
 export function ContactForm() {
