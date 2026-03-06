@@ -4,7 +4,7 @@ import { Star, ExternalLink, MessageSquare } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9"
-const GOOGLE_MAPS_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1943.2!2d15.1876!3d60.1489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4660f66a1a1a1a1a%3A0x1234567890abcdef!2sKamilj%C3%B6%20AB!5e0!3m2!1ssv!2sse!4v1709913600000!5m2!1ssv!2sse"
+const GOOGLE_MAPS_EMBED = "https://maps.google.com/maps?q=Kamilj%C3%B6+AB+Ludvika+Sweden&t=m&z=12&ie=UTF8&iwloc=&output=embed"
 
 export function GoogleReviews() {
   const { t } = useLocale()
