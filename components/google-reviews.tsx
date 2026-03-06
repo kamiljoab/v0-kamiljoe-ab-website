@@ -142,7 +142,6 @@ export function GoogleReviews() {
                 />
               ))}
             </div>
-          </div>
         </div>
 
         <div className="mx-auto mt-10 max-w-4xl">
