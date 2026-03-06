@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server"
 
-const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9"
-
 interface Review {
   id: string
   author: string
@@ -9,48 +7,6 @@ interface Review {
   date: string
   text: string
   avatar: string
-}
-
-let cachedReviews: Review[] | null = null
-let cacheTimestamp = 0
-const CACHE_DURATION = 1000 * 60 * 60
-
-async function scrapeGoogleReviews(): Promise<Review[]> {
-  try {
-    const response = await fetch(GOOGLE_MAPS_URL, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "sv-SE,sv;q=0.9,en;q=0.8",
-      },
-      redirect: "follow",
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.status}`)
-    }
-
-    const html = await response.text()
-    
-    const reviewPattern = /"([^"]{2,50})"\s*,\s*"(\d)"\s*,\s*"([^"]{0,500})"/g
-    const matches = [...html.matchAll(reviewPattern)]
-    
-    if (matches.length > 0) {
-      return matches.slice(0, 15).map((match, index) => ({
-        id: `scraped-${index}`,
-        author: match[1],
-        rating: parseInt(match[2]) || 5,
-        date: new Date().toISOString().split("T")[0],
-        text: match[3] || "",
-        avatar: match[1].slice(0, 2).toUpperCase(),
-      }))
-    }
-
-    return getStaticReviews()
-  } catch (error) {
-    console.error("Scraping error:", error)
-    return getStaticReviews()
-  }
 }
 
 function getStaticReviews(): Review[] {
@@ -147,25 +103,11 @@ function getStaticReviews(): Review[] {
 }
 
 export async function GET() {
-  const now = Date.now()
+  const reviews = getStaticReviews()
   
-  if (cachedReviews && now - cacheTimestamp < CACHE_DURATION) {
-    return NextResponse.json({
-      reviews: cachedReviews,
-      total: cachedReviews.length,
-      rating: 5.0,
-      cached: true,
-    })
-  }
-
-  const reviews = await scrapeGoogleReviews()
-  cachedReviews = reviews
-  cacheTimestamp = now
-
   return NextResponse.json({
     reviews,
     total: reviews.length,
     rating: 5.0,
-    cached: false,
   })
 }
