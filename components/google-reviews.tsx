@@ -7,14 +7,19 @@ import { useLocale } from "@/lib/locale-context"
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9"
 const GOOGLE_MAPS_EMBED = "https://maps.google.com/maps?q=Kamilj%C3%B6+AB+Ludvika+Sweden&t=m&z=12&ie=UTF8&iwloc=&output=embed"
 
-interface Review {
-  id: string
-  author: string
-  rating: number
-  date: string
-  text: string
-  avatar: string
-}
+const STATIC_REVIEWS = [
+  { id: "1", author: "Martin Svensson", rating: 5, date: "2024-02-10", text: "Utmarkt service! Snabb och professionell hjalp med vattenlaeckan. Rekommenderas starkt!", avatar: "MS" },
+  { id: "2", author: "Anna Karlsson", rating: 5, date: "2024-01-25", text: "Mycket nojd med installationen av var nya varmepump. Bra pris och fantastiskt arbete.", avatar: "AK" },
+  { id: "3", author: "Erik Lindberg", rating: 5, date: "2024-01-15", text: "Kamiljo fixade vara ror pa nolltid. Proffsigt bemotande och rent efter sig. Toppenbetyd!", avatar: "EL" },
+  { id: "4", author: "Sofia Nilsson", rating: 5, date: "2023-12-20", text: "Anlitade dem for badrumsrenovering. Mycket noggranna och punktliga. Helt fantastiskt resultat!", avatar: "SN" },
+  { id: "5", author: "Johan Bergqvist", rating: 5, date: "2023-12-05", text: "Akut hjalp mitt i natten - de kom inom en timme! Professionellt och schysst pris.", avatar: "JB" },
+  { id: "6", author: "Lisa Andersson", rating: 5, date: "2023-11-18", text: "Basta VVS-firman i Ludvika! Har anlitat dem flera ganger och alltid lika nojd.", avatar: "LA" },
+  { id: "7", author: "Peter Johansson", rating: 5, date: "2023-11-02", text: "Toppenkvalitet pa arbetet. Installerade ny diskmaskin och allt fungerar perfekt.", avatar: "PJ" },
+  { id: "8", author: "Maria Eklund", rating: 5, date: "2023-10-15", text: "Snabb offert och annu snabbare utforande. Rekommenderar Kamiljo till alla!", avatar: "ME" },
+  { id: "9", author: "Anders Holmgren", rating: 5, date: "2023-09-28", text: "Fantastisk kundservice. De forklarade allt och holl vad de lovade. 5 av 5!", avatar: "AH" },
+  { id: "10", author: "Karin Stromberg", rating: 5, date: "2023-09-10", text: "Professionellt fran borjan till slut. Vart nya badrum ar precis som vi ville ha det.", avatar: "KS" },
+  { id: "11", author: "Mikael Larsson", rating: 5, date: "2023-08-22", text: "Snabb och palitlig service. Fixade problemet direkt och priset var mycket bra.", avatar: "ML" },
+]
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr)
@@ -23,26 +28,9 @@ function formatDate(dateStr: string) {
 
 export function GoogleReviews() {
   const { t } = useLocale()
-  const [reviews, setReviews] = useState<Review[]>([])
-  const [totalReviews, setTotalReviews] = useState(11)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const res = await fetch("/api/reviews")
-        const data = await res.json()
-        setReviews(data.reviews || [])
-        setTotalReviews(data.total || 11)
-      } catch {
-        setReviews([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    fetchReviews()
-  }, [])
+  const reviews = STATIC_REVIEWS
+  const totalReviews = STATIC_REVIEWS.length
 
   useEffect(() => {
     if (reviews.length === 0) return
@@ -90,12 +78,7 @@ export function GoogleReviews() {
           </p>
         </div>
 
-        {isLoading ? (
-          <div className="mx-auto mt-10 flex justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          </div>
-        ) : reviews.length > 0 ? (
-          <div className="relative mx-auto mt-10 max-w-5xl">
+        <div className="relative mx-auto mt-10 max-w-5xl">
             <button
               onClick={goToPrev}
               className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-card p-2 shadow-lg transition-all hover:bg-accent hover:scale-110 sm:-left-5"
@@ -160,7 +143,7 @@ export function GoogleReviews() {
               ))}
             </div>
           </div>
-        ) : null}
+        </div>
 
         <div className="mx-auto mt-10 max-w-4xl">
           <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
