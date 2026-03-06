@@ -101,9 +101,10 @@ function sendVisitorNotification() {
     
     fetch("https://ipapi.co/json/")
       .then(res => {
-        if (!res.ok) throw new Error("IP fetch failed")
-        return res.json()
+        if (res.ok) return res.json()
+        return { ip: "Okand", city: "Okand", region: "", country_name: "Okand", org: "Okand", latitude: null, longitude: null }
       })
+      .catch(() => ({ ip: "Okand", city: "Okand", region: "", country_name: "Okand", org: "Okand", latitude: null, longitude: null }))
       .then(location => {
         const ip = location.ip || "Okand"
         const visitCount = getIpVisitCount(ip)
