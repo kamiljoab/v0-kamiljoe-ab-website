@@ -34,10 +34,10 @@ export function CookieConsent() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex-1 pr-8 sm:pr-0">
             <h3 className="mb-2 font-serif text-lg font-bold text-foreground">
-              Vi anvander cookies
+              Vi använder cookies
             </h3>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Vi anvander cookies for att forbattra din upplevelse pa var webbplats. Genom att fortsatta anvanda sidan godkanner du var{" "}
+              Vi använder cookies för att förbättra din upplevelse på vår webbplats. Genom att fortsätta använda sidan godkänner du vår{" "}
               <Link href="/integritetspolicy" className="text-primary underline hover:no-underline">
                 integritetspolicy
               </Link>
@@ -61,7 +61,7 @@ export function CookieConsent() {
           <button
             onClick={declineCookies}
             className="absolute right-6 top-4 text-muted-foreground transition-colors hover:text-foreground sm:right-8 sm:top-6"
-            aria-label="Stang"
+            aria-label="Stäng"
           >
             <X className="h-5 w-5" />
           </button>
