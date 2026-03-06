@@ -1,9 +1,10 @@
 "use client"
 
-import { Star, ExternalLink, MapPin } from "lucide-react"
+import { Star, ExternalLink, MessageSquare } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
-const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9?g_st=i&utm_campaign=ac-im"
+const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9"
+const GOOGLE_MAPS_EMBED = "https://maps.google.com/maps?q=Kamilj%C3%B6+AB+Ludvika+Sweden&t=m&z=12&ie=UTF8&iwloc=&output=embed"
 
 export function GoogleReviews() {
   const { t } = useLocale()
@@ -24,7 +25,7 @@ export function GoogleReviews() {
                 <Star key={star} className="h-5 w-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0</span>
+            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0 (11 omdomen)</span>
           </div>
           <h2 className="text-balance font-serif text-3xl font-bold text-foreground sm:text-4xl">
             {t.reviews.title}
@@ -34,32 +35,44 @@ export function GoogleReviews() {
           </p>
         </div>
 
-        <div className="mx-auto mt-10 max-w-4xl">
+        <div className="mx-auto mt-10 max-w-5xl">
           <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1885.7660696366043!2d15.190684977330853!3d60.15053807979934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4660f14d57d7f0c5%3A0x3e8c43bb1c3e7a40!2sLudvika%2C%20Sweden!5e0!3m2!1ssv!2sse!4v1709913600000!5m2!1ssv!2sse"
+              src={GOOGLE_MAPS_EMBED}
               width="100%"
-              height="250"
+              height="350"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Kamiljo AB lokalizacja na Google Maps - Ludvika, Dalarna"
-              className="w-full sm:h-[300px]"
+              title="Kamiljo AB - VVS och Rormokare i Ludvika"
+              className="w-full sm:h-[400px] lg:h-[450px]"
             />
           </div>
+          <p className="mt-3 text-center text-sm text-muted-foreground">
+            Klicka pa kartan for att se alla 11 omdomen pa Google Maps
+          </p>
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href={GOOGLE_MAPS_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-transform hover:scale-105"
           >
-            <MapPin className="h-4 w-4" />
-            {t.reviews.viewOnGoogle}
+            <Star className="h-4 w-4" />
+            Se alla 11 omdomen
             <ExternalLink className="h-4 w-4" />
+          </a>
+          <a
+            href={`${GOOGLE_MAPS_URL}?hl=sv`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-medium text-foreground transition-all hover:bg-accent hover:scale-105"
+          >
+            <MessageSquare className="h-4 w-4" />
+            Lamna ett omdome
           </a>
         </div>
       </div>
