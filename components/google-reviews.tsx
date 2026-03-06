@@ -1,10 +1,10 @@
 "use client"
 
-import { Star, ExternalLink, MapPin, MessageSquare } from "lucide-react"
+import { Star, ExternalLink, MessageSquare } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9"
-const GOOGLE_PLACE_ID = "ChIJxfB3V01m8EYRQHo-HLtDjD4"
+const GOOGLE_MAPS_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1943.2!2d15.1876!3d60.1489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4660f66a1a1a1a1a%3A0x1234567890abcdef!2sKamilj%C3%B6%20AB!5e0!3m2!1ssv!2sse!4v1709913600000!5m2!1ssv!2sse"
 
 export function GoogleReviews() {
   const { t } = useLocale()
@@ -38,7 +38,7 @@ export function GoogleReviews() {
         <div className="mx-auto mt-10 max-w-5xl">
           <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <iframe
-              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=place_id:${GOOGLE_PLACE_ID}&zoom=15`}
+              src={GOOGLE_MAPS_EMBED}
               width="100%"
               height="350"
               style={{ border: 0 }}
