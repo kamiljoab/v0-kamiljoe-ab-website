@@ -5,17 +5,26 @@ import { Send, CheckCircle, Loader2, X } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 import { useContactModal } from "@/lib/contact-modal-context"
 
-const WHATSAPP_NUMBER = "46762124124"
+const CALLMEBOT_PHONE = "46762124124"
+const CALLMEBOT_APIKEY = "YOUR_CALLMEBOT_API_KEY"
 
-function sendWhatsAppMessage(payload: Record<string, string>) {
+async function sendWhatsAppMessage(payload: Record<string, string>): Promise<boolean> {
   const message = encodeURIComponent(
-    `Ny förfrågan från kamiljo.se!\n\n` +
-    `Förnamn: ${payload.firstName}\n` +
-    `Efternamn: ${payload.lastName}\n` +
-    `Telefon: ${payload.phone}\n` +
-    `Meddelande: ${payload.message || "Inget meddelande"}`
+    `*Ny förfrågan från kamiljo.se!*\n\n` +
+    `*Förnamn:* ${payload.firstName}\n` +
+    `*Efternamn:* ${payload.lastName}\n` +
+    `*Telefon:* ${payload.phone}\n` +
+    `*Meddelande:* ${payload.message || "Inget meddelande"}\n\n` +
+    `_Skickat: ${new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })}_`
   )
-  window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${message}`, "_blank")
+  
+  try {
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${message}&apikey=${CALLMEBOT_APIKEY}`
+    await fetch(url, { mode: "no-cors" })
+    return true
+  } catch {
+    return false
+  }
 }
 
 export function ContactForm() {
@@ -58,7 +67,7 @@ export function ContactForm() {
     setTimeout(resetForm, 300)
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError("")
@@ -71,7 +80,7 @@ export function ContactForm() {
       message: (formData.get("message") as string) || "",
     }
 
-    sendWhatsAppMessage(payload)
+    await sendWhatsAppMessage(payload)
     setSubmitted(true)
     setLoading(false)
   }

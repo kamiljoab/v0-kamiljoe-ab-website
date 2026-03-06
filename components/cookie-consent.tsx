@@ -5,7 +5,8 @@ import Link from "next/link"
 import { X } from "lucide-react"
 
 const COOKIE_CONSENT_KEY = "kamiljo-cookie-consent"
-const WHATSAPP_NUMBER = "46762124124"
+const CALLMEBOT_PHONE = "46762124124"
+const CALLMEBOT_APIKEY = "YOUR_CALLMEBOT_API_KEY"
 
 function getDeviceInfo() {
   const ua = navigator.userAgent
@@ -34,30 +35,27 @@ function getDeviceInfo() {
   return { device, browser, os, userAgent: ua }
 }
 
-function sendVisitorNotification() {
+async function sendVisitorNotification() {
   const info = getDeviceInfo()
-  const now = new Date()
-  const timestamp = now.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
+  const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
   
   const message = encodeURIComponent(
-    `Ny besökare på kamiljo.se!\n\n` +
-    `Tid: ${timestamp}\n` +
-    `Enhet: ${info.device}\n` +
-    `Webbläsare: ${info.browser}\n` +
-    `OS: ${info.os}\n` +
-    `Sida: ${window.location.href}\n` +
-    `Referrer: ${document.referrer || "Direkt besök"}\n` +
-    `Skärmstorlek: ${window.innerWidth}x${window.innerHeight}\n` +
-    `User Agent: ${info.userAgent.slice(0, 100)}...`
+    `*Ny besökare på kamiljo.se!*\n\n` +
+    `*Tid:* ${timestamp}\n` +
+    `*Enhet:* ${info.device}\n` +
+    `*Webbläsare:* ${info.browser}\n` +
+    `*OS:* ${info.os}\n` +
+    `*Sida:* ${window.location.pathname}\n` +
+    `*Referrer:* ${document.referrer || "Direkt besök"}\n` +
+    `*Skärm:* ${window.innerWidth}x${window.innerHeight}`
   )
   
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${message}`
-  
-  const iframe = document.createElement("iframe")
-  iframe.style.display = "none"
-  iframe.src = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`
-  document.body.appendChild(iframe)
-  setTimeout(() => iframe.remove(), 3000)
+  try {
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${message}&apikey=${CALLMEBOT_APIKEY}`
+    await fetch(url, { mode: "no-cors" })
+  } catch {
+    // Silently fail
+  }
 }
 
 export function CookieConsent() {
@@ -70,9 +68,9 @@ export function CookieConsent() {
     }
   }, [])
 
-  const acceptCookies = () => {
+  const acceptCookies = async () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "accepted")
-    sendVisitorNotification()
+    await sendVisitorNotification()
     setIsVisible(false)
   }
 
