@@ -11,7 +11,7 @@ export const translations = {
       emergency: "Jour 24/7",
     },
     hero: {
-      h1: "Din professionella rörmokare i Ludvika – Kamiljö AB",
+      h1: "Billig värme, smart energi, bättre miljö – Kamiljö AB",
       h2: "Gratis offert inom 24h",
       cta: "Begär offert",
       ctaCall: "Ring oss nu",
@@ -118,7 +118,7 @@ export const translations = {
       emergency: "24/7 Emergency",
     },
     hero: {
-      h1: "Your Professional Plumber in Ludvika – Kamiljö AB",
+      h1: "Affordable heating, smart energy, better environment – Kamiljö AB",
       h2: "Free quote within 24h",
       cta: "Request a quote",
       ctaCall: "Call us now",
