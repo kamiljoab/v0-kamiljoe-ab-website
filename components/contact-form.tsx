@@ -55,13 +55,13 @@ function getTodayStr() {
 
 function sendWhatsAppNotification(payload: Record<string, string>) {
   const message = encodeURIComponent(
-    `Ny forfragan fran kamiljo.se!\n\n` +
+    `Ny förfrågan från kamiljo.se!\n\n` +
     `Namn: ${payload.name}\n` +
     `Telefon: ${payload.phone || "Ej angivet"}\n` +
     `E-post: ${payload.email || "Ej angivet"}\n` +
     `Adress: ${payload.address || "Ej angivet"}\n` +
-    `Tjanst: ${payload.service || "Ej valt"}\n` +
-    `Bradskande: ${payload.urgency}\n` +
+    `Tjänst: ${payload.service || "Ej valt"}\n` +
+    `Brådskande: ${payload.urgency}\n` +
     `Datum: ${payload.date1 || "Ej valt"}\n` +
     `Tid: ${payload.timeSlot || "Ej valt"}\n` +
     `Meddelande: ${payload.message || "Inget meddelande"}\n` +
@@ -326,13 +326,13 @@ export function ContactForm() {
                 onClick={handleClose}
                 className="rounded-lg bg-muted px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/80"
               >
-                {"Stang"}
+                {"Stäng"}
               </button>
               <button
                 onClick={resetForm}
                 className="rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                {"Skicka ny forfragan"}
+                {"Skicka ny förfrågan"}
               </button>
             </div>
           </div>
@@ -571,7 +571,7 @@ export function ContactForm() {
                   <select id="modal-timeSlot" name="timeSlot" defaultValue=""
                     className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
                   >
-                    <option value="">{"Valj tid (valfritt)"}</option>
+                    <option value="">{"Välj tid (valfritt)"}</option>
                     {TIME_SLOTS.map((s) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
@@ -581,9 +581,9 @@ export function ContactForm() {
                 </div>
 
                 <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs leading-relaxed text-muted-foreground">
-                  <strong className="text-foreground">{"Kamiljo AB"}</strong>{", org.nr 559572-5366, ar personuppgiftsansvarig. Vi behandlar de uppgifter du lamnar for att kunna kontakta dig, lamna offert och utfora det begarda VVS-arbetet. Uppgifterna sparas i maximalt 2 ar (eller 7 ar om bokforingsunderlag). Du har ratt att begara radering, tillgang eller rattelse via "}
+                  <strong className="text-foreground">{"Kamiljö AB"}</strong>{", org.nr 559572-5366, är personuppgiftsansvarig. Vi behandlar de uppgifter du lämnar för att kunna kontakta dig, lämna offert och utföra det begärda VVS-arbetet. Uppgifterna sparas i maximalt 2 år (eller 7 år om bokföringsunderlag). Du har rätt att begära radering, tillgång eller rättelse via "}
                   <a href="mailto:info@kamiljo.se" className="underline hover:text-foreground">info@kamiljo.se</a>
-                  {". Klagomal kan lamnas till Integritetsskyddsmyndigheten pa "}
+                  {". Klagomål kan lämnas till Integritetsskyddsmyndigheten på "}
                   <a href="https://imy.se" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">imy.se</a>.
                 </div>
 
@@ -593,7 +593,7 @@ export function ContactForm() {
                     className="mt-0.5 h-4 w-4 flex-shrink-0 accent-primary"
                   />
                   <span className="text-sm text-foreground">
-                    {"Jag har last och godkanner att Kamiljo AB behandlar mina personuppgifter i enlighet med integritetspolicyn ovan (GDPR). *"}
+                    {"Jag har läst och godkänner att Kamiljö AB behandlar mina personuppgifter i enlighet med integritetspolicyn ovan (GDPR). *"}
                   </span>
                 </label>
 

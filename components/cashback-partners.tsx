@@ -149,7 +149,7 @@ export function CashbackPartners() {
                   <span className="text-sm font-medium text-[oklch(0.9_0.05_270)]">www.kamiljo.se</span>
                 </div>
                 <span className="rounded-full bg-[oklch(1_0_0/0.12)] px-3 py-1 text-xs font-medium text-[oklch(0.9_0.05_270)] backdrop-blur-md transition-colors group-hover:bg-[oklch(1_0_0/0.2)]">
-                  Besok sidan
+                  Besök sidan
                 </span>
               </div>
             </a>
@@ -237,8 +237,8 @@ export function CashbackPartners() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            name: "Kamiljo.se - 32 Partnerzy Cashback 2026",
-            description: "Totalt 32 cashback-partners for Kamiljo.se VVS & Rormokare i Dalarna.",
+            name: "Kamiljo.se - 32 Cashback-partners 2026",
+            description: "Totalt 32 cashback-partners för Kamiljo.se VVS & Rörmokare i Dalarna.",
             url: "https://www.kamiljo.se/cashback",
             mainEntity: {
               "@type": "ItemList",

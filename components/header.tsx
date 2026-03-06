@@ -26,7 +26,7 @@ export function Header() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/logo.jpeg"
-            alt="Kamiljo AB - Rormokarfirma i Ludvika"
+            alt="Kamiljö AB - Rörmokare i Ludvika"
             width={80}
             height={80}
             className="h-12 w-auto sm:h-14 lg:h-16"

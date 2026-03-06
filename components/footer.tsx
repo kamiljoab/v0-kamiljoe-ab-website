@@ -17,7 +17,7 @@ export function Footer() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/logo.jpeg"
-                alt="Kamiljo AB - VVS och Rormokare i Ludvika, Dalarna"
+                alt="Kamiljö AB - VVS och Rörmokare i Ludvika, Dalarna"
                 width={200}
                 height={80}
                 className="h-full w-auto rounded-xl object-contain object-left"
@@ -62,14 +62,14 @@ export function Footer() {
             </div>
           </nav>
 
-          <nav className="flex flex-col gap-4" aria-label="Tjanster">
+          <nav className="flex flex-col gap-4" aria-label="Tjänster">
             <h3 className="font-serif text-sm font-bold text-secondary-foreground">
               {t.nav.services}
             </h3>
             <ul className="flex flex-col gap-2 text-sm text-secondary-foreground/80">
               {t.services.items.map((service, i) => (
                 <li key={i}>
-                  <a href="#tjanster" className="transition-colors hover:text-secondary-foreground">
+                  <a href="#tjanster" className="transition-colors hover:text-secondary-foreground" aria-label="Gå till tjänster">
                     {service.title}
                   </a>
                 </li>
@@ -85,7 +85,7 @@ export function Footer() {
             </Link>
             <span className="hidden sm:inline">|</span>
             <a href="mailto:info@kamiljo.se" className="transition-colors hover:text-secondary-foreground">
-              GDPR-forfragan
+              GDPR-förfrågan
             </a>
           </div>
           <p>&copy; {new Date().getFullYear()} Kamiljö AB. {t.footer.rights}</p>

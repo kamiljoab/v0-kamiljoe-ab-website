@@ -2,16 +2,16 @@ import { CashbackPartners } from "@/components/cashback-partners"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Kamiljo.se - 32 Partnerzy Cashback 2026",
+  title: "Kamiljö.se - 32 Cashback-partners 2026",
   description:
-    "Totalt 32 cashback-partners for Kamiljo.se VVS & Rormokare. Dahl, Ahlsell, Nibe, Grohe, Geberit och fler. Alla med unika UTM-koder.",
+    "Totalt 32 cashback-partners för Kamiljö.se VVS & Rörmokare. Dahl, Ahlsell, Nibe, Grohe, Geberit och fler. Alla med unika UTM-koder.",
   keywords:
-    "cashback, partners, kamiljo, VVS, rormokare, Dahl, Ahlsell, Nibe, Grohe, Geberit, Uponor, Hansgrohe, Danfoss, Grundfos",
+    "cashback, partners, kamiljö, VVS, rörmokare, Dahl, Ahlsell, Nibe, Grohe, Geberit, Uponor, Hansgrohe, Danfoss, Grundfos",
   openGraph: {
-    title: "Kamiljo.se - 32 Partnerzy Cashback 2026",
-    description: "Totalt 32 partner! Nu kommer Kamil att kontakta alla for certifikat!",
+    title: "Kamiljö.se - 32 Cashback-partners 2026",
+    description: "Totalt 32 partners! Nu kommer Kamil att kontakta alla för certifikat!",
     url: "https://www.kamiljo.se/cashback",
-    siteName: "Kamiljo.se",
+    siteName: "Kamiljö.se",
     type: "website",
     locale: "sv_SE",
   },
