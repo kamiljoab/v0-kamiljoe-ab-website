@@ -5,8 +5,8 @@ import Link from "next/link"
 import { X } from "lucide-react"
 
 const COOKIE_CONSENT_KEY = "kamiljo-cookie-consent"
-const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-const TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID"
+const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
+const TELEGRAM_CHAT_ID = "7838369609"
 
 function getDeviceInfo() {
   const ua = navigator.userAgent

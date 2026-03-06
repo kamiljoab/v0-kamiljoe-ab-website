@@ -5,8 +5,8 @@ import { Send, CheckCircle, Loader2, X } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 import { useContactModal } from "@/lib/contact-modal-context"
 
-const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-const TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID"
+const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
+const TELEGRAM_CHAT_ID = "7838369609"
 
 async function sendTelegramMessage(payload: Record<string, string>): Promise<boolean> {
   const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
