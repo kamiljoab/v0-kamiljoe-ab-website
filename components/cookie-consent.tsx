@@ -141,20 +141,32 @@ export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const consent = localStorage.getItem(COOKIE_CONSENT_KEY)
-    if (!consent) {
+    try {
+      const consent = localStorage.getItem(COOKIE_CONSENT_KEY)
+      if (!consent) {
+        setIsVisible(true)
+      }
+    } catch {
       setIsVisible(true)
     }
   }, [])
 
-  const acceptCookies = async () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, "accepted")
-    await sendVisitorNotification()
+  const acceptCookies = () => {
+    try {
+      localStorage.setItem(COOKIE_CONSENT_KEY, "accepted")
+    } catch {
+      // Ignore
+    }
+    sendVisitorNotification().catch(() => {})
     setIsVisible(false)
   }
 
   const declineCookies = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, "declined")
+    try {
+      localStorage.setItem(COOKIE_CONSENT_KEY, "declined")
+    } catch {
+      // Ignore
+    }
     setIsVisible(false)
   }
 
