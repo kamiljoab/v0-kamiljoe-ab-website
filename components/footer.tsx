@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Phone, Mail, MapPin } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 
@@ -77,8 +78,17 @@ export function Footer() {
           </nav>
 
         </div>
-        <div className="mt-10 border-t border-secondary-foreground/20 pt-6 text-center text-xs text-secondary-foreground/60">
-          &copy; {new Date().getFullYear()} Kamiljö AB. {t.footer.rights}
+        <div className="mt-10 flex flex-col items-center gap-4 border-t border-secondary-foreground/20 pt-6 text-xs text-secondary-foreground/60">
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/integritetspolicy" className="transition-colors hover:text-secondary-foreground">
+              Integritetspolicy
+            </Link>
+            <span className="hidden sm:inline">|</span>
+            <a href="mailto:info@kamiljo.se" className="transition-colors hover:text-secondary-foreground">
+              GDPR-forfragan
+            </a>
+          </div>
+          <p>&copy; {new Date().getFullYear()} Kamiljö AB. {t.footer.rights}</p>
         </div>
       </div>
     </footer>
