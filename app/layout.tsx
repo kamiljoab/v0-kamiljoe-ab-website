@@ -45,21 +45,12 @@ export const metadata: Metadata = {
     siteName: "Kamiljö AB",
     type: "website",
     locale: "sv_SE",
-    images: [
-      {
-        url: "https://kamiljo.se/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Kamiljö AB - VVS & Rörmokare i Ludvika",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
     description:
       "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
-    images: ["https://kamiljo.se/og-image.jpg"],
   },
   verification: {
     google: "Yhp89mD3iTMNlSiXpDs2nCY5OLVVBm2TMOrt2PwHAjI",
