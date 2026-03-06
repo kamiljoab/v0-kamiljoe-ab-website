@@ -5,13 +5,14 @@ import Link from "next/link"
 import { X } from "lucide-react"
 
 const COOKIE_CONSENT_KEY = "kamiljo-cookie-consent"
-const WHATSAPP_NUMBER = "46762124124"
+const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
+const TELEGRAM_CHAT_ID = "7838369609"
 
 function getDeviceInfo() {
   const ua = navigator.userAgent
-  let device = "Okänd enhet"
-  let browser = "Okänd webbläsare"
-  let os = "Okänt OS"
+  let device = "Okand enhet"
+  let browser = "Okand webblasare"
+  let os = "Okant OS"
 
   if (/iPhone/.test(ua)) device = "iPhone"
   else if (/iPad/.test(ua)) device = "iPad"
@@ -31,33 +32,37 @@ function getDeviceInfo() {
   else if (/Android/.test(ua)) os = "Android"
   else if (/iOS|iPhone|iPad/.test(ua)) os = "iOS"
 
-  return { device, browser, os, userAgent: ua }
+  return { device, browser, os }
 }
 
-function sendVisitorNotification() {
+async function sendVisitorNotification() {
   const info = getDeviceInfo()
-  const now = new Date()
-  const timestamp = now.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
+  const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
   
-  const message = encodeURIComponent(
-    `Ny besökare på kamiljo.se!\n\n` +
-    `Tid: ${timestamp}\n` +
-    `Enhet: ${info.device}\n` +
-    `Webbläsare: ${info.browser}\n` +
-    `OS: ${info.os}\n` +
-    `Sida: ${window.location.href}\n` +
-    `Referrer: ${document.referrer || "Direkt besök"}\n` +
-    `Skärmstorlek: ${window.innerWidth}x${window.innerHeight}\n` +
-    `User Agent: ${info.userAgent.slice(0, 100)}...`
-  )
+  const message = 
+    `<b>Ny besokare pa kamiljo.se!</b>\n\n` +
+    `<b>Tid:</b> ${timestamp}\n` +
+    `<b>Enhet:</b> ${info.device}\n` +
+    `<b>Webblasare:</b> ${info.browser}\n` +
+    `<b>OS:</b> ${info.os}\n` +
+    `<b>Sida:</b> ${window.location.pathname}\n` +
+    `<b>Referrer:</b> ${document.referrer || "Direkt besok"}\n` +
+    `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}`
   
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${message}`
-  
-  const iframe = document.createElement("iframe")
-  iframe.style.display = "none"
-  iframe.src = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`
-  document.body.appendChild(iframe)
-  setTimeout(() => iframe.remove(), 3000)
+  try {
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: "HTML"
+      })
+    })
+  } catch {
+    // Silently fail
+  }
 }
 
 export function CookieConsent() {
@@ -70,9 +75,9 @@ export function CookieConsent() {
     }
   }, [])
 
-  const acceptCookies = () => {
+  const acceptCookies = async () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "accepted")
-    sendVisitorNotification()
+    await sendVisitorNotification()
     setIsVisible(false)
   }
 
