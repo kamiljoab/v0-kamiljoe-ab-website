@@ -75,7 +75,7 @@ export function ContactForm() {
     setTimeout(resetForm, 300)
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError("")
@@ -88,9 +88,12 @@ export function ContactForm() {
       message: (formData.get("message") as string) || "",
     }
 
-    await sendTelegramMessage(payload)
-    setSubmitted(true)
-    setLoading(false)
+    sendTelegramMessage(payload)
+      .catch(() => {})
+      .finally(() => {
+        setSubmitted(true)
+        setLoading(false)
+      })
   }
 
   if (!isOpen) return null
