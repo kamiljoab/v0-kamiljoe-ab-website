@@ -34,35 +34,41 @@ export function InstagramFeed() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    const controller = new AbortController()
+    let isMounted = true
     
-    fetch(`${BEHOLD_FEED_URL}?t=${Date.now()}`, { 
-      cache: "no-store",
-      signal: controller.signal 
-    })
-      .then(res => {
-        if (!res.ok) {
-          setError(true)
-          setLoading(false)
-          return null
-        }
-        return res.json()
-      })
-      .then(data => {
-        if (!data) return
-        const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
-        setPosts(items.slice(0, 6))
-        if (items.length === 0) {
+    const xhr = new XMLHttpRequest()
+    xhr.open("GET", `${BEHOLD_FEED_URL}?t=${Date.now()}`, true)
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && isMounted) {
+        if (xhr.status === 200) {
+          try {
+            const data = JSON.parse(xhr.responseText)
+            const items: BeholdPost[] = Array.isArray(data?.posts) ? data.posts : Array.isArray(data) ? data : []
+            setPosts(items.slice(0, 6))
+            if (items.length === 0) {
+              setError(true)
+            }
+          } catch {
+            setError(true)
+          }
+        } else {
           setError(true)
         }
         setLoading(false)
-      })
-      .catch(() => {
+      }
+    }
+    xhr.onerror = function() {
+      if (isMounted) {
         setError(true)
         setLoading(false)
-      })
+      }
+    }
+    xhr.send()
     
-    return () => controller.abort()
+    return () => {
+      isMounted = false
+      xhr.abort()
+    }
   }, [])
 
   function getThumbnail(post: BeholdPost): string {
