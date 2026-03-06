@@ -35,19 +35,45 @@ function getDeviceInfo() {
   return { device, browser, os }
 }
 
+async function getIpAndLocation() {
+  try {
+    const res = await fetch("https://ipapi.co/json/")
+    const data = await res.json()
+    return {
+      ip: data.ip || "Okand",
+      city: data.city || "Okand",
+      region: data.region || "",
+      country: data.country_name || "Okand",
+      isp: data.org || "Okand",
+      latitude: data.latitude || "",
+      longitude: data.longitude || ""
+    }
+  } catch {
+    return { ip: "Okand", city: "Okand", region: "", country: "Okand", isp: "Okand", latitude: "", longitude: "" }
+  }
+}
+
 async function sendVisitorNotification() {
   const info = getDeviceInfo()
+  const location = await getIpAndLocation()
   const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
+  
+  const locationStr = location.latitude && location.longitude 
+    ? `\n<b>Koordinater:</b> ${location.latitude}, ${location.longitude}`
+    : ""
   
   const message = 
     `<b>Ny besokare pa kamiljo.se!</b>\n\n` +
-    `<b>Tid:</b> ${timestamp}\n` +
+    `<b>Tid:</b> ${timestamp}\n\n` +
+    `<b>IP:</b> ${location.ip}\n` +
+    `<b>Plats:</b> ${location.city}${location.region ? ", " + location.region : ""}, ${location.country}\n` +
+    `<b>ISP:</b> ${location.isp}${locationStr}\n\n` +
     `<b>Enhet:</b> ${info.device}\n` +
     `<b>Webblasare:</b> ${info.browser}\n` +
     `<b>OS:</b> ${info.os}\n` +
-    `<b>Sida:</b> ${window.location.pathname}\n` +
-    `<b>Referrer:</b> ${document.referrer || "Direkt besok"}\n` +
-    `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}`
+    `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}\n\n` +
+    `<b>Sida:</b> ${window.location.href}\n` +
+    `<b>Referrer:</b> ${document.referrer || "Direkt besok"}`
   
   try {
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
