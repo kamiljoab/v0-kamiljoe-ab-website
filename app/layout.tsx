@@ -66,13 +66,9 @@ export const metadata: Metadata = {
     google: "Yhp89mD3iTMNlSiXpDs2nCY5OLVVBm2TMOrt2PwHAjI",
   },
   icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
-      { url: "/icon-dark-32x32.png", media: "(prefers-color-scheme: dark)" },
-    ],
+    icon: "/favicon.ico",
     apple: "/apple-icon.png",
-    shortcut: "/icon.svg",
+    shortcut: "/favicon.ico",
   },
 }
 

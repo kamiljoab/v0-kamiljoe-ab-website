@@ -5,8 +5,46 @@ import Link from "next/link"
 import { X } from "lucide-react"
 
 const COOKIE_CONSENT_KEY = "kamiljo-cookie-consent"
+const VISITOR_STATS_KEY = "kamiljo-visitor-stats"
 const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
 const TELEGRAM_CHAT_ID = "7838369609"
+
+function getVisitorStats() {
+  const today = new Date().toISOString().split("T")[0]
+  const currentMonth = today.slice(0, 7)
+  
+  let stats = { daily: 0, monthly: 0, lastDate: "", lastMonth: "" }
+  
+  try {
+    const stored = localStorage.getItem(VISITOR_STATS_KEY)
+    if (stored) {
+      stats = JSON.parse(stored)
+    }
+  } catch {
+    // Ignore
+  }
+  
+  if (stats.lastDate !== today) {
+    stats.daily = 0
+    stats.lastDate = today
+  }
+  
+  if (stats.lastMonth !== currentMonth) {
+    stats.monthly = 0
+    stats.lastMonth = currentMonth
+  }
+  
+  stats.daily += 1
+  stats.monthly += 1
+  
+  try {
+    localStorage.setItem(VISITOR_STATS_KEY, JSON.stringify(stats))
+  } catch {
+    // Ignore
+  }
+  
+  return { daily: stats.daily, monthly: stats.monthly }
+}
 
 function getDeviceInfo() {
   const ua = navigator.userAgent
@@ -56,6 +94,7 @@ async function getIpAndLocation() {
 async function sendVisitorNotification() {
   const info = getDeviceInfo()
   const location = await getIpAndLocation()
+  const stats = getVisitorStats()
   const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
   
   const locationStr = location.latitude && location.longitude 
@@ -65,6 +104,9 @@ async function sendVisitorNotification() {
   const message = 
     `<b>Ny besokare pa kamiljo.se!</b>\n\n` +
     `<b>Tid:</b> ${timestamp}\n\n` +
+    `<b>STATISTIK:</b>\n` +
+    `Idag: ${stats.daily} besokare\n` +
+    `Denna manad: ${stats.monthly} besokare\n\n` +
     `<b>IP:</b> ${location.ip}\n` +
     `<b>Plats:</b> ${location.city}${location.region ? ", " + location.region : ""}, ${location.country}\n` +
     `<b>ISP:</b> ${location.isp}${locationStr}\n\n` +
