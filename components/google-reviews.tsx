@@ -25,7 +25,7 @@ export function GoogleReviews() {
                 <Star key={star} className="h-5 w-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0 (7 omdomen)</span>
+            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0 (11 omdömen)</span>
           </div>
           <h2 className="text-balance font-serif text-3xl font-bold text-foreground sm:text-4xl">
             {t.reviews.title}
@@ -45,7 +45,7 @@ export function GoogleReviews() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Kamiljo AB - VVS och Rormokare i Ludvika"
+              title="Kamiljö AB - VVS och Rörmokare i Ludvika"
               className="w-full sm:h-[450px]"
             />
           </div>
@@ -59,7 +59,7 @@ export function GoogleReviews() {
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-transform hover:scale-105"
           >
             <Star className="h-4 w-4" />
-            Se alla omdomen pa Google
+            Se alla omdömen på Google
             <ExternalLink className="h-4 w-4" />
           </a>
           <a
@@ -69,7 +69,7 @@ export function GoogleReviews() {
             className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-medium text-foreground transition-all hover:bg-accent hover:scale-105"
           >
             <MessageSquare className="h-4 w-4" />
-            Lamna ett omdome
+            Lämna ett omdöme
           </a>
         </div>
       </div>
