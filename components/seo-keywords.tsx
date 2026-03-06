@@ -1,10 +1,3 @@
-/**
- * SEO Keywords Component
- * Renders hidden but crawlable text for search engine indexing.
- * Uses sr-only (screen-reader only) technique - invisible to sighted users
- * but fully accessible to search engine crawlers and screen readers.
- */
-
 const LOCATIONS = [
   "Alvik", "Bjursås", "Bonäs", "Brintbodarna", "Dala-Floda", "Dala-Järna",
   "Danholn", "Djurås", "Enviken", "Fredriksberg", "Fryksås", "Furudal",

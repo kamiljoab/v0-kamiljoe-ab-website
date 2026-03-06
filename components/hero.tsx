@@ -10,9 +10,9 @@ export function Hero() {
   const { open: openContactModal } = useContactModal()
 
   return (
-    <section id="hem" className="relative overflow-hidden bg-card">
+    <section id="hem" className="relative overflow-x-hidden bg-card">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,oklch(0.52_0.14_155_/_0.08),transparent_60%)]" />
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-16 lg:flex-row lg:gap-12 lg:px-8 lg:py-24">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-12 sm:py-16 lg:flex-row lg:gap-12 lg:px-8 lg:py-24">
         <div className="flex-1 text-center lg:text-left">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground">
             <div className="flex items-center gap-0.5">
@@ -49,14 +49,15 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-4">
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-lg">
+        <div className="flex flex-col items-center gap-4 w-full max-w-xs sm:max-w-none sm:w-auto">
+          <div className="rounded-2xl border border-border bg-card p-3 sm:p-4 shadow-lg">
             <Image
               src="/images/qr-code.png"
-              alt="QR-kod för att kontakta Kamiljö AB"
+              alt="QR-kod for att kontakta Kamiljo AB via telefon eller e-post"
               width={180}
               height={180}
-              className="h-44 w-44 lg:h-52 lg:w-52"
+              className="h-36 w-36 sm:h-44 sm:w-44 lg:h-52 lg:w-52"
+              priority
             />
           </div>
           <p className="text-sm font-medium text-muted-foreground">{t.hero.scanQr}</p>

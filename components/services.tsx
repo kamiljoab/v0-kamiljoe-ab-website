@@ -9,16 +9,16 @@ export function Services() {
   const { t } = useLocale()
 
   return (
-    <section id="tjanster" className="bg-background py-16 lg:py-24">
+    <section id="tjanster" className="bg-background py-12 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="mb-12 text-center">
-          <h2 className="mb-3 font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
+        <header className="mb-12 text-center">
+          <h2 className="mb-3 font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl text-balance">
             {t.services.title}
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground">
             {t.services.subtitle}
           </p>
-        </div>
+        </header>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.services.items.map((service, index) => {

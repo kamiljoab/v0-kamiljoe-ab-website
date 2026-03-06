@@ -71,7 +71,7 @@ export function Partners() {
   const doubledPartners = [...PARTNERS, ...PARTNERS]
 
   return (
-    <section id="partners" className="bg-background py-16 lg:py-24 overflow-hidden">
+    <section id="partners" className="bg-background py-12 sm:py-16 lg:py-24 overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mb-12 text-center">
           <h2 className="font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl text-balance">
@@ -86,7 +86,7 @@ export function Partners() {
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
-        <div className="flex animate-scroll-left gap-6 py-4">
+        <div className="flex animate-scroll-left gap-3 sm:gap-6 py-4">
           {doubledPartners.slice(0, PARTNERS.length).map((partner, i) => (
             <PartnerCard key={`row1-${i}`} partner={partner} />
           ))}
@@ -99,7 +99,7 @@ export function Partners() {
       <div className="relative mt-4">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
-        <div className="flex animate-scroll-right gap-6 py-4">
+        <div className="flex animate-scroll-right gap-3 sm:gap-6 py-4">
           {[...PARTNERS].reverse().map((partner, i) => (
             <PartnerCard key={`row2-${i}`} partner={partner} />
           ))}
@@ -119,24 +119,26 @@ function PartnerCard({ partner }: { partner: { name: string; url: string } }) {
   return (
     <button
       onClick={() => handlePartnerClick(partner.url)}
-      className="group flex h-20 w-44 shrink-0 cursor-pointer items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
-      title={partner.name}
+      className="group flex h-16 w-36 sm:h-20 sm:w-44 shrink-0 cursor-pointer items-center gap-2 sm:gap-3 rounded-xl border border-border bg-card px-3 sm:px-4 py-2 sm:py-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+      aria-label={`Besok ${partner.name}`}
     >
       {logoUrl && !imgFailed ? (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={logoUrl}
-          alt={`${partner.name} logo`}
-          className="h-8 w-8 shrink-0 rounded object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+          alt={`${partner.name} partnerlogotyp`}
+          width={32}
+          height={32}
+          className="h-6 w-6 sm:h-8 sm:w-8 shrink-0 rounded object-contain grayscale opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
           loading="lazy"
           onError={() => setImgFailed(true)}
         />
       ) : (
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-muted text-xs font-bold text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
+        <span className="flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded bg-muted text-xs font-bold text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary">
           {partner.name.slice(0, 2).toUpperCase()}
         </span>
       )}
-      <span className="truncate text-sm font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
+      <span className="truncate text-xs sm:text-sm font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
         {partner.name}
       </span>
     </button>

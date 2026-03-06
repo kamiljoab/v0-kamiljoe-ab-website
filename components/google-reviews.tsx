@@ -9,7 +9,7 @@ export function GoogleReviews() {
   const { t } = useLocale()
 
   return (
-    <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
+    <section id="rekommendationer" className="bg-muted py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="text-center">
           <div className="mx-auto mb-4 flex items-center justify-center gap-2">
@@ -39,13 +39,13 @@ export function GoogleReviews() {
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1885.7660696366043!2d15.190684977330853!3d60.15053807979934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4660f14d57d7f0c5%3A0x3e8c43bb1c3e7a40!2sLudvika%2C%20Sweden!5e0!3m2!1ssv!2sse!4v1709913600000!5m2!1ssv!2sse"
               width="100%"
-              height="300"
+              height="250"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Kamiljö AB - Google Maps"
-              className="w-full"
+              title="Kamiljo AB lokalizacja na Google Maps - Ludvika, Dalarna"
+              className="w-full sm:h-[300px]"
             />
           </div>
         </div>
