@@ -25,7 +25,7 @@ export function GoogleReviews() {
                 <Star key={star} className="h-5 w-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0 (11 omdomen)</span>
+            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0 (7 omdomen)</span>
           </div>
           <h2 className="text-balance font-serif text-3xl font-bold text-foreground sm:text-4xl">
             {t.reviews.title}
@@ -59,7 +59,7 @@ export function GoogleReviews() {
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-transform hover:scale-105"
           >
             <Star className="h-4 w-4" />
-            Se alla 11 omdomen pa Google
+            Se alla omdomen pa Google
             <ExternalLink className="h-4 w-4" />
           </a>
           <a
