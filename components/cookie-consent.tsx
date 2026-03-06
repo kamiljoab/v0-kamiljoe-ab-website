@@ -76,6 +76,21 @@ function getDeviceInfo() {
   return { device, browser, os }
 }
 
+const IP_VISITS_KEY = "kamiljo-ip-visits"
+
+function getIpVisitCount(ip: string): number {
+  if (typeof window === "undefined") return 1
+  try {
+    const stored = localStorage.getItem(IP_VISITS_KEY)
+    const visits: Record<string, number> = stored ? JSON.parse(stored) : {}
+    visits[ip] = (visits[ip] || 0) + 1
+    localStorage.setItem(IP_VISITS_KEY, JSON.stringify(visits))
+    return visits[ip]
+  } catch {
+    return 1
+  }
+}
+
 function sendVisitorNotification() {
   if (typeof window === "undefined") return
   
@@ -85,19 +100,31 @@ function sendVisitorNotification() {
     const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
     
     fetch("https://ipapi.co/json/")
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("IP fetch failed")
+        return res.json()
+      })
       .then(location => {
+        const ip = location.ip || "Okand"
+        const visitCount = getIpVisitCount(ip)
+        const isReturning = visitCount > 1
+        
         const locationStr = location.latitude && location.longitude 
           ? `\n<b>Koordinater:</b> ${location.latitude}, ${location.longitude}`
           : ""
         
+        const returningInfo = isReturning 
+          ? `\n<b>ATERKOMMANDE BESOKARE!</b> Besok nr: ${visitCount}\n`
+          : `\n<b>NY UNIK BESOKARE</b>\n`
+        
         const message = 
-          `<b>Ny besokare pa kamiljo.se!</b>\n\n` +
-          `<b>Tid:</b> ${timestamp}\n\n` +
+          `<b>Besokare pa kamiljo.se!</b>\n\n` +
+          `<b>Tid:</b> ${timestamp}${returningInfo}\n` +
           `<b>STATISTIK:</b>\n` +
-          `Idag: ${stats.daily} besokare\n` +
-          `Denna manad: ${stats.monthly} besokare\n\n` +
-          `<b>IP:</b> ${location.ip || "Okand"}\n` +
+          `Idag totalt: ${stats.daily} besok\n` +
+          `Denna manad: ${stats.monthly} besok\n\n` +
+          `<b>IP:</b> ${ip}\n` +
+          `<b>Besok fran detta IP:</b> ${visitCount} ganger\n` +
           `<b>Plats:</b> ${location.city || "Okand"}${location.region ? ", " + location.region : ""}, ${location.country_name || "Okand"}\n` +
           `<b>ISP:</b> ${location.org || "Okand"}${locationStr}\n\n` +
           `<b>Enhet:</b> ${info.device}\n` +
