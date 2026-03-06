@@ -8,30 +8,32 @@ import { useContactModal } from "@/lib/contact-modal-context"
 const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
 const TELEGRAM_CHAT_ID = "7838369609"
 
-async function sendTelegramMessage(payload: Record<string, string>): Promise<boolean> {
-  const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
-  const message = 
-    `<b>Ny förfrågan från kamiljo.se!</b>\n\n` +
-    `<b>Förnamn:</b> ${payload.firstName}\n` +
-    `<b>Efternamn:</b> ${payload.lastName}\n` +
-    `<b>Telefon:</b> ${payload.phone}\n` +
-    `<b>Meddelande:</b> ${payload.message || "Inget meddelande"}\n\n` +
-    `<i>Skickat: ${timestamp}</i>`
+function sendTelegramMessage(payload: Record<string, string>): void {
+  if (typeof window === "undefined") return
   
   try {
+    const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
+    const message = 
+      `<b>Ny förfrågan från kamiljo.se!</b>\n\n` +
+      `<b>Förnamn:</b> ${payload.firstName}\n` +
+      `<b>Efternamn:</b> ${payload.lastName}\n` +
+      `<b>Telefon:</b> ${payload.phone}\n` +
+      `<b>Meddelande:</b> ${payload.message || "Inget meddelande"}\n\n` +
+      `<i>Skickat: ${timestamp}</i>`
+    
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: "HTML"
-      })
+    const body = JSON.stringify({
+      chat_id: TELEGRAM_CHAT_ID,
+      text: message,
+      parse_mode: "HTML"
     })
-    return true
+    
+    const xhr = new XMLHttpRequest()
+    xhr.open("POST", url, true)
+    xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.send(body)
   } catch {
-    return false
+    // Silently fail
   }
 }
 
@@ -75,7 +77,7 @@ export function ContactForm() {
     setTimeout(resetForm, 300)
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError("")
@@ -88,7 +90,7 @@ export function ContactForm() {
       message: (formData.get("message") as string) || "",
     }
 
-    await sendTelegramMessage(payload)
+    sendTelegramMessage(payload)
     setSubmitted(true)
     setLoading(false)
   }

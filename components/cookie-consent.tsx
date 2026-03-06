@@ -5,10 +5,53 @@ import Link from "next/link"
 import { X } from "lucide-react"
 
 const COOKIE_CONSENT_KEY = "kamiljo-cookie-consent"
+const VISITOR_STATS_KEY = "kamiljo-visitor-stats"
+const IP_VISITS_KEY = "kamiljo-ip-visits"
 const TELEGRAM_BOT_TOKEN = "8652350468:AAEkQA8n90mL5bq45U3ZjgTyE0R8DU9kx4Q"
 const TELEGRAM_CHAT_ID = "7838369609"
 
+function safeLocalStorage(action: "get" | "set", key: string, value?: string): string | null {
+  if (typeof window === "undefined") return null
+  try {
+    if (action === "get") return localStorage.getItem(key)
+    if (action === "set" && value !== undefined) localStorage.setItem(key, value)
+    return null
+  } catch {
+    return null
+  }
+}
+
+function getVisitorStats() {
+  const today = new Date().toISOString().split("T")[0]
+  const currentMonth = today.slice(0, 7)
+  
+  let stats = { daily: 0, monthly: 0, lastDate: "", lastMonth: "" }
+  
+  const stored = safeLocalStorage("get", VISITOR_STATS_KEY)
+  if (stored) {
+    try { stats = JSON.parse(stored) } catch { /* ignore */ }
+  }
+  
+  if (stats.lastDate !== today) {
+    stats.daily = 0
+    stats.lastDate = today
+  }
+  
+  if (stats.lastMonth !== currentMonth) {
+    stats.monthly = 0
+    stats.lastMonth = currentMonth
+  }
+  
+  stats.daily += 1
+  stats.monthly += 1
+  
+  safeLocalStorage("set", VISITOR_STATS_KEY, JSON.stringify(stats))
+  
+  return { daily: stats.daily, monthly: stats.monthly }
+}
+
 function getDeviceInfo() {
+  if (typeof window === "undefined") return { device: "Okand", browser: "Okand", os: "Okand" }
   const ua = navigator.userAgent
   let device = "Okand enhet"
   let browser = "Okand webblasare"
@@ -35,59 +78,106 @@ function getDeviceInfo() {
   return { device, browser, os }
 }
 
-async function getIpAndLocation() {
+function getIpVisitCount(ip: string): number {
+  const stored = safeLocalStorage("get", IP_VISITS_KEY)
+  let visits: Record<string, number> = {}
+  if (stored) {
+    try { visits = JSON.parse(stored) } catch { /* ignore */ }
+  }
+  visits[ip] = (visits[ip] || 0) + 1
+  safeLocalStorage("set", IP_VISITS_KEY, JSON.stringify(visits))
+  return visits[ip]
+}
+
+function sendTelegramMessage(text: string) {
+  if (typeof window === "undefined") return
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+  const body = JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, parse_mode: "HTML" })
+  
   try {
-    const res = await fetch("https://ipapi.co/json/")
-    const data = await res.json()
-    return {
-      ip: data.ip || "Okand",
-      city: data.city || "Okand",
-      region: data.region || "",
-      country: data.country_name || "Okand",
-      isp: data.org || "Okand",
-      latitude: data.latitude || "",
-      longitude: data.longitude || ""
-    }
+    const xhr = new XMLHttpRequest()
+    xhr.open("POST", url, true)
+    xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.send(body)
   } catch {
-    return { ip: "Okand", city: "Okand", region: "", country: "Okand", isp: "Okand", latitude: "", longitude: "" }
+    // Silently fail
   }
 }
 
-async function sendVisitorNotification() {
+function sendVisitorNotification() {
+  if (typeof window === "undefined") return
+  
   const info = getDeviceInfo()
-  const location = await getIpAndLocation()
+  const stats = getVisitorStats()
   const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
   
-  const locationStr = location.latitude && location.longitude 
-    ? `\n<b>Koordinater:</b> ${location.latitude}, ${location.longitude}`
-    : ""
+  const defaultLocation = { ip: "Okand", city: "Okand", region: "", country_name: "Okand", org: "Okand", latitude: null, longitude: null }
   
-  const message = 
-    `<b>Ny besokare pa kamiljo.se!</b>\n\n` +
-    `<b>Tid:</b> ${timestamp}\n\n` +
-    `<b>IP:</b> ${location.ip}\n` +
-    `<b>Plats:</b> ${location.city}${location.region ? ", " + location.region : ""}, ${location.country}\n` +
-    `<b>ISP:</b> ${location.isp}${locationStr}\n\n` +
-    `<b>Enhet:</b> ${info.device}\n` +
-    `<b>Webblasare:</b> ${info.browser}\n` +
-    `<b>OS:</b> ${info.os}\n` +
-    `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}\n\n` +
-    `<b>Sida:</b> ${window.location.href}\n` +
-    `<b>Referrer:</b> ${document.referrer || "Direkt besok"}`
+  const xhr = new XMLHttpRequest()
+  xhr.open("GET", "https://ipapi.co/json/", true)
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      let location = defaultLocation
+      try {
+        if (xhr.status === 200) {
+          location = JSON.parse(xhr.responseText)
+        }
+      } catch {
+        // Use default
+      }
+      
+      const ip = location.ip || "Okand"
+      const visitCount = getIpVisitCount(ip)
+      const isReturning = visitCount > 1
+      
+      const locationStr = location.latitude && location.longitude 
+        ? `\n<b>Koordinater:</b> ${location.latitude}, ${location.longitude}`
+        : ""
+      
+      const returningInfo = isReturning 
+        ? `\n<b>ATERKOMMANDE BESOKARE!</b> Besok nr: ${visitCount}\n`
+        : `\n<b>NY UNIK BESOKARE</b>\n`
+      
+      const message = 
+        `<b>Besokare pa kamiljo.se!</b>\n\n` +
+        `<b>Tid:</b> ${timestamp}${returningInfo}\n` +
+        `<b>STATISTIK:</b>\n` +
+        `Idag totalt: ${stats.daily} besok\n` +
+        `Denna manad: ${stats.monthly} besok\n\n` +
+        `<b>IP:</b> ${ip}\n` +
+        `<b>Besok fran detta IP:</b> ${visitCount} ganger\n` +
+        `<b>Plats:</b> ${location.city || "Okand"}${location.region ? ", " + location.region : ""}, ${location.country_name || "Okand"}\n` +
+        `<b>ISP:</b> ${location.org || "Okand"}${locationStr}\n\n` +
+        `<b>Enhet:</b> ${info.device}\n` +
+        `<b>Webblasare:</b> ${info.browser}\n` +
+        `<b>OS:</b> ${info.os}\n` +
+        `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}\n\n` +
+        `<b>Sida:</b> ${window.location.href}\n` +
+        `<b>Referrer:</b> ${document.referrer || "Direkt besok"}`
+      
+      sendTelegramMessage(message)
+    }
+  }
   
   try {
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: "HTML"
-      })
-    })
+    xhr.send()
   } catch {
-    // Silently fail
+    // Silently fail - send with default location
+    const message = 
+      `<b>Besokare pa kamiljo.se!</b>\n\n` +
+      `<b>Tid:</b> ${timestamp}\n` +
+      `<b>NY UNIK BESOKARE</b>\n\n` +
+      `<b>STATISTIK:</b>\n` +
+      `Idag totalt: ${stats.daily} besok\n` +
+      `Denna manad: ${stats.monthly} besok\n\n` +
+      `<b>Enhet:</b> ${info.device}\n` +
+      `<b>Webblasare:</b> ${info.browser}\n` +
+      `<b>OS:</b> ${info.os}\n` +
+      `<b>Skarm:</b> ${window.innerWidth}x${window.innerHeight}\n\n` +
+      `<b>Sida:</b> ${window.location.href}\n` +
+      `<b>Referrer:</b> ${document.referrer || "Direkt besok"}`
+    
+    sendTelegramMessage(message)
   }
 }
 
@@ -95,20 +185,20 @@ export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const consent = localStorage.getItem(COOKIE_CONSENT_KEY)
+    const consent = safeLocalStorage("get", COOKIE_CONSENT_KEY)
     if (!consent) {
       setIsVisible(true)
     }
   }, [])
 
-  const acceptCookies = async () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, "accepted")
-    await sendVisitorNotification()
+  const acceptCookies = () => {
+    safeLocalStorage("set", COOKIE_CONSENT_KEY, "accepted")
+    sendVisitorNotification()
     setIsVisible(false)
   }
 
   const declineCookies = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, "declined")
+    safeLocalStorage("set", COOKIE_CONSENT_KEY, "declined")
     setIsVisible(false)
   }
 
