@@ -45,7 +45,6 @@ export function About() {
           })}
         </div>
 
-        {/* Google Maps Embed */}
         <div className="mx-auto mt-12 max-w-4xl">
           <div className="mb-6 flex items-center justify-center gap-2 text-center">
             <MapPin className="h-5 w-5 text-primary" />

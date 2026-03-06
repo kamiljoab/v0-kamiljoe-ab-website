@@ -7,7 +7,6 @@ import { useLocale } from "@/lib/locale-context"
 const GOOGLE_MAPS_URL =
   "https://maps.app.goo.gl/NA3Dq7cnDUCExVsy9?g_st=i&utm_campaign=ac-im"
 
-// Statyczne opinie - mozesz je edytowac bezposrednio tutaj
 const REVIEWS = [
   {
     id: 1,
@@ -69,7 +68,6 @@ export function GoogleReviews() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
-  // Visa 3 kort pa desktop, 1 pa mobil
   const getVisibleCount = () => {
     if (typeof window !== "undefined") {
       if (window.innerWidth >= 1024) return 3
@@ -87,7 +85,6 @@ export function GoogleReviews() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  // Auto-rotate
   useEffect(() => {
     if (!isAutoPlaying) return
     const timer = setInterval(() => {
@@ -117,7 +114,6 @@ export function GoogleReviews() {
   return (
     <section id="rekommendationer" className="bg-muted py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        {/* Header */}
         <div className="text-center">
           <div className="mx-auto mb-4 flex items-center justify-center gap-2">
             <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden="true">
@@ -156,9 +152,7 @@ export function GoogleReviews() {
           </p>
         </div>
 
-        {/* Reviews Carousel */}
         <div className="relative mx-auto mt-10 max-w-5xl">
-          {/* Navigation buttons */}
           <button
             onClick={goToPrev}
             className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-card p-2 shadow-lg transition-all hover:bg-accent hover:scale-110 sm:-left-6"
@@ -174,7 +168,6 @@ export function GoogleReviews() {
             <ChevronRight className="h-5 w-5 text-foreground" />
           </button>
 
-          {/* Reviews grid */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {getVisibleReviews().map((review) => (
               <div
@@ -182,8 +175,6 @@ export function GoogleReviews() {
                 className="relative flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md"
               >
                 <Quote className="absolute right-4 top-4 h-8 w-8 text-primary/10" />
-                
-                {/* Author */}
                 <div className="mb-4 flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                     {review.avatar}
@@ -194,7 +185,6 @@ export function GoogleReviews() {
                   </div>
                 </div>
 
-                {/* Stars */}
                 <div className="mb-3 flex items-center gap-0.5">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
@@ -208,12 +198,10 @@ export function GoogleReviews() {
                   ))}
                 </div>
 
-                {/* Review text */}
                 <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
                   {review.text}
                 </p>
 
-                {/* Google badge */}
                 <div className="mt-4 flex items-center gap-1 text-xs text-muted-foreground/60">
                   <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -227,7 +215,6 @@ export function GoogleReviews() {
             ))}
           </div>
 
-          {/* Dots indicator */}
           <div className="mt-6 flex justify-center gap-2">
             {REVIEWS.map((_, idx) => (
               <button
@@ -245,7 +232,6 @@ export function GoogleReviews() {
           </div>
         </div>
 
-        {/* CTA to Google Maps */}
         <div className="mt-10 text-center">
           <a
             href={GOOGLE_MAPS_URL}

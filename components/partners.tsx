@@ -45,7 +45,6 @@ const PARTNERS = [
 ]
 
 function getLogoUrl(domain: string): string {
-  // Google S2 Favicon API - free, unlimited, no token needed
   try {
     const hostname = new URL(domain).hostname
     return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`
@@ -69,7 +68,6 @@ function handlePartnerClick(url: string) {
 export function Partners() {
   const { t } = useLocale()
 
-  // Duplicate list for seamless infinite scroll
   const doubledPartners = [...PARTNERS, ...PARTNERS]
 
   return (
@@ -85,7 +83,6 @@ export function Partners() {
         </div>
       </div>
 
-      {/* Slider row 1 - scroll left */}
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
@@ -99,7 +96,6 @@ export function Partners() {
         </div>
       </div>
 
-      {/* Slider row 2 - scroll right (reversed order) */}
       <div className="relative mt-4">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
