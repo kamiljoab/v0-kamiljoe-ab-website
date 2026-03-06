@@ -5,10 +5,9 @@ import { Send, CheckCircle, Loader2, X } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 import { useContactModal } from "@/lib/contact-modal-context"
 
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzLXpAPVJ7sW66zy6b9ZSFm0XoPLw921xIkd_ZEVcLt0-O-p3Qnk5T-LU71ktPKgs3rYA/exec"
 const WHATSAPP_NUMBER = "46762124124"
 
-function sendWhatsAppNotification(payload: Record<string, string>) {
+function sendWhatsAppMessage(payload: Record<string, string>) {
   const message = encodeURIComponent(
     `Ny förfrågan från kamiljo.se!\n\n` +
     `Förnamn: ${payload.firstName}\n` +
@@ -59,46 +58,22 @@ export function ContactForm() {
     setTimeout(resetForm, 300)
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError("")
 
     const formData = new FormData(e.currentTarget)
-    const payloadFields = {
+    const payload = {
       firstName: (formData.get("firstName") as string) || "",
       lastName: (formData.get("lastName") as string) || "",
       phone: (formData.get("phone") as string) || "",
       message: (formData.get("message") as string) || "",
     }
 
-    const payload = {
-      action: "formSubmit",
-      name: `${payloadFields.firstName} ${payloadFields.lastName}`,
-      ...payloadFields,
-      timestamp: new Date().toISOString(),
-      source: "kamiljo.se - kontaktformulär",
-    }
-
-    try {
-      const res = await fetch(WEBAPP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-      const json = await res.json()
-      if (json.success) {
-        sendWhatsAppNotification(payloadFields)
-        setSubmitted(true)
-      } else {
-        throw new Error(json.error || "Okänt fel")
-      }
-    } catch {
-      sendWhatsAppNotification(payloadFields)
-      setSubmitted(true)
-    } finally {
-      setLoading(false)
-    }
+    sendWhatsAppMessage(payload)
+    setSubmitted(true)
+    setLoading(false)
   }
 
   if (!isOpen) return null
