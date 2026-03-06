@@ -25,7 +25,7 @@ export function GoogleReviews() {
                 <Star key={star} className="h-5 w-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0 (11 omdömen)</span>
+            <span className="ml-2 text-sm font-medium text-muted-foreground">5.0</span>
           </div>
           <h2 className="text-balance font-serif text-3xl font-bold text-foreground sm:text-4xl">
             {t.reviews.title}
