@@ -70,7 +70,7 @@ export function InstagramFeed() {
   }
 
   return (
-    <section id="instagram" className="bg-card py-16 lg:py-24">
+    <section id="instagram" className="bg-card py-12 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mb-12 text-center">
           <div className="mb-4 flex items-center justify-center gap-2">

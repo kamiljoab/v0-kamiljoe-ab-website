@@ -12,12 +12,15 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-3">
 
           <div className="flex flex-col gap-4">
-            <div className="relative h-20 w-full max-w-[200px] sm:h-24 sm:max-w-[240px]">
+            <div className="relative h-16 w-full max-w-[180px] sm:h-20 sm:max-w-[200px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/logo.jpeg"
-                alt="Kamiljö AB logotyp"
+                alt="Kamiljo AB - VVS och Rormokare i Ludvika, Dalarna"
+                width={200}
+                height={80}
                 className="h-full w-auto rounded-xl object-contain object-left"
+                loading="lazy"
               />
             </div>
             <p className="text-sm leading-relaxed text-secondary-foreground/80">
@@ -36,7 +39,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-4" aria-label="Kontaktinformation">
             <h3 className="font-serif text-sm font-bold text-secondary-foreground">
               {t.nav.contact}
             </h3>
@@ -56,21 +59,22 @@ export function Footer() {
                 {t.footer.address}
               </span>
             </div>
-          </div>
+          </nav>
 
-          <div className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-4" aria-label="Tjanster">
             <h3 className="font-serif text-sm font-bold text-secondary-foreground">
               {t.nav.services}
             </h3>
-            <div className="flex flex-col gap-2 text-sm text-secondary-foreground/80">
+            <ul className="flex flex-col gap-2 text-sm text-secondary-foreground/80">
               {t.services.items.map((service, i) => (
-                <a key={i} href="#tjanster"
-                  className="transition-colors hover:text-secondary-foreground">
-                  {service.title}
-                </a>
+                <li key={i}>
+                  <a href="#tjanster" className="transition-colors hover:text-secondary-foreground">
+                    {service.title}
+                  </a>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </nav>
 
         </div>
         <div className="mt-10 border-t border-secondary-foreground/20 pt-6 text-center text-xs text-secondary-foreground/60">

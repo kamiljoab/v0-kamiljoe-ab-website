@@ -22,12 +22,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
-        <a href="#hem" className="flex shrink-0 items-center gap-3">
+        <a href="#hem" className="flex shrink-0 items-center gap-3" aria-label="Kamiljo AB - Hem">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/logo.jpeg"
-            alt="Kamiljö AB logotyp"
-            className="h-14 w-auto sm:h-16 lg:h-20"
+            alt="Kamiljo AB - Rormokarfirma i Ludvika"
+            width={80}
+            height={80}
+            className="h-12 w-auto sm:h-14 lg:h-16"
           />
         </a>
 

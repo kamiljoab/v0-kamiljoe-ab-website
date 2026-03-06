@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.kamiljo.se"),
+  metadataBase: new URL("https://kamiljo.se"),
   title: {
     default: "Kamiljö AB | VVS & Rörmokare i Ludvika, Dalarna",
     template: "%s | Kamiljö AB",
@@ -35,19 +35,19 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.kamiljo.se",
+    canonical: "https://kamiljo.se",
   },
   openGraph: {
     title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
     description:
       "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
-    url: "https://www.kamiljo.se",
+    url: "https://kamiljo.se",
     siteName: "Kamiljö AB",
     type: "website",
     locale: "sv_SE",
     images: [
       {
-        url: "https://www.kamiljo.se/images/logo.jpeg",
+        url: "https://kamiljo.se/images/logo.jpeg",
         width: 1200,
         height: 630,
         alt: "Kamiljö AB - VVS & Rörmokare i Ludvika",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "Kamiljö AB | VVS & Rörmokare i Ludvika",
     description:
       "Din professionella rörmokare i Ludvika – Installation, värme, rörjour 24/7. Gratis offert inom 24h.",
-    images: ["https://www.kamiljo.se/images/logo.jpeg"],
+    images: ["https://kamiljo.se/images/logo.jpeg"],
   },
   verification: {
     google: "Yhp89mD3iTMNlSiXpDs2nCY5OLVVBm2TMOrt2PwHAjI",

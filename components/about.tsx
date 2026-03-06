@@ -13,10 +13,10 @@ export function About() {
   ]
 
   return (
-    <section id="om-oss" className="bg-card py-16 lg:py-24">
+    <section id="om-oss" className="bg-card py-12 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-6 font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
+          <h2 className="mb-6 font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl text-balance">
             {t.about.title}
           </h2>
           <p className="mb-10 leading-relaxed text-muted-foreground">
