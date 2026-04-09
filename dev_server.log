@@ -1,0 +1,14 @@
+
+> my-project@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 690ms
+○ Compiling /vvs-portal-access ...
+ GET /vvs-portal-access 200 in 3.6s (compile: 3.3s, render: 350ms)
+ GET /vvs-portal-access 200 in 119ms (compile: 13ms, render: 107ms)
